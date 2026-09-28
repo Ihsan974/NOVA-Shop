@@ -1469,26 +1469,36 @@ img {
 
 }
 
-/* ഇമേജ് ബോക്സ് കൃത്യമായി കാണിക്കാൻ */
+} /* 1470-ാമത്തെ ലൈനിലെ മീഡിയ ക്വറിയുടെ ബ്രാക്കറ്റ് ഇവിടെ അവസാനിക്കുന്നു */
+
+/* ========================================================
+   ഹീറോ സെക്ഷനിൽ പുതിയ ഇമേജ് കൃത്യമായി വരാൻ
+   ======================================================== */
 .hero-image-container {
     display: flex !important;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px; /* വെബ്‌സൈറ്റിന് അനുസരിച്ച് മാറ്റാം */
-    position: relative;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 450px !important; 
+    position: relative !important;
+    background: none !important; /* പഴയ ക്രീം/വെളുത്ത ബാക്ക്ഗ്രൗണ്ട് ബോക്സ് മാറ്റാൻ */
+    box-shadow: none !important;
 }
 
-/* പഴയ വെളുത്ത ബോക്സ് ഡിസൈൻ ഒഴിവാക്കി പുതിയ ചിത്രം കാണാൻ */
+/* പഴയ വെളുത്ത ബോക്സ് ഡിസൈനും കാർഡുകളും പൂർണ്ണമായി ഹൈഡ് ചെയ്യാൻ */
 .hero-image-container .earbud-case,
+.hero-image-container .earbud,
+.hero-image-container .case-light,
 .hero-image-container .floating-card {
-    display: none !important; /* പഴയ കാർഡുകൾ തൽക്കാലം മറയ്ക്കുന്നു */
+    display: none !important; 
 }
 
-/* പുതിയ ഇയർബഡ്സ് ചിത്രത്തിന്റെ സ്റ്റൈൽ */
+/* പുതിയ ഇയർബഡ്സ് ചിത്രത്തിന്റെ വലിപ്പം കറക്റ്റ് ആക്കാൻ */
 .hero-product-img {
-    max-width: 85% !important;
+    width: 100% !important;
+    max-width: 450px !important; /* ചിത്രം ചെറുതാണെങ്കിൽ ഈ വാല്യൂ കൂട്ടാം (ഉദാ: 500px) */
     height: auto !important;
     display: block !important;
-    object-fit: contain;
-    filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.08)); /* ഭംഗിയുള്ള ഒരു ഷാഡോ */
+    object-fit: contain !important;
+    filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.06)) !important;
 }
+
