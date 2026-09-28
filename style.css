@@ -1470,38 +1470,26 @@ img {
 }
 
 /* ========================================================
-   പഴയ ഡിസൈൻ പൂർണ്ണമായി മാറ്റി പുതിയ ഇമേജ് കറക്റ്റ് ആക്കാൻ
+   ചിത്രത്തിന് ചുറ്റുമുള്ള ക്രീം ബോക്സും ബോർഡറും പൂർണ്ണമായി ഒഴിവാക്കാൻ
    ======================================================== */
-
-/* 1. വലിയ ക്രീം ബാക്ക്ഗ്രൗണ്ട് ബോക്സ് ഒഴിവാക്കാൻ */
 .hero-image-container {
-    background: none !important; 
-    box-shadow: none !important;
+    background: none !important;      /* ക്രീം ബാക്ക്ഗ്രൗണ്ട് കളർ ഒഴിവാക്കുന്നു */
+    border: none !important;          /* ചുറ്റുമുള്ള ബോർഡർ ലൈൻ ഒഴിവാക്കുന്നു */
+    box-shadow: none !important;      /* ഷാഡോകൾ ഉണ്ടെങ്കിൽ അത് മാറ്റുന്നു */
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     position: relative !important;
     width: 100% !important;
+    padding: 0 !important;            /* ആവശ്യമില്ലാത്ത സ്പേസ് ഒഴിവാക്കാൻ */
 }
 
-/* 2. പഴയ വെളുത്ത കേസ്, ലൈറ്റ്, ഇയർബഡുകൾ, കാർഡുകൾ എന്നിവ പൂർണ്ണമായി ഹൈഡ് ചെയ്യാൻ */
-.hero-image-container .earbud-case,
-.hero-image-container .earbud,
-.hero-image-container .case-light,
-.hero-image-container .floating-card,
-.hero-image-container div:not(.hero-product-img) { 
-    display: none !important; 
-}
-
-/* 3. പുതിയ ഇയർബഡ്സ് ചിത്രം വലുതാക്കി മധ്യഭാഗത്ത് കൊണ്ടുവരാൻ */
+/* പുതിയ ഇയർബഡ്സ് ചിത്രത്തിന്റെ വലിപ്പം ക്രമീകരിക്കാൻ */
 .hero-product-img {
-    width: 120% !important; /* ചിത്രത്തിന്റെ വലിപ്പം കൂട്ടാൻ ഇത് 130% വരെയൊക്കെ ആക്കാം */
-    max-width: 550px !important; 
+    width: 100% !important;
+    max-width: 520px !important;      /* ചിത്രം ഇനിയും വലുതാക്കണമെങ്കിൽ ഇത് 550px ആക്കാം */
     height: auto !important;
     display: block !important;
     object-fit: contain !important;
-    margin: 0 auto !important;
-    /* ഭംഗിയുള്ള സോഫ്റ്റ് ഷാഡോ */
-    filter: drop-shadow(0px 30px 60px rgba(0, 0, 0, 0.08)) !important; 
+    filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.06)) !important; /* ലൈറ്റ് ഷാഡോ */
 }
-
