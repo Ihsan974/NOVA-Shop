@@ -1468,3 +1468,27 @@ img {
     }
 
 }
+
+/* ഇമേജ് ബോക്സ് കൃത്യമായി കാണിക്കാൻ */
+.hero-image-container {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px; /* വെബ്‌സൈറ്റിന് അനുസരിച്ച് മാറ്റാം */
+    position: relative;
+}
+
+/* പഴയ വെളുത്ത ബോക്സ് ഡിസൈൻ ഒഴിവാക്കി പുതിയ ചിത്രം കാണാൻ */
+.hero-image-container .earbud-case,
+.hero-image-container .floating-card {
+    display: none !important; /* പഴയ കാർഡുകൾ തൽക്കാലം മറയ്ക്കുന്നു */
+}
+
+/* പുതിയ ഇയർബഡ്സ് ചിത്രത്തിന്റെ സ്റ്റൈൽ */
+.hero-product-img {
+    max-width: 85% !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: contain;
+    filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.08)); /* ഭംഗിയുള്ള ഒരു ഷാഡോ */
+}
