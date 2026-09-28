@@ -1493,3 +1493,30 @@ img {
     object-fit: contain !important;
     filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.06)) !important; /* ലൈറ്റ് ഷാഡോ */
 }
+
+/* ========================================================
+   ചിത്രത്തിന് ചുറ്റുമുള്ള വലിയ ബോക്സ് പൂർണ്ണമായി അപ്രത്യക്ഷമാക്കാൻ
+   ======================================================== */
+.hero-image-container::before,
+.hero-image-container::after {
+    display: none !important; /* ബോക്സിന് പിന്നിലെ ഷാഡോകൾ മാറ്റാൻ */
+}
+
+/* ഇമേജ് കിടക്കുന്ന മെയിൻ കണ്ടെയ്നർ ബോക്സ് ഹൈഡ് ചെയ്യുന്നു */
+.hero-image-container {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* ഇമേജ് വെബ്‌സൈറ്റ് ലേഔട്ടിൽ മനോഹരമായി വരാൻ */
+.hero-product-img {
+    width: 100% !important;
+    max-width: 500px !important;
+    height: auto !important;
+    display: block !important;
+    object-fit: contain !important;
+    transform: none !important; /* പഴയ ഏതെങ്കിലും ആനിമേഷൻ ഇതിനെ മറയ്ക്കുന്നുണ്ടെങ്കിൽ മാറ്റാൻ */
+}
