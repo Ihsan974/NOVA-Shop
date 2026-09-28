@@ -1469,36 +1469,39 @@ img {
 
 }
 
-} /* 1470-ാമത്തെ ലൈനിലെ മീഡിയ ക്വറിയുടെ ബ്രാക്കറ്റ് ഇവിടെ അവസാനിക്കുന്നു */
-
 /* ========================================================
-   ഹീറോ സെക്ഷനിൽ പുതിയ ഇമേജ് കൃത്യമായി വരാൻ
+   പഴയ ഡിസൈൻ പൂർണ്ണമായി മാറ്റി പുതിയ ഇമേജ് കറക്റ്റ് ആക്കാൻ
    ======================================================== */
+
+/* 1. വലിയ ക്രീം ബാക്ക്ഗ്രൗണ്ട് ബോക്സ് ഒഴിവാക്കാൻ */
 .hero-image-container {
+    background: none !important; 
+    box-shadow: none !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    min-height: 450px !important; 
     position: relative !important;
-    background: none !important; /* പഴയ ക്രീം/വെളുത്ത ബാക്ക്ഗ്രൗണ്ട് ബോക്സ് മാറ്റാൻ */
-    box-shadow: none !important;
+    width: 100% !important;
 }
 
-/* പഴയ വെളുത്ത ബോക്സ് ഡിസൈനും കാർഡുകളും പൂർണ്ണമായി ഹൈഡ് ചെയ്യാൻ */
+/* 2. പഴയ വെളുത്ത കേസ്, ലൈറ്റ്, ഇയർബഡുകൾ, കാർഡുകൾ എന്നിവ പൂർണ്ണമായി ഹൈഡ് ചെയ്യാൻ */
 .hero-image-container .earbud-case,
 .hero-image-container .earbud,
 .hero-image-container .case-light,
-.hero-image-container .floating-card {
+.hero-image-container .floating-card,
+.hero-image-container div:not(.hero-product-img) { 
     display: none !important; 
 }
 
-/* പുതിയ ഇയർബഡ്സ് ചിത്രത്തിന്റെ വലിപ്പം കറക്റ്റ് ആക്കാൻ */
+/* 3. പുതിയ ഇയർബഡ്സ് ചിത്രം വലുതാക്കി മധ്യഭാഗത്ത് കൊണ്ടുവരാൻ */
 .hero-product-img {
-    width: 100% !important;
-    max-width: 450px !important; /* ചിത്രം ചെറുതാണെങ്കിൽ ഈ വാല്യൂ കൂട്ടാം (ഉദാ: 500px) */
+    width: 120% !important; /* ചിത്രത്തിന്റെ വലിപ്പം കൂട്ടാൻ ഇത് 130% വരെയൊക്കെ ആക്കാം */
+    max-width: 550px !important; 
     height: auto !important;
     display: block !important;
     object-fit: contain !important;
-    filter: drop-shadow(0px 20px 40px rgba(0, 0, 0, 0.06)) !important;
+    margin: 0 auto !important;
+    /* ഭംഗിയുള്ള സോഫ്റ്റ് ഷാഡോ */
+    filter: drop-shadow(0px 30px 60px rgba(0, 0, 0, 0.08)) !important; 
 }
 
