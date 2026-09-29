@@ -1568,3 +1568,15 @@ img {
 .footer-bottom {
   color: #666666 !important;
 }
+/* CTA ബട്ടണിലെ അക്ഷരങ്ങൾ കറുപ്പാക്കാൻ */
+.cta .btn-primary {
+  color: #111111 !important;
+}
+
+/* ഫൂട്ടറിലെ മെയിൻ ഹെഡിംഗുകൾ കറുപ്പാക്കാൻ */
+.footer h5, 
+.footer h6, 
+.footer-heading {
+  color: #111111 !important;
+  font-weight: 600; /* അല്പം കട്ടി കൂട്ടാൻ */
+}
