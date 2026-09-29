@@ -186,7 +186,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
   document.addEventListener('DOMContentLoaded', () => {
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
@@ -230,15 +230,22 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        var targetLink = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+        // URL ഉണ്ടാക്കുമ്പോൾ ഒരു പ്ലസ് ചിഹ്നവും ഇല്ലാതെ കൃത്യമായി എൻകോഡ് ചെയ്യുന്നു
+        var cleanLink = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
         localStorage.clear(); 
         
-        window.location.replace(targetLink);
+        // ബ്രൗസറിന് ഒരു എററും തരാൻ കഴിയാത്ത വിധം ഒരു താൽക്കാലിക ലിങ്ക് ടാഗ് ഉണ്ടാക്കി ക്ലിക്ക് ചെയ്യിക്കുന്നു (ഏറ്റവും സുരക്ഷിതമായ വഴി)
+        var linkCreator = document.createElement('a');
+        linkCreator.href = cleanLink;
+        linkCreator.target = '_self'; // ഇതേ വിൻഡോയിൽ വാട്സാപ്പ് തുറക്കാൻ
+        document.body.appendChild(linkCreator);
+        linkCreator.click(); // തനിയെ ക്ലിക്ക് ചെയ്യിച്ച് വാട്സാപ്പിലേക്ക് വിടുന്നു
       });
     }
   });
 </script>
+
 
 
 
