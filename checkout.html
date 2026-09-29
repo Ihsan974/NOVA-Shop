@@ -188,7 +188,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. കാർട്ട് വിവരങ്ങൾ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,11 +201,10 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ബ്രൗസറിനെ പറ്റിക്കാൻ ഒരു അടിപൊളി വഴി
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault(); // ഫോം റീഫ്രഷ് ആകുന്നത് തടയുന്നു
+        e.preventDefault();
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -232,10 +230,8 @@
 
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
         localStorage.clear(); 
 
-        // ബ്രൗസറിലെ എല്ലാ എററുകളും മറികടക്കാൻ കസ്റ്റമർക്ക് നേരിട്ട് ക്ലിക്ക് ചെയ്യാൻ ഒരു മനോഹരമായ ബട്ടൺ കാണിക്കുന്നു
         const popup = document.createElement('div');
         popup.style.position = 'fixed';
         popup.style.top = '50%';
@@ -249,13 +245,13 @@
         popup.style.textAlign = 'center';
         popup.style.fontFamily = 'sans-serif';
         
+        // ഇവിടെ target="_self" എന്ന് നൽകി, ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ഇതേ ടാബിൽ തന്നെ ലിങ്ക് തുറക്കും
         popup.innerHTML = `
-          <h3 style="margin-bottom: 15px; color: #111;">Order Details Details Saved!</h3>
+          <h3 style="margin-bottom: 15px; color: #111;">Order Details Saved!</h3>
           <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Click the button below to send your order via WhatsApp.</p>
-          <a href="${whatsappURL}" style="display: inline-block; background: #25D366; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px;">🚀 Send Order to WhatsApp</a>
+          <a href="${whatsappURL}" target="_self" style="display: inline-block; background: #25D366; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px;">🚀 Send Order to WhatsApp</a>
         `;
         
-        // ബാക്ക്ഗ്രൗണ്ട് മങ്ങിക്കാൻ ഒരു ലെയർ
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
         overlay.style.top = '0';
@@ -271,6 +267,7 @@
     }
   });
 </script>
+
 
 
 
