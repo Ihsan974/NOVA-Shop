@@ -1580,3 +1580,14 @@ img {
   color: #111111 !important;
   font-weight: 600; /* അല്പം കട്ടി കൂട്ടാൻ */
 }
+/* 1. 'More life.' എന്ന വാക്കിന്റെ റീഡബിലിറ്റി കൂട്ടാൻ */
+.story-content h2 span, 
+.philosophy-content h2 span {
+  color: #111111 !important; /* മങ്ങിയ ഗ്രേ മാറ്റി നല്ല കടും കറുപ്പ് നിറം നൽകി */
+}
+
+/* 2. താഴെയുള്ള വിവരണങ്ങൾ കൂടുതൽ വ്യക്തമായി വായിക്കാൻ */
+.story-content p, 
+.philosophy-content p {
+  color: #555555 !important; /* ലൈറ്റ് കളർ മാറ്റി നല്ലൊരു ഡാർക്ക് ഗ്രേ നൽകി */
+}
