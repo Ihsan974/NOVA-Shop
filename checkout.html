@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout | NOVA</title>
     <style>
-        /* നിങ്ങളുടെ വെബ്‌സൈറ്റിലെ ഡിസൈൻ അനുസരിച്ചുള്ള സ്റ്റൈൽ */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -52,7 +51,7 @@
             margin: 20px 0;
             font-size: 16px;
         }
-        /* ✅ ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത സുരക്ഷിതമായ HTML Anchor Link */
+        /* ✅ பிரவுசர் பிளாக் செய்யாத பாதுகாப்பான பட்டன் வடிவம் */
         .confirm-btn {
             display: block;
             width: 100%;
@@ -65,6 +64,8 @@
             font-weight: bold;
             font-size: 15px;
             box-sizing: border-box;
+            cursor: pointer;
+            border: none;
             transition: background 0.2s;
         }
         .confirm-btn:hover { background-color: #333; }
@@ -73,7 +74,7 @@
 <body>
 
 <div class="checkout-wrapper">
-    <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാനുള്ള ഇൻപുട്ടുകൾ -->
+    <!-- இடது பக்கம்: வாடிக்கையாளர் விவரங்கள் -->
     <div class="container-box">
         <h2>Shipping Details</h2>
         
@@ -110,11 +111,10 @@
         </div>
     </div>
 
-    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+    <!-- வலது பக்கம்: ஆர்டர் விவரங்கள் -->
     <div class="summary-box">
         <h2>Order Summary</h2>
         
-        <!-- കാർട്ടിലെ സാധനങ്ങൾ കാണിക്കാൻ -->
         <div id="checkoutItemsList"></div>
         
         <div class="total-section">
@@ -122,14 +122,14 @@
             <span id="checkoutTotal">₹0</span>
         </div>
 
-        <!-- ✅ ഇതിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ നേരിട്ട് ://whatsapp.com ഓപ്പൺ ആകും -->
-        <a href="#" id="realConfirmBtn" target="_blank" class="confirm-btn">Confirm Order</a>
+        <!-- ✅ onclick நிகழ்வு மூலம் நேரடியாக செயல்படும் வகையில் மாற்றப்பட்டுள்ளது -->
+        <button type="button" onclick="goToWhatsAppAPI()" class="confirm-btn">Confirm Order</button>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
+  // கார்ட் தரவை லோடு செய்கிறது
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -139,55 +139,39 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
-
-  // 2. ://whatsapp.com ലിങ്ക് തത്സമയം ഉണ്ടാക്കാനുള്ള ഫങ്ക്ഷൻ
-  function updateWhatsAppHref() {
-    const name = document.getElementById('name')?.value || "Not Provided";
-    const phone = document.getElementById('phone')?.value || "Not Provided";
-    const address = document.getElementById('address')?.value || "Not Provided";
-    const city = document.getElementById('city')?.value || "Not Provided";
-    const pincode = document.getElementById('pincode')?.value || "Not Provided";
-    const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-    const myWhatsAppNumber = "918921033257"; 
-
-    // വാട്സാപ്പിൽ കാണിക്കേണ്ട ഒഫീഷ്യൽ ഓർഡർ മെസ്സേജ് ഫോർമാറ്റ്
-    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-    msgText += "👤 Customer Details:\n";
-    msgText += "• Name: " + name + "\n";
-    msgText += "• Phone: " + phone + "\n\n";
-    msgText += "📍 Shipping Address:\n";
-    msgText += "• Address: " + address + "\n";
-    msgText += "• City: " + city + " - " + pincode + "\n\n";
-    msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-    msgText += "Thank you for shopping with NOVA!";
-
-    // ✅ നിങ്ങൾ ആവശ്യപ്പെട്ട കൃത്യമായ ://whatsapp.com ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
-    const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-    
-    // HTML-ലെ ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
-    const confirmBtn = document.getElementById('realConfirmBtn');
-    if (confirmBtn) {
-      confirmBtn.href = whatsappURL;
-    }
-  }
-
-  // കൗണ്ടർ ആദ്യം ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് റെഡിയാക്കുന്നു
-  updateWhatsAppHref();
-
-  // 3. കസ്റ്റമർ ഓരോ ഇൻപുട്ടിലും ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോൾ ലിങ്കിലെ വിവരങ്ങൾ തത്സമയം അപ്ഡേറ്റ് ആകും
-  const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
-  inputs.forEach(id => {
-    document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
-  });
-
-  // 4. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യാൻ
-  document.getElementById('realConfirmBtn')?.addEventListener('click', () => {
-    setTimeout(() => {
-      localStorage.clear();
-    }, 1500); // ലിങ്ക് പുതിയ ടാബിൽ തുറന്നതിനു ശേഷം മാത്രം കാർട്ട് ക്ലിയർ ചെയ്യും
-  });
 });
+
+// பிரவுசரால் பிளாக் செய்ய முடியாத வாட்ஸ்அப் திசைதிருப்பல் செயல்பாடு
+function goToWhatsAppAPI() {
+  const name = document.getElementById('name')?.value || "Not Provided";
+  const phone = document.getElementById('phone')?.value || "Not Provided";
+  const address = document.getElementById('address')?.value || "Not Provided";
+  const city = document.getElementById('city')?.value || "Not Provided";
+  const pincode = document.getElementById('pincode')?.value || "Not Provided";
+  const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+
+  const myWhatsAppNumber = "918921033257"; 
+
+  let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+  msgText += "👤 Customer Details:\n";
+  msgText += "• Name: " + name + "\n";
+  msgText += "• Phone: " + phone + "\n\n";
+  msgText += "📍 Shipping Address:\n";
+  msgText += "• Address: " + address + "\n";
+  msgText += "• City: " + city + " - " + pincode + "\n\n";
+  msgText += "💰 Total Amount: " + currentTotal + "\n\n";
+  msgText += "Thank you for shopping with NOVA!";
+
+  // ✅ பிரவுசர் பிளாக் செய்யாதவாறு அமைக்கப்பட்ட சரியான API முகவரி
+  const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+  
+  // கார்ட்டை காலி செய்கிறது
+  localStorage.clear();
+
+  // ⚠️ [ULTIMATE FIX] புதிய விண்டோவில் திறக்காமல் அதே பக்கத்தில் (Same Window) திறக்கிறது. 
+  // இது பிரவுசரின் செக்யூரிட்டி சிஸ்டத்தை ஏமாற்றுவதால் ஒருபோதும் 'blocked' எரர் வராது!
+  window.location.href = whatsappURL;
+}
 </script>
 
 </body>
