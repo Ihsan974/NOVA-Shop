@@ -188,6 +188,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -201,6 +202,7 @@
       totalContainer.textContent = savedTotal;
     }
 
+    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ വിവരങ്ങൾ പാക്ക് ചെയ്യുന്നു
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
@@ -213,7 +215,6 @@
         const pincode = document.getElementById('pincode').value;
         const payment = document.querySelector('input[name="payment"]:checked').value;
         
-        // ഇവിടെ വെറും ഫോൺ നമ്പർ മാത്രം (Country code സഹിതം)
         const myWhatsAppNumber = "918921033257"; 
 
         let msgText = "NEW ORDER RECEIVED!\n\n";
@@ -229,10 +230,10 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // ⚠️ ബ്രൗസറിലെ ആഡ്-ബ്ലോക്കറുകൾ ഒട്ടും തടയാത്ത ഏറ്റവും ലളിതമായ 'wa.me' ഷോർട്ട് ലിങ്ക് ഫോർമാറ്റ്
+        // ⚠️ കമ്പ്യൂട്ടറിലും ഫോണിലും ഒരു തടസ്സവുമില്ലാതെ ലിങ്ക് വർക്ക് ചെയ്യാൻ https:// പൂർണ്ണമായി ചേർത്തു
         const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); 
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
 
         // ഇതേ ടാബിൽ തന്നെ പുതിയ ലിങ്ക് ലോഡ് ചെയ്യിക്കുന്നു (target="_self")
         document.body.innerHTML = `
