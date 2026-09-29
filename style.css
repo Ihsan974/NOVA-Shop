@@ -725,7 +725,7 @@ img {
     position: absolute;
     top: 25px;
     right: 25px;
-    color: #aaa7a0;
+    color: #66635d;;
     font-size: 10px;
     font-weight: 800;
 }
@@ -753,7 +753,7 @@ img {
 }
 
 .feature-card p {
-    color: var(--muted);
+    color: #555555;;
     font-size: 12px;
     margin-top: 8px;
 }
