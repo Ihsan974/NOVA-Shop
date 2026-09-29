@@ -206,7 +206,9 @@
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        // ബ്രൗസറിന് ഒരു ബ്ലോക്കും ചെയ്യാൻ പറ്റാത്ത രീതിയിൽ നമ്മൾ നേരിട്ട് ലിങ്ക് മാറുന്നു
+        // ഫോം സ്വന്തം നിലയ്ക്ക് റീഫ്രഷ് ആകുന്നത് നിർബന്ധമായും തടയാൻ ഇത് ഇവിടെ ചേർത്തു
+        e.preventDefault(); 
+
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -234,9 +236,9 @@
         // പൂർണ്ണമായും വാലിഡ് ആയ ലിങ്ക് ഫോർമാറ്റ്
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        localStorage.clear(); // കാർട്ട് ക്ലീൻിക്കുന്നു
         
-        // window.open ഒഴിവാക്കി, വെബ്‌സൈറ്റിന്റെ മെയിൻ വിൻഡോ തന്നെ മാറ്റി വിടുന്നു (ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല)
+        // മെയിൻ വിൻഡോ തന്നെ മാറ്റി വിടുന്നു (ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല)
         window.top.location.href = whatsappURL; 
       });
     }
