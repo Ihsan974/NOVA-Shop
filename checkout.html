@@ -151,49 +151,58 @@
   </div>
 
   <script>
-    function updateOrderLink() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
-      const city = document.getElementById('city').value;
-      const pincode = document.getElementById('pincode').value;
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
+    const savedItems = localStorage.getItem('cartItemsHTML');
+    const savedTotal = localStorage.getItem('cartTotalAmount');
 
-      const myWhatsAppNumber = "918921033257"; 
+    const itemsContainer = document.getElementById('checkoutItemsList');
+    const totalContainer = document.getElementById('checkoutTotal');
 
-      let msgText = "NEW ORDER RECEIVED!\n\n";
-      msgText += "Customer Details:\n";
-      msgText += "Name: " + name + "\n";
-      msgText += "Phone: " + phone + "\n\n";
-      msgText += "Shipping Address:\n";
-      msgText += "Address: " + address + "\n";
-      msgText += "City: " + city + " - " + pincode + "\n\n";
-      msgText += "Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // കമ്പ്യൂട്ടറിലും ഫോണിലും കോൺടാക്റ്റ് ലിസ്റ്റ് വരാതെ നേരിട്ട് നിങ്ങളുടെ ചാറ്റ് തുറക്കാനുള്ള കൃത്യമായ ലിങ്ക്
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      const directBtn = document.getElementById('waDirectBtn');
-      if (directBtn) {
-        directBtn.href = whatsappURL;
-      }
+    if (savedItems && itemsContainer) {
+      itemsContainer.innerHTML = savedItems;
+    }
+    if (savedTotal && totalContainer) {
+      totalContainer.textContent = savedTotal;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount');
+    // 2. ബ്രൗസറിന് ഒട്ടും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത അൾട്ടിമേറ്റ് ഫോം ആക്ഷൻ സിസ്റ്റം
+    const form = document.getElementById('checkoutForm');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        // ശ്രദ്ധിക്കുക: നമ്മൾ ഇവിടെ e.preventDefault() കൊടുക്കുന്നില്ല! ഫോം ഡിഫോൾട്ട് ആയി സബ്മിറ്റ് ആകണം.
 
-      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
-      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const pincode = document.getElementById('pincode').value;
+        
+        const myWhatsAppNumber = "918921033257"; 
 
-      // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ആദ്യത്തെ ലിങ്ക് തയാറാക്കുന്നു
-      updateOrderLink();
+        let msgText = "NEW ORDER RECEIVED!\n\n";
+        msgText += "Customer Details:\n";
+        msgText += "Name: " + name + "\n";
+        msgText += "Phone: " + phone + "\n\n";
+        
+        msgText += "Shipping Address:\n";
+        msgText += "Address: " + address + "\n";
+        msgText += "City: " + city + " - " + pincode + "\n\n";
+        
+        msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
+        msgText += "Thank you for shopping with NOVA!";
 
-      document.getElementById('waDirectBtn').addEventListener('click', () => {
+        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+        
         localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        
+        // ജാവാസ്ക്രിപ്റ്റ് വഴി മാറാതെ, ഫോമിന്റെ ആക്ഷൻ ലിങ്ക് വാട്സാപ്പ് ലിങ്ക് ആക്കി മാറ്റുന്നു!
+        form.action = whatsappURL;
+        form.method = "POST"; // അല്ലെങ്കിൽ ഗെറ്റ് രീതി ഒഴിവാക്കാൻ
       });
-    });
-  </script>
+    }
+  });
+</script>
+
 </body>
 </html>
