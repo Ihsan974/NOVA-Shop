@@ -168,11 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmBtn = document.getElementById('realConfirmBtn');
   if (confirmBtn) {
     confirmBtn.addEventListener('click', (event) => {
-      // ഫോം സബ്‌മിറ്റ് ആയി പേജ് ഓട്ടോമാറ്റിക് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
+      // ഫോം സബ്‌മിറ്റ് ആയി പേജ് ഓട്ടോമാറ്റിക് റീഫ്രഷ് ആകുന്നത് പൂർണ്ണമായി തടയുന്നു
       event.preventDefault();
-
-      // ⚠️ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ക്ലിക്ക് ചെയ്ത ഉടനെ ഒരു ബ്ലാങ്ക് ടാബ് തുറക്കുന്നു
-      const whatsappTab = window.open('about:blank', '_blank');
+      event.stopPropagation();
 
       // 3. കസ്റ്റമർ ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ തത്സമയം എടുക്കുന്നു
       const name = document.getElementById('name')?.value || "Not Provided";
@@ -198,17 +196,24 @@ document.addEventListener('DOMContentLoaded', () => {
       // 5. ഒഫീഷ്യൽ വാട്സാപ്പ് വെബ് കണ്ടിന്യൂ ലിങ്ക് നൽകുന്നു
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      // 6. തുറന്നു വെച്ചിരിക്കുന്ന ബ്ലാങ്ക് ടാബിലേക്ക് വാട്സാപ്പ് ലിങ്ക് ലോഡ് ചെയ്യുന്നു (ഇത് ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
-      if (whatsappTab) {
-        whatsappTab.location.href = whatsappURL;
-      }
+      // ⚠️ [BEST TRICK] ജാവാസ്ക്രിപ്റ്റ് വഴി താല്ക്കാലികമായി ഒരു ലിങ്ക് ഉണ്ടാക്കി ക്ലിക്ക് ചെയ്യിക്കുന്നു
+      // ഇത് ബ്രൗസറിനെ പറ്റിക്കുകയും 'about:blank' വരുന്നത് പൂർണ്ണമായി ഒഴിവാക്കുകയും ചെയ്യും
+      const tempLink = document.createElement('a');
+      tempLink.href = whatsappURL;
+      tempLink.target = '_blank';
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
 
-      // 7. ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
-      localStorage.clear();
+      // 6. ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് 1 സെക്കൻഡിന് ശേഷം കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+      setTimeout(() => {
+        localStorage.clear();
+      }, 1000);
     });
   }
 });
 </script>
+
 
 
 
