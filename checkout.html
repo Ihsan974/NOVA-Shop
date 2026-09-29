@@ -186,8 +186,9 @@
     </div>
   </div>
 
- <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -201,11 +202,11 @@
       totalContainer.textContent = savedTotal;
     }
 
+    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ നേരിട്ട് ഫോർവേഡ് ചെയ്യാൻ
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
+        // ബ്രൗസറിന് ഒരു ബ്ലോക്കും ചെയ്യാൻ പറ്റാത്ത രീതിയിൽ നമ്മൾ നേരിട്ട് ലിങ്ക് മാറുന്നു
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -230,21 +231,18 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // URL ഉണ്ടാക്കുമ്പോൾ ഒരു പ്ലസ് ചിഹ്നവും ഇല്ലാതെ കൃത്യമായി എൻകോഡ് ചെയ്യുന്നു
-        var cleanLink = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+        // പൂർണ്ണമായും വാലിഡ് ആയ ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); 
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
         
-        // ബ്രൗസറിന് ഒരു എററും തരാൻ കഴിയാത്ത വിധം ഒരു താൽക്കാലിക ലിങ്ക് ടാഗ് ഉണ്ടാക്കി ക്ലിക്ക് ചെയ്യിക്കുന്നു (ഏറ്റവും സുരക്ഷിതമായ വഴി)
-        var linkCreator = document.createElement('a');
-        linkCreator.href = cleanLink;
-        linkCreator.target = '_self'; // ഇതേ വിൻഡോയിൽ വാട്സാപ്പ് തുറക്കാൻ
-        document.body.appendChild(linkCreator);
-        linkCreator.click(); // തനിയെ ക്ലിക്ക് ചെയ്യിച്ച് വാട്സാപ്പിലേക്ക് വിടുന്നു
+        // window.open ഒഴിവാക്കി, വെബ്‌സൈറ്റിന്റെ മെയിൻ വിൻഡോ തന്നെ മാറ്റി വിടുന്നു (ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല)
+        window.top.location.href = whatsappURL; 
       });
     }
   });
 </script>
+
 
 
 
