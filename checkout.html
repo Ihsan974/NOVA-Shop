@@ -204,49 +204,50 @@
 
     // ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ WhatsApp-ലേക്ക് വിവരങ്ങൾ അയക്കാൻ
     const form = document.getElementById('checkoutForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-      // ഫോമിലെ കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
-      const city = document.getElementById('city').value;
-      const pincode = document.getElementById('pincode').value;
-      const payment = document.querySelector('input[name="payment"]:checked').value;
+        // ഫോമിലെ കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const pincode = document.getElementById('pincode').value;
+        const payment = document.querySelector('input[name="payment"]:checked').value;
+        
+        // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ കൃത്യമായ സ്പെല്ലിംഗിൽ ഇവിടെ നൽകിയിട്ടുണ്ട്
+        const myWhatsAppNumber = "918921033257"; 
 
-            // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പറും ശരിയായ സ്പെല്ലിംഗും ഇവിടെ നൽകിയിട്ടുണ്ട്
-      const myWhatsAppNumber = "918921033257"; 
+        // WhatsApp മെസ്സേജ് ഫോർമാറ്റ് തയാറാക്കുന്നു
+        let message = `*📦 NEW ORDER RECEIVED!* \n\n`;
+        message += `*👤 Customer Details:* \n`;
+        message += `• Name: ${name}\n`;
+        message += `• Phone: ${phone}\n`;
+        message += `• Email: ${email}\n\n`;
+        
+        message += `*📍 Shipping Address:* \n`;
+        message += `• Address: ${address}\n`;
+        message += `• City: ${city} - ${pincode}\n\n`;
+        
+        message += `*💳 Payment Method:* ${payment}\n`;
+        message += `*💰 Total Amount:* ${savedTotal || '₹0'}\n\n`;
+        message += `Thank you for shopping with NOVA!`;
 
-      // WhatsApp മെസ്സേജ് ഫോർമാറ്റ് തയാറാക്കുന്നു
-      let message = `*📦 NEW ORDER RECEIVED!* \n\n`;
-      message += `*👤 Customer Details:* \n`;
-      message += `• Name: ${name}\n`;
-      message += `• Phone: ${phone}\n`;
-      message += `• Email: ${email}\n\n`;
-      
-      message += `*📍 Shipping Address:* \n`;
-      message += `• Address: ${address}\n`;
-      message += `• City: ${city} - ${pincode}\n\n`;
-      
-      message += `*💳 Payment Method:* ${payment}\n\n`;
-      message += `*💰 Total Amount:* ${savedTotal || '₹0'}\n\n`;
-      message += `Thank you for shopping with NOVA!`;
-
-            // 1. തിരുത്തിയ ശരിയായ വാട്സാപ്പ് ലിങ്ക്
-      const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
-
-      
-      // 2. ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      localStorage.clear(); 
-      
-      // 3. ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതെ ഇതേ ടാബിൽ നേരിട്ട് വാട്സാപ്പ് ചാറ്റ് ഓപ്പൺ ആക്കുന്നു
-      window.location.href = whatsappURL; 
-
-    });
+        // ഔദ്യോഗിക ലിങ്കും ശരിയായ വേരിയബിളും ഒരൊറ്റ വരിയിൽ
+        const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
+        
+        // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        localStorage.clear(); 
+        
+        // ഒരു തടസ്സവുമില്ലാതെ നേരിട്ട് വാട്സാപ്പ് ചാറ്റിലേക്ക് പേജ് മാറ്റുന്നു
+        window.location.href = whatsappURL; 
+      });
+    }
   });
 </script>
+
 
 
 </body>
