@@ -187,17 +187,34 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // ആദ്യത്തെ പേജിലെ കാർട്ടിൽ നിന്ന് വിവരങ്ങൾ തനിയെ എടുക്കാനുള്ള ഒരു ലളിതമായ സിസ്റ്റം അടുത്ത സ്റ്റെപ്പിൽ ചെയ്യാം.
-      // തൽക്കാലം ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ഒരു കൺഫർമേഷൻ കാണിക്കാൻ:
-      const form = document.getElementById('checkoutForm');
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Thank you! Your order has been placed successfully.');
-        window.location.href = 'index.html'; // തിരികെ ഹോം പേജിലേക്ക് പോകാൻ
-      });
+  document.addEventListener('DOMContentLoaded', () => {
+    // ലോക്കൽ സ്റ്റോറേജിൽ നിന്ന് വിവരങ്ങൾ എടുക്കുന്നു
+    const savedItems = localStorage.getItem('cartItemsHTML');
+    const savedTotal = localStorage.getItem('cartTotalAmount');
+
+    const itemsContainer = document.getElementById('checkoutItemsList');
+    const totalContainer = document.getElementById('checkoutTotal');
+
+    // ഈ പേജിലേക്ക് വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്യുന്നു
+    if (savedItems && itemsContainer) {
+      itemsContainer.innerHTML = savedItems;
+    }
+    if (savedTotal && totalContainer) {
+      totalContainer.textContent = savedTotal;
+    }
+
+    // ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ഓർഡർ സക്സസ് ആകാൻ
+    const form = document.getElementById('checkoutForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you! Your order has been placed successfully.');
+      // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      localStorage.clear();
+      window.location.href = 'index.html'; // തിരികെ ഹോം പേജിലേക്ക്
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
 
