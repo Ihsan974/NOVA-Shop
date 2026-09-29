@@ -64,7 +64,6 @@ button:active {
     color: #111;
 }
 
-<script>
 document.addEventListener('DOMContentLoaded', () => {
   // കാർട്ട് കൗണ്ട് കാണിക്കുന്ന നമ്പറും, ബട്ടണും ഐഡി വഴി സെലക്ട് ചെയ്യുന്നു
   const cartCount = document.getElementById('cartCount');
@@ -83,5 +82,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-</script>
 
