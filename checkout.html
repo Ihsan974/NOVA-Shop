@@ -172,8 +172,8 @@
     msgText += "💰 Total Amount: " + savedTotal + "\n\n";
     msgText += "Thank you for shopping with NOVA!";
 
-    // ⚠️ കമ്പ്യൂട്ടറിലെ ബ്രൗസറിന് 100% കൃത്യമായി മനസ്സിലാകുന്ന പൂർണ്ണമായ ഔദ്യോഗിക വാട്സാപ്പ് വെബ് ലിങ്ക് ഫോർമാറ്റ്
-    const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+    // ⚠️ ബ്രൗസറിന് ഒരു നെറ്റ്‌വർക്ക് എററോ ബ്ലോക്കോ കാണിക്കാൻ പറ്റാത്ത ആഗോള ഔദ്യോഗിക ലിങ്ക് ഫോർമാറ്റ്
+    const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
     
     const confirmLink = document.getElementById('realConfirmBtn');
     if (confirmLink) {
@@ -188,7 +188,7 @@
     if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
     if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ശരിയായ ലിങ്ക് സെറ്റ് ചെയ്യുന്നു
+    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ കൃത്യമായ ലിങ്ക് സെറ്റ് ചെയ്യുന്നു
     updateOrderWhatsAppURL();
 
     document.getElementById('realConfirmBtn').addEventListener('click', () => {
