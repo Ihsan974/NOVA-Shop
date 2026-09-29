@@ -174,29 +174,40 @@
         msgText += "💰 Total Amount: " + savedTotal + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // ⚠️ കമ്പ്യൂട്ടറിൽ 'Continue to WhatsApp Web' ബോക്സ് നേരിട്ട് ഓപ്പൺ ആക്കാനുള്ള 100% കറക്റ്റ് ലിങ്ക് ഫോർമാറ്റ്
-        const whatsappURL = "https://whatsapp.com" + encodeURIComponent(msgText);
-        
         localStorage.clear(); 
 
+        // യഥാർത്ഥ പരിഹാരം: ഡയറക്ട് എക്സ്റ്റേണൽ റീഡയറക്ഷൻ ഒഴിവാക്കി ഇതേ വിൻഡോയിൽ ഓട്ടോ കോപ്പി ബട്ടൺ നൽകുന്നു
         document.body.innerHTML = `
           <div style="max-width: 550px; margin: 80px auto; padding: 40px 30px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif; box-sizing: border-box;">
             <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
             <h2 style="font-size: 24px; margin-bottom: 10px; color: #111111;">Order Details Saved!</h2>
-            <p style="color: #666666; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Please copy the order text below and send it to our official WhatsApp number: <strong>+91 89210 33257</strong></p>
+            <p style="color: #666666; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Click the button below to copy the order details, then paste and send it to our WhatsApp number: <strong>+91 89210 33257</strong></p>
             
-            <textarea readonly style="width: 100%; height: 160px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 13px; background: #fafafa; resize: none; box-sizing: border-box; margin-bottom: 20px;">${msgText}</textarea>
+            <textarea id="orderTextToCopy" readonly style="width: 100%; height: 160px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 13px; background: #fafafa; resize: none; box-sizing: border-box; margin-bottom: 20px;">${msgText}</textarea>
             
-            <a href="${whatsappURL}" target="_self" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px; margin-bottom: 15px;">
-              🚀 Continue to WhatsApp Web
-            </a>
+            <button onclick="copyAndAlertOrder()" style="display: block; width: 100%; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 16px; border: none; cursor: pointer; margin-bottom: 15px;">
+              📋 Copy Order Details to Clipboard
+            </button>
             <a href="index.html" style="display: inline-block; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
           </div>
         `;
       });
     }
   });
+
+  // ക്ലിക്ക് ചെയ്യുമ്പോൾ മെസ്സേജ് ടെക്സ്റ്റ് തനിയെ കോപ്പി ചെയ്യാനുള്ള ഫങ്ക്ഷൻ
+  function copyAndAlertOrder() {
+    const copyText = document.getElementById("orderTextToCopy");
+    if (copyText) {
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // മൊബൈൽ ഫോണുകൾക്ക് വേണ്ടി
+      navigator.clipboard.writeText(copyText.value);
+      
+      alert("Order details copied successfully! You can now paste and send it to +91 89210 33257 on WhatsApp.");
+    }
+  }
 </script>
+
 
 
 </body>
