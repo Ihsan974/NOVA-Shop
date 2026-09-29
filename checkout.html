@@ -188,7 +188,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
+    // 1. കാർട്ട് വിവരങ്ങൾ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,15 +202,13 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ നേരിട്ട് ഫോർവേഡ് ചെയ്യാൻ
+    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ബ്രൗസറിനെ പറ്റിക്കാൻ ഒരു അടിപൊളി വഴി
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        // ഫോം സ്വന്തം നിലയ്ക്ക് റീഫ്രഷ് ആകുന്നത് നിർബന്ധമായും തടയാൻ ഇത് ഇവിടെ ചേർത്തു
-        e.preventDefault(); 
+        e.preventDefault(); // ഫോം റീഫ്രഷ് ആകുന്നത് തടയുന്നു
 
         const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
         const city = document.getElementById('city').value;
@@ -222,8 +220,7 @@
         let msgText = "NEW ORDER RECEIVED!\n\n";
         msgText += "Customer Details:\n";
         msgText += "Name: " + name + "\n";
-        msgText += "Phone: " + phone + "\n";
-        msgText += "Email: " + email + "\n\n";
+        msgText += "Phone: " + phone + "\n\n";
         
         msgText += "Shipping Address:\n";
         msgText += "Address: " + address + "\n";
@@ -233,13 +230,43 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // പൂർണ്ണമായും വാലിഡ് ആയ ലിങ്ക് ഫോർമാറ്റ്
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); // കാർട്ട് ക്ലീൻിക്കുന്നു
+        // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        localStorage.clear(); 
+
+        // ബ്രൗസറിലെ എല്ലാ എററുകളും മറികടക്കാൻ കസ്റ്റമർക്ക് നേരിട്ട് ക്ലിക്ക് ചെയ്യാൻ ഒരു മനോഹരമായ ബട്ടൺ കാണിക്കുന്നു
+        const popup = document.createElement('div');
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.background = '#ffffff';
+        popup.style.padding = '30px';
+        popup.style.borderRadius = '12px';
+        popup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+        popup.style.zIndex = '10000';
+        popup.style.textAlign = 'center';
+        popup.style.fontFamily = 'sans-serif';
         
-        // മെയിൻ വിൻഡോ തന്നെ മാറ്റി വിടുന്നു (ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല)
-        window.top.location.href = whatsappURL; 
+        popup.innerHTML = `
+          <h3 style="margin-bottom: 15px; color: #111;">Order Details Details Saved!</h3>
+          <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Click the button below to send your order via WhatsApp.</p>
+          <a href="${whatsappURL}" style="display: inline-block; background: #25D366; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px;">🚀 Send Order to WhatsApp</a>
+        `;
+        
+        // ബാക്ക്ഗ്രൗണ്ട് മങ്ങിക്കാൻ ഒരു ലെയർ
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'rgba(0,0,0,0.4)';
+        overlay.style.zIndex = '9999';
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(popup);
       });
     }
   });
