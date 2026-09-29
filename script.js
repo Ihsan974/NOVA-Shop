@@ -54,3 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+  // മുകളിലെ Cart ബട്ടണും ആകെ ലിസ്റ്റ് കാണിക്കുന്ന aside ബോക്സും സെലക്ട് ചെയ്യുന്നു
+  const cartButton = document.getElementById('cartButton');
+  const sidebar = document.querySelector('aside'); // നിങ്ങളുടെ HTML-ലെ aside ടാഗ്
+
+  if (cartButton && sidebar) {
+    // മുകളിലെ Cart ഐക്കൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ബോക്സ് തുറക്കാൻ
+    cartButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      sidebar.classList.toggle('active'); // active എന്ന ക്ലാസ്സ് ആഡ് ചെയ്യുന്നു/ഒഴിവാക്കുന്നു
+    });
+  }
