@@ -147,16 +147,25 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. கார்ட்டில் இருக்கும் விவரங்களைச் செக்கவுட் பக்கத்தில் காட்டுகிறது
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
-    if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+    const itemsContainer = document.getElementById('checkoutItemsList');
+    const totalContainer = document.getElementById('checkoutTotal');
 
+    if (savedItems && itemsContainer) {
+      itemsContainer.innerHTML = savedItems;
+    }
+    if (savedTotal && totalContainer) {
+      totalContainer.textContent = savedTotal;
+    }
+
+    // 2. ஃபார்ம் சப்மிட் ஆகும் போது வாட்ஸ்அப் வெப் பக்கத்திற்கு நேரடியாக ரீடைரெக்ட் செய்கிறது
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault(); 
+        e.preventDefault(); // ஃபார்ம் தானாக ரீஃப்ரெஷ் ஆவதைத் தடுக்கிறது
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -174,39 +183,18 @@
         msgText += "💰 Total Amount: " + savedTotal + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        localStorage.clear(); 
+        // ⚠️ கணினியில் நேரடியாக 'Continue to WhatsApp Web' பக்கத்திற்குச் செல்ல பிரவுசர் பிளாக் செய்யாத லிங்க் வடிவம்
+        const whatsappWebURL = "https://whatsapp.com" + encodeURIComponent(msgText);
+        
+        localStorage.clear(); // ஆர்டர் முடிந்ததால் கார்ட்டை காலி செய்கிறது
 
-        // യഥാർത്ഥ പരിഹാരം: ഡയറക്ട് എക്സ്റ്റേണൽ റീഡയറക്ഷൻ ഒഴിവാക്കി ഇതേ വിൻഡോയിൽ ഓട്ടോ കോപ്പി ബട്ടൺ നൽകുന്നു
-        document.body.innerHTML = `
-          <div style="max-width: 550px; margin: 80px auto; padding: 40px 30px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif; box-sizing: border-box;">
-            <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
-            <h2 style="font-size: 24px; margin-bottom: 10px; color: #111111;">Order Details Saved!</h2>
-            <p style="color: #666666; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Click the button below to copy the order details, then paste and send it to our WhatsApp number: <strong>+91 89210 33257</strong></p>
-            
-            <textarea id="orderTextToCopy" readonly style="width: 100%; height: 160px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 13px; background: #fafafa; resize: none; box-sizing: border-box; margin-bottom: 20px;">${msgText}</textarea>
-            
-            <button onclick="copyAndAlertOrder()" style="display: block; width: 100%; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 16px; border: none; cursor: pointer; margin-bottom: 15px;">
-              📋 Copy Order Details to Clipboard
-            </button>
-            <a href="index.html" style="display: inline-block; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
-          </div>
-        `;
+        // புதிய விண்டோவில் திறக்காமல், இதே பக்கத்தில் திறப்பதால் பிரவுசர் இதை பிளாக் செய்யாது
+        window.location.assign(whatsappWebURL);
       });
     }
   });
-
-  // ക്ലിക്ക് ചെയ്യുമ്പോൾ മെസ്സേജ് ടെക്സ്റ്റ് തനിയെ കോപ്പി ചെയ്യാനുള്ള ഫങ്ക്ഷൻ
-  function copyAndAlertOrder() {
-    const copyText = document.getElementById("orderTextToCopy");
-    if (copyText) {
-      copyText.select();
-      copyText.setSelectionRange(0, 99999); // മൊബൈൽ ഫോണുകൾക്ക് വേണ്ടി
-      navigator.clipboard.writeText(copyText.value);
-      
-      alert("Order details copied successfully! You can now paste and send it to +91 89210 33257 on WhatsApp.");
-    }
-  }
 </script>
+
 
 
 
