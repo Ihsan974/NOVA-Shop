@@ -1598,3 +1598,11 @@ aside.active,
   display: block !important;
   right: 0 !important; /* സൈഡിൽ നിന്ന് വരാൻ */
 }
+/* ചെക്കൗട്ട് ലിങ്ക് ബട്ടൺ അലൈൻമെന്റ് ശരിയാക്കാൻ */
+a.checkout-btn {
+  display: block !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
