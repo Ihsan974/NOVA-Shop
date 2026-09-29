@@ -51,7 +51,6 @@
             margin: 20px 0;
             font-size: 16px;
         }
-        /* കൺഫേം ഓർഡർ ബട്ടൺ സ്റ്റൈൽ */
         .confirm-btn {
             display: block;
             width: 100%;
@@ -72,13 +71,8 @@
 </head>
 <body>
 
-<!-- ✅ ജാവാസ്ക്രിപ്റ്റ് ഇല്ലാതെ ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത ഒഫീഷ്യൽ വാട്സാപ്പ് ഫോം ആക്ഷൻ -->
-<form action="https://whatsapp.com" method="get">
-    
-    <!-- നിങ്ങളുടെ വാട്സാപ്പ് നമ്പറും ഡിഫോൾട്ട് മെസ്സേജും ഇതിലൂടെ വാട്സാപ്പിലേക്ക് പോകും -->
-    <input type="hidden" name="phone" value="918921033257">
-    <input type="hidden" name="text" value="📦 NEW ORDER RECEIVED! Please check my shipping details below.">
-
+<!-- ✅ ജാവാസ്ക്രിപ്റ്റ് വഴി നിയന്ത്രിക്കുന്നതിനാൽ ഫോം ആക്ഷൻ ആവശ്യമില്ല -->
+<form id="whatsappOrderForm">
     <div class="checkout-wrapper">
         <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
         <div class="container-box">
@@ -86,34 +80,33 @@
             
             <div class="form-group">
                 <label>Full Name</label>
-                <!-- കസ്റ്റമർ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ ലിങ്കിൽ വരാൻ name ഫീൽഡുകൾ ഉപയോഗിക്കുന്നു -->
-                <input type="text" name="Customer_Name" placeholder="Enter full name" required>
+                <input type="text" id="custName" placeholder="Enter full name" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="Customer_Email" placeholder="Enter email address" required>
+                    <input type="email" id="custEmail" placeholder="Enter email address" required>
                 </div>
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="tel" name="Customer_Phone" placeholder="Enter phone number" required>
+                    <input type="tel" id="custPhone" placeholder="Enter phone number" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label>Delivery Address</label>
-                <input type="text" name="Delivery_Address" placeholder="Enter delivery address" required>
+                <input type="text" id="custAddress" placeholder="Enter delivery address" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>City</label>
-                    <input type="text" name="City" placeholder="City" required>
+                    <input type="text" id="custCity" placeholder="City" required>
                 </div>
                 <div class="form-group">
                     <label>Pincode</label>
-                    <input type="text" name="Pincode" placeholder="0000" required>
+                    <input type="text" id="custPincode" placeholder="0000" required>
                 </div>
             </div>
         </div>
@@ -127,19 +120,55 @@
                 <span id="checkoutTotal">₹0</span>
             </div>
 
-            <!-- ✅ സാധാരണ സബ്മിറ്റ് ബട്ടൺ (ഇത് ക്ലിക്ക് ചെയ്യുമ്പോൾ ബ്ലോക്ക് ആകാതെ അതേ ടാബിൽ നേരിട്ട് വാട്സാപ്പ് വെബ് തുറക്കും) -->
+            <!-- കൺഫേം ബട്ടൺ -->
             <button type="submit" class="confirm-btn">Confirm Order</button>
         </div>
     </div>
 </form>
 
 <script>
-// പേജ് ലോഡ് ചെയ്യുമ്പോൾ ലോക്കൽ സ്റ്റോറേജിലുള്ള തുക മാത്രം കാണിക്കാൻ ഈ ചെറിയ സ്ക്രിപ്റ്റ് (ഇതിൽ എറർ വരില്ല)
+// പേജ് ലോഡ് ചെയ്യുമ്പോൾ തുക കാണിക്കാൻ
 document.addEventListener('DOMContentLoaded', () => {
   const savedTotal = localStorage.getItem('cartTotalAmount');
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
+});
+
+// ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ വാട്സാപ്പിലേക്ക് വിവരങ്ങൾ അയക്കാൻ
+document.getElementById('whatsappOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
+
+    // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ (കൺട്രി കോഡ് സഹിതം)
+    const myWhatsAppNumber = "918921033257"; 
+
+    // ഫോമിൽ നിന്നും കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
+    const name = document.getElementById('custName').value;
+    const email = document.getElementById('custEmail').value;
+    const phone = document.getElementById('custPhone').value;
+    const address = document.getElementById('custAddress').value;
+    const city = document.getElementById('custCity').value;
+    const pincode = document.getElementById('custPincode').value;
+    const totalAmount = document.getElementById('checkoutTotal').textContent;
+
+    // വാട്സാപ്പിൽ കാണിക്കേണ്ട സന്ദേശത്തിന്റെ ഘടന (Format)
+    const message = `📦 *NEW ORDER RECEIVED!*
+Please check my shipping details below:
+
+👤 *Name:* ${name}
+📧 *Email:* ${email}
+📞 *Phone:* ${phone}
+🏠 *Address:* ${address}, ${city} - ${pincode}
+
+💰 *Total Amount:* ${totalAmount}
+
+Please confirm my order. Thank you!`;
+
+    // ലിങ്ക് കൃത്യമായി എൻകോഡ് ചെയ്യുന്നു (നിങ്ങൾക്ക് ആവശ്യമുള്ള api.whatsapp.com ലിങ്ക്)
+    const whatsappUrl = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
+
+    // പുതിയ ടാബിലോ വിൻഡോയിലോ വാട്സാപ്പ് ഓപ്പൺ ചെയ്യുന്നു (ഇത് ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
+    window.open(whatsappUrl, '_blank');
 });
 </script>
 
