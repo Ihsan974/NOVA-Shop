@@ -48,6 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
           newItem.style.color = '#111111';
           newItem.innerHTML = `<span>${productName}</span> <strong>${productPriceText}</strong>`;
           cartItemsContainer.appendChild(newItem);
+          // കാർട്ടിലെ നിലവിലെ വിവരങ്ങൾ ലോക്കൽ സ്റ്റോറേജിൽ സേവ് ചെയ്യുന്നു
+          localStorage.setItem('cartItemsHTML', cartItemsContainer.innerHTML);
+          localStorage.setItem('cartTotalAmount', cartTotal.textContent);
+        
         }
         
         // പ്രൊഡക്റ്റ് ആഡ് ചെയ്യുമ്പോൾ തന്നെ തനിയെ കാർട്ട് ബോക്സ് തുറന്നു വരാൻ ഇത് സഹായിക്കും
