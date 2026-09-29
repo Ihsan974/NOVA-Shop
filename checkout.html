@@ -152,53 +152,52 @@
   </div>
 
   <script>
-    function redirectToWhatsApp(e) {
-      // 1. ஃபார்ம் தானாக சப்மிட் ஆகி பேஜ் ரீஃப்ரெஷ் ஆவதைத் தடுக்கிறது
-      e.preventDefault();
-
-      const name = document.getElementById('name')?.value || "Not Provided";
-      const phone = document.getElementById('phone')?.value || "Not Provided";
-      const address = document.getElementById('address')?.value || "Not Provided";
-      const city = document.getElementById('city')?.value || "Not Provided";
-      const pincode = document.getElementById('pincode')?.value || "Not Provided";
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-      const myWhatsAppNumber = "918921033257"; 
-
-      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-      msgText += "👤 Customer Details:\n";
-      msgText += "• Name: " + name + "\n";
-      msgText += "• Phone: " + phone + "\n\n";
-      msgText += "📍 Shipping Address:\n";
-      msgText += "• Address: " + address + "\n";
-      msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      // 2. கார்ட்டை கிளியர் செய்கிறது
-      localStorage.clear();
-
-      // 3. பயனர் கிளிக்கிற்குள் நேரடியாக புதிய விண்டோவைத் திறப்பதால் பிரவுசர் இதைத் தடுக்காது
-      window.open(whatsappURL, '_blank');
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      // கார்ட் டேட்டாவை லோடு செய்கிறது
+      // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ കാണിക്കുന്നു
       const savedItems = localStorage.getItem('cartItemsHTML');
       const savedTotal = localStorage.getItem('cartTotalAmount');
 
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // பட்டன் கிளிக்கைக் கவனித்து ஃபங்க்ஷனை இயக்குகிறது
+      // 2. 'Confirm Order' ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ മാത്രം റൺ ആകുന്ന ഫങ്ക്ഷൻ
       const confirmBtn = document.getElementById('realConfirmBtn');
       if (confirmBtn) {
-        confirmBtn.addEventListener('click', redirectToWhatsApp);
+        confirmBtn.addEventListener('click', (e) => {
+          
+          // ഇൻപുട്ടിലെ വാല്യൂസ് എടുക്കുന്നു
+          const name = document.getElementById('name')?.value || "Not Provided";
+          const phone = document.getElementById('phone')?.value || "Not Provided";
+          const address = document.getElementById('address')?.value || "Not Provided";
+          const city = document.getElementById('city')?.value || "Not Provided";
+          const pincode = document.getElementById('pincode')?.value || "Not Provided";
+          const savedTotalAmount = localStorage.getItem('cartTotalAmount') || "₹0";
+
+          const myWhatsAppNumber = "918921033257"; 
+
+          let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+          msgText += "👤 Customer Details:\n";
+          msgText += "• Name: " + name + "\n";
+          msgText += "• Phone: " + phone + "\n\n";
+          msgText += "📍 Shipping Address:\n";
+          msgText += "• Address: " + address + "\n";
+          msgText += "• City: " + city + " - " + pincode + "\n\n";
+          msgText += "💰 Total Amount: " + savedTotalAmount + "\n\n";
+          msgText += "Thank you for shopping with NOVA!";
+
+          // ✅ നിങ്ങൾ ആവശ്യപ്പെട്ട WhatsApp Web പേജിലേക്ക് നേരിട്ട് പോകാനുള്ള ഒഫീഷ്യൽ ലിങ്ക്
+          const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+          
+          // കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+          localStorage.clear();
+
+          // ✅ ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ തന്നെ പുതിയ ടാബിൽ ഈ ലിങ്ക് തുറക്കും (ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
+          window.open(whatsappURL, '_blank');
+        });
       }
     });
 </script>
+
 
 </body>
 </html>
