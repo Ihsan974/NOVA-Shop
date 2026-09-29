@@ -147,7 +147,7 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. கார்ட்டில் இருக்கும் விவரங்களைச் செக்கவுட் பக்கத்தில் காட்டுகிறது
+    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
@@ -161,11 +161,11 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ஃபார்ம் சப்மிட் ஆகும் போது வாட்ஸ்அப் வெப் பக்கத்திற்கு நேரடியாக ரீடைரெக்ட் செய்கிறது
+    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ബ്രൗസറിന് ഒരു ബ്ലോക്കും ചെയ്യാൻ പറ്റാത്ത സുരക്ഷിതമായ വഴി
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault(); // ஃபார்ம் தானாக ரீஃப்ரெஷ் ஆவதைத் தடுக்கிறது
+        e.preventDefault(); // ഫോം സ്വന്തം നിലയ്ക്ക് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -183,13 +183,13 @@
         msgText += "💰 Total Amount: " + savedTotal + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // ⚠️ கணினியில் நேரடியாக 'Continue to WhatsApp Web' பக்கத்திற்குச் செல்ல பிரவுசர் பிளாக் செய்யாத லிங்க் வடிவம்
-        const whatsappWebURL = "https://whatsapp.com" + encodeURIComponent(msgText);
+        // ⚠️ ബ്രൗസറുകളിലെ ഒരു സുരക്ഷാ ഫിൽട്ടറും തടയാത്ത ആഗോള വാട്സാപ്പ് ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappURL = "https://wa.me" + encodeURIComponent(msgText);
         
-        localStorage.clear(); // ஆர்டர் முடிந்ததால் கார்ட்டை காலி செய்கிறது
+        localStorage.clear(); // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
 
-        // புதிய விண்டோவில் திறக்காமல், இதே பக்கத்தில் திறப்பதால் பிரவுசர் இதை பிளாக் செய்யாது
-        window.location.assign(whatsappWebURL);
+        // പുതിയ വിൻഡോയിലോ ടാബിലോ തുറക്കാതെ, ഇതേ പേജിൽ തന്നെ ലിങ്ക് ലോഡ് ചെയ്യിക്കുന്നു (ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല)
+        window.location.href = whatsappURL;
       });
     }
   });
