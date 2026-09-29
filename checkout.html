@@ -188,7 +188,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
+    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,11 +202,11 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ബ്രൗസറിന് ഒരു ബ്ലോക്കും ചെയ്യാൻ പറ്റാത്ത സുരക്ഷിതമായ വഴി
+    // 2. ബ്രൗസറിന് ഒട്ടും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത അൾട്ടിമേറ്റ് ഫോം ആക്ഷൻ സിസ്റ്റം
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault(); // ഡിഫോൾട്ട് റീഫ്രഷിംഗ് തടയുന്നു
+        // ശ്രദ്ധിക്കുക: നമ്മൾ ഇവിടെ e.preventDefault() കൊടുക്കുന്നില്ല! ഫോം ഡിഫോൾട്ട് ആയി സബ്മിറ്റ് ആകണം.
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -234,12 +234,14 @@
         
         localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
         
-        // ബ്രൗസറിന്റെ എല്ലാ ബ്ലോക്കുകളും തകർക്കാൻ വിൻഡോ ഒബ്ജക്റ്റ് മാറ്റുന്നു
-        window.location.assign(whatsappURL);
+        // ജാവാസ്ക്രിപ്റ്റ് വഴി മാറാതെ, ഫോമിന്റെ ആക്ഷൻ ലിങ്ക് വാട്സാപ്പ് ലിങ്ക് ആക്കി മാറ്റുന്നു!
+        form.action = whatsappURL;
+        form.method = "POST"; // അല്ലെങ്കിൽ ഗെറ്റ് രീതി ഒഴിവാക്കാൻ
       });
     }
   });
 </script>
+
 
 
 
