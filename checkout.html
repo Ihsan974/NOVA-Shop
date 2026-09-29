@@ -1,167 +1,561 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Checkout | NOVA</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background: #f6f6f6;
             margin: 0;
-            padding: 20px;
+            padding: 30px 20px;
+            color: #1c1c1c;
         }
+
         .checkout-wrapper {
             display: flex;
             max-width: 1000px;
             margin: 0 auto;
-            gap: 20px;
+            gap: 25px;
+            align-items: flex-start;
         }
+
+        .container-box,
+        .summary-box {
+            background: #ffffff;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
         .container-box {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             flex: 1;
         }
+
         .summary-box {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             width: 320px;
         }
-        h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .form-group { margin-bottom: 15px; }
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; color: #555; }
+
+        h2 {
+            margin: 0 0 25px;
+            font-size: 21px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+        }
+
         input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 13px;
+            border: 1px solid #d5d5d5;
+            border-radius: 7px;
+            outline: none;
             font-size: 14px;
+            transition: 0.2s ease;
         }
+
+        input:focus {
+            border-color: #1c1c1c;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
         .total-section {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 25px 0;
+            padding: 18px 0;
+            border-top: 1px solid #eeeeee;
+            border-bottom: 1px solid #eeeeee;
             font-size: 16px;
         }
+
+        #checkoutTotal {
+            font-size: 21px;
+        }
+
         .confirm-btn {
             display: block;
             width: 100%;
-            padding: 14px;
-            background-color: #1c1c1c;
-            color: white;
-            text-align: center;
+            padding: 15px;
+            background: #1c1c1c;
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 7px;
             font-weight: bold;
             font-size: 15px;
-            box-sizing: border-box;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.2s ease;
         }
-        .confirm-btn:hover { background-color: #333; }
+
+        .confirm-btn:hover {
+            background: #333333;
+        }
+
+        .confirm-btn:disabled {
+            background: #888888;
+            cursor: not-allowed;
+        }
+
+        #orderStatus {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .success {
+            color: #16803c;
+        }
+
+        .error {
+            color: #c62828;
+        }
+
+        @media (max-width: 768px) {
+
+            body {
+                padding: 20px 15px;
+            }
+
+            .checkout-wrapper {
+                flex-direction: column;
+            }
+
+            .container-box,
+            .summary-box {
+                width: 100%;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<!-- ഒഫീഷ്യൽ ലിങ്ക് ഫോമിൽ തന്നെ നേരിട്ട് നൽകിയിരിക്കുന്നു, ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല -->
-<form id="whatsappOrderForm" action="https://whatsapp.com" method="get" target="_blank">
-    
-    <!-- നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ -->
-    <input type="hidden" name="phone" value="918921033257">
-    
-    <!-- വാട്സാപ്പിലേക്ക് പോകുന്ന മെസ്സേജ് ഈ ഇൻപുട്ടിൽ തനിയെ ജനറേറ്റ് ചെയ്യപ്പെടും -->
-    <input type="hidden" name="text" id="whatsappTextMessage">
+<form id="orderForm">
 
     <div class="checkout-wrapper">
-        <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
+
+        <!-- CUSTOMER DETAILS -->
         <div class="container-box">
+
             <h2>Shipping Details</h2>
-            
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="custName" placeholder="Enter full name" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="custEmail" placeholder="Enter email address" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="custPhone" placeholder="Enter phone number" required>
-                </div>
-            </div>
 
             <div class="form-group">
-                <label>Delivery Address</label>
-                <input type="text" id="custAddress" placeholder="Enter delivery address" required>
+                <label for="custName">Full Name</label>
+
+                <input
+                    type="text"
+                    id="custName"
+                    placeholder="Enter full name"
+                    required
+                >
             </div>
 
+
             <div class="form-row">
+
                 <div class="form-group">
-                    <label>City</label>
-                    <input type="text" id="custCity" placeholder="City" required>
+
+                    <label for="custEmail">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="custEmail"
+                        placeholder="Enter email address"
+                        required
+                    >
+
                 </div>
+
+
                 <div class="form-group">
-                    <label>Pincode</label>
-                    <input type="text" id="custPincode" placeholder="0000" required>
+
+                    <label for="custPhone">Phone Number</label>
+
+                    <input
+                        type="tel"
+                        id="custPhone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
                 </div>
+
             </div>
+
+
+            <div class="form-group">
+
+                <label for="custAddress">
+                    Delivery Address
+                </label>
+
+                <input
+                    type="text"
+                    id="custAddress"
+                    placeholder="Enter delivery address"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="custCity">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        id="custCity"
+                        placeholder="City"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="custPincode">
+                        Pincode
+                    </label>
+
+                    <input
+                        type="text"
+                        id="custPincode"
+                        placeholder="000000"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+
+        <!-- ORDER SUMMARY -->
         <div class="summary-box">
+
             <h2>Order Summary</h2>
-            
+
+
             <div class="total-section">
-                <span>Total Amount</span>
-                <span id="checkoutTotal">₹0</span>
+
+                <span>
+                    Total Amount
+                </span>
+
+                <span id="checkoutTotal">
+                    ₹0
+                </span>
+
             </div>
 
-            <!-- കൺഫേം ബട്ടൺ -->
-            <button type="submit" class="confirm-btn">Confirm Order</button>
+
+            <button
+                type="submit"
+                class="confirm-btn"
+                id="confirmButton"
+            >
+                Confirm Order
+            </button>
+
+
+            <p id="orderStatus"></p>
+
         </div>
+
     </div>
+
 </form>
 
+
 <script>
-// പേജ് ലോഡ് ചെയ്യുമ്പോൾ തുക കാണിക്കാൻ
-document.addEventListener('DOMContentLoaded', () => {
-  const savedTotal = localStorage.getItem('cartTotalAmount');
-  if (savedTotal && document.getElementById('checkoutTotal')) {
-    document.getElementById('checkoutTotal').textContent = savedTotal;
-  }
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /*
+    ==========================================
+    LOAD CART TOTAL
+    ==========================================
+    */
+
+    const savedTotal =
+        localStorage.getItem("cartTotalAmount");
+
+    const totalElement =
+        document.getElementById("checkoutTotal");
+
+
+    if (savedTotal) {
+
+        totalElement.textContent = savedTotal;
+
+    }
+
 });
 
-// ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ സന്ദേശം നിർമ്മിച്ച് ഫോം സബ്മിറ്റ് ചെയ്യും
-document.getElementById('whatsappOrderForm').addEventListener('submit', function(e) {
-    // ഫോമിൽ നിന്നും കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
-    const name = document.getElementById('custName').value;
-    const email = document.getElementById('custEmail').value;
-    const phone = document.getElementById('custPhone').value;
-    const address = document.getElementById('custAddress').value;
-    const city = document.getElementById('custCity').value;
-    const pincode = document.getElementById('custPincode').value;
-    const totalAmount = document.getElementById('checkoutTotal').textContent;
 
-    // വാട്സാപ്പിൽ കാണിക്കേണ്ട സന്ദേശത്തിന്റെ ഘടന (Format)
-    const message = `📦 NEW ORDER RECEIVED!\n\n👤 Name: ${name}\n📧 Email: ${email}\n📞 Phone: ${phone}\n🏠 Address: ${address}, ${city} - ${pincode}\n\n💰 Total Amount: ${totalAmount}\n\nPlease confirm my order. Thank you!`;
+/*
+==========================================
+ORDER SUBMISSION
+==========================================
+*/
 
-    // രഹസ്യ ഇൻപുട്ടിലേക്ക് മെസ്സേജ് സെറ്റ് ചെയ്യുന്നു
-    document.getElementById('whatsappTextMessage').value = message;
-    
-    // ഇനി ഫോം അതിന്റെ ഒഫീഷ്യൽ വഴിക്ക് വാട്സാപ്പിലേക്ക് പൊയ്ക്കോളും (ബ്ലോക്കിംഗ് പ്രശ്നം ഉണ്ടാകില്ല)
-});
+document
+    .getElementById("orderForm")
+    .addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+        /*
+        ==========================================
+        GET CUSTOMER DETAILS
+        ==========================================
+        */
+
+        const name =
+            document.getElementById("custName")
+                .value
+                .trim();
+
+
+        const email =
+            document.getElementById("custEmail")
+                .value
+                .trim();
+
+
+        const phone =
+            document.getElementById("custPhone")
+                .value
+                .trim();
+
+
+        const address =
+            document.getElementById("custAddress")
+                .value
+                .trim();
+
+
+        const city =
+            document.getElementById("custCity")
+                .value
+                .trim();
+
+
+        const pincode =
+            document.getElementById("custPincode")
+                .value
+                .trim();
+
+
+        const totalAmount =
+            document.getElementById("checkoutTotal")
+                .textContent;
+
+
+        /*
+        ==========================================
+        BUTTON + STATUS
+        ==========================================
+        */
+
+        const button =
+            document.getElementById("confirmButton");
+
+
+        const status =
+            document.getElementById("orderStatus");
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Processing...";
+
+
+        status.textContent = "";
+
+        status.className = "";
+
+
+        /*
+        ==========================================
+        CREATE ORDER DATA
+        ==========================================
+        */
+
+        const orderData = {
+
+            name: name,
+
+            email: email,
+
+            phone: phone,
+
+            address: address,
+
+            city: city,
+
+            pincode: pincode,
+
+            totalAmount: totalAmount
+
+        };
+
+
+        /*
+        ==========================================
+        SEND ORDER TO YOUR BACKEND API
+        ==========================================
+        
+        IMPORTANT:
+        This endpoint must exist on your server/Vercel.
+
+        Example:
+
+        /api/send-order
+
+        ==========================================
+        */
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/send-order",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(orderData)
+
+                    }
+                );
+
+
+            /*
+            ==========================================
+            CHECK RESPONSE
+            ==========================================
+            */
+
+            const result =
+                await response.json();
+
+
+            if (response.ok && result.success) {
+
+                status.textContent =
+                    "Order sent successfully!";
+
+                status.className =
+                    "success";
+
+
+                /*
+                ==========================================
+                CLEAR FORM
+                ==========================================
+                */
+
+                document
+                    .getElementById("orderForm")
+                    .reset();
+
+
+            } else {
+
+                status.textContent =
+                    result.message ||
+                    "Unable to send order.";
+
+                status.className =
+                    "error";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Order API Error:",
+                error
+            );
+
+
+            status.textContent =
+                "Unable to connect to the order server. Please try again.";
+
+            status.className =
+                "error";
+
+        }
+
+
+        /*
+        ==========================================
+        RESTORE BUTTON
+        ==========================================
+        */
+
+        button.disabled = false;
+
+        button.textContent =
+            "Confirm Order";
+
+    });
+
 </script>
 
 </body>
 </html>
+```
