@@ -174,12 +174,11 @@
         msgText += "💰 Total Amount: " + savedTotal + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // ⚠️ കമ്പ്യൂട്ടറിലും ഫോണിലും ഒരു തടസ്സവുമില്ലാതെ ലിങ്ക് വർക്ക് ചെയ്യാൻ https://whatsapp.com ഫോർമാറ്റ് നൽകി
-        const whatsappURL = "https://whatsapp.com?phone=918921033257&text=" + encodeURIComponent(msgText);
+        // ⚠️ കമ്പ്യൂട്ടറിൽ 'Continue to WhatsApp Web' ബോക്സ് നേരിട്ട് ഓപ്പൺ ആക്കാനുള്ള 100% കറക്റ്റ് ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappURL = "https://whatsapp.com" + encodeURIComponent(msgText);
         
         localStorage.clear(); 
 
-        // യഥാർത്ഥ പരിഹാരം: ഇവിടെ target="_self" എന്ന് മാറ്റി നൽകിയിട്ടുണ്ട്. ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല.
         document.body.innerHTML = `
           <div style="max-width: 550px; margin: 80px auto; padding: 40px 30px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif; box-sizing: border-box;">
             <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
@@ -189,7 +188,7 @@
             <textarea readonly style="width: 100%; height: 160px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 13px; background: #fafafa; resize: none; box-sizing: border-box; margin-bottom: 20px;">${msgText}</textarea>
             
             <a href="${whatsappURL}" target="_self" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px; margin-bottom: 15px;">
-              🚀 Open WhatsApp & Send Order
+              🚀 Continue to WhatsApp Web
             </a>
             <a href="index.html" style="display: inline-block; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
           </div>
@@ -198,6 +197,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>
