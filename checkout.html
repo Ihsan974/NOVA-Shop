@@ -74,7 +74,7 @@
 <body>
 
 <div class="checkout-wrapper">
-    <!-- കസ്റ്റമർ ഷിപ്പിംഗ് വിവരങ്ങൾ -->
+    <!-- ഇടത് വശം: കസ്റ്റമർ ഷിപ്പിംഗ് വിവരങ്ങൾ -->
     <div class="container-box">
         <h2>Shipping Details</h2>
         
@@ -111,36 +111,32 @@
         </div>
     </div>
 
-    <!-- ഓർഡർ വിവരങ്ങൾ -->
+    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
     <div class="summary-box">
         <h2>Order Summary</h2>
         
-        <div id="checkoutItemsList"></div>
+        <!-- കാർട്ടിലെ തകരാറിലായ എച്ച്.ടി.എം.എൽ ഒഴിവാക്കി വെറും വിവരങ്ങൾ മാത്രം കാണിക്കുന്നു -->
+        <div id="checkoutItemsList" style="font-size: 14px; color: #666; margin-bottom: 15px;">Your items will be confirmed via WhatsApp</div>
         
         <div class="total-section">
             <span>Total Amount</span>
             <span id="checkoutTotal">₹0</span>
         </div>
 
-        <!-- ✅ ടൈപ്പ് 'button' നൽകിയതിനാൽ ഫോം തനിയെ സബ്മിറ്റ് ആയി എറർ വരില്ല -->
+        <!-- ✅ സുരക്ഷിതമായ ബട്ടൺ ആക്ഷൻ -->
         <button type="button" id="realConfirmBtn" class="confirm-btn">Confirm Order</button>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // ലോക്കൽ സ്റ്റോറേജിലുള്ള സാധനങ്ങളും ടോട്ടൽ തുകയും പേജിൽ കാണിക്കുന്നു
-  const savedItems = localStorage.getItem('cartItemsHTML');
+  // കാർട്ടിലെ ടോട്ടൽ തുക മാത്രം ലോഡ് ചെയ്ത് കാണിക്കുന്നു (തകരാറിലായ HTML നമ്മൾ പൂർണ്ണമായി ഒഴിവാക്കി)
   const savedTotal = localStorage.getItem('cartTotalAmount');
-
-  if (savedItems && document.getElementById('checkoutItemsList')) {
-    document.getElementById('checkoutItemsList').innerHTML = savedItems;
-  }
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
 
-  // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ വിവരങ്ങൾ ശേഖരിച്ച് അതേ ടാബിൽ വാട്സാപ്പ് വെബ്ബ് തുറക്കും
+  // ബട്ടൺ ക്ലിക്ക് ഇവന്റ്
   const confirmBtn = document.getElementById('realConfirmBtn');
   if (confirmBtn) {
     confirmBtn.addEventListener('click', () => {
@@ -164,14 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
       msgText += "💰 Total Amount: " + currentTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
-      // ✅ ബ്രൗസറിൽ വെച്ച് തന്നെ വാട്സാപ്പ് വെബ്ബിലേക്ക് പോകാനുള്ള കൃത്യമായ ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
+      // ഒഫീഷ്യൽ വാട്സാപ്പ് വെബ് ലിങ്ക് ഫോർമാറ്റ്
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      // ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് ആദ്യം കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+      // ലോക്കൽ സ്റ്റോറേജ് ക്ലിയർ ചെയ്യുന്നു
       localStorage.clear();
 
-      // ⚠️ [FINAL ZERO-FAIL FIX] പുതിയ ടാബിൽ തുറക്കാതെ അതേ ടാബിൽ തന്നെ തുറക്കുന്നു. 
-      // ഇത് ബ്രൗസറിന്റെ സെക്യൂരിറ്റി സിസ്റ്റത്തെ പൂർണ്ണമായി മറികടക്കുന്നതിനാൽ 'about:blank' പേജ് ഇനി ഒരിക്കലും വരില്ല!
+      // അതേ വിൻഡോയിൽ തന്നെ വാട്സാപ്പ് വെബ്ബ് ലോഡ് ചെയ്യിക്കുന്നു
       window.location.href = whatsappURL;
     });
   }
