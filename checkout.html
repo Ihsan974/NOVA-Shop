@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout | NOVA</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       background-color: #f8f9fa;
@@ -45,18 +44,13 @@
       margin-bottom: 8px;
       color: #444;
     }
-    input[type="text"], input[type="email"], input[type="tel"], select {
+    input[type="text"], input[type="email"], input[type="tel"] {
       width: 100%;
       padding: 12px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 15px;
       box-sizing: border-box;
-      transition: border 0.2s;
-    }
-    input:focus, select:focus {
-      border-color: #111111;
-      outline: none;
     }
     .form-row {
       display: grid;
@@ -70,12 +64,6 @@
       box-shadow: 0 4px 20px rgba(0,0,0,0.02);
       height: fit-content;
     }
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      font-size: 15px;
-    }
     .summary-total {
       display: flex;
       justify-content: space-between;
@@ -85,96 +73,70 @@
       font-size: 18px;
       font-weight: 600;
     }
-    .btn-place-order {
+    /* പ്രധാന മാറ്റം: ഇതൊരു സാധാരണ സുരക്ഷിതമായ ലിങ്ക് ബട്ടൺ ആണ് */
+    .btn-whatsapp-order {
+      display: block;
       width: 100%;
-      background: #111111;
+      background: #25D366;
       color: #ffffff;
       padding: 15px;
-      border: none;
+      text-align: center;
+      text-decoration: none;
       border-radius: 6px;
       font-size: 16px;
       font-weight: 600;
-      cursor: pointer;
       margin-top: 25px;
-      transition: background 0.2s;
+      box-sizing: border-box;
     }
-    .btn-place-order:hover {
-      background: #333333;
-    }
-    .payment-options label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-    .payment-options input:checked + span {
-      font-weight: 600;
+    .btn-whatsapp-order:hover {
+      background: #20ba5a;
     }
   </style>
 </head>
 <body>
 
   <div class="checkout-container">
-    <!-- ഇടത് വശം: ഷിപ്പിംഗ് ഫോം -->
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <form id="checkoutForm">
+      <form id="checkoutForm" oninput="updateWhatsAppLink()">
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" required placeholder="John Doe">
+          <label>Full Name</label>
+          <input type="text" id="name" placeholder="John Doe" value="test">
         </div>
         
         <div class="form-row">
           <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" required placeholder="john@example.com">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="john@example.com" value="ihsansanu974@gmail.com">
           </div>
           <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" required placeholder="9876543210">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="9876543210" value="8921033257">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="address">Delivery Address</label>
-          <input type="text" id="address" required placeholder="House Name, Street Address">
+          <label>Delivery Address</label>
+          <input type="text" id="address" placeholder="House Name, Street Address" value="test">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="city">City</label>
-            <input type="text" id="city" required placeholder="Kochi">
+            <label>City</label>
+            <input type="text" id="city" placeholder="Kochi" value="test">
           </div>
           <div class="form-group">
-            <label for="pincode">Pincode</label>
-            <input type="text" id="pincode" required placeholder="682001">
+            <label>Pincode</label>
+            <input type="text" id="pincode" placeholder="682001" value="0000">
           </div>
-        </div>
-
-        <h2 style="margin-top: 40px;">Payment Method</h2>
-        <div class="payment-options">
-          <label>
-            <input type="radio" name="payment" value="COD" checked>
-            <span>Cash on Delivery (COD)</span>
-          </label>
-          <label>
-            <input type="radio" name="payment" value="UPI">
-            <span>UPI / Cards (Pay Online)</span>
-          </label>
         </div>
       </form>
     </div>
 
-    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
     <div class="order-summary-box">
       <h2>Order Summary</h2>
       <div id="checkoutItemsList">
-        <!-- കാർട്ടിലെ സാധനങ്ങൾ ഇവിടെ ജാവാസ്ക്രിപ്റ്റ് വഴി വരും -->
-        <p style="color: #666; font-size: 14px;">Reviewing your items...</p>
+        <!-- കാർട്ടിലെ വിവരങ്ങൾ ഇവിടെ വരും -->
       </div>
       
       <div class="summary-total">
@@ -182,74 +144,53 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <button type="submit" form="checkoutForm" class="btn-place-order">Confirm Order</button>
+      <!-- യഥാർത്ഥ പരിഹാരം: ജാവാസ്ക്രിപ്റ്റ് റീഡയറക്ഷൻ ഒഴിവാക്കി നേരിട്ടുള്ള നോർമൽ ബട്ടൺ ലിങ്ക് -->
+      <a href="#" id="waOrderBtn" class="btn-whatsapp-order">🚀 Confirm & Send via WhatsApp</a>
     </div>
   </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
-    const savedItems = localStorage.getItem('cartItemsHTML');
-    const savedTotal = localStorage.getItem('cartTotalAmount');
+  <script>
+    function updateWhatsAppLink() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+      const pincode = document.getElementById('pincode').value;
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    const itemsContainer = document.getElementById('checkoutItemsList');
-    const totalContainer = document.getElementById('checkoutTotal');
+      const myWhatsAppNumber = "918921033257"; 
 
-    if (savedItems && itemsContainer) {
-      itemsContainer.innerHTML = savedItems;
+      let msgText = "NEW ORDER RECEIVED!\n\n";
+      msgText += "Customer Details:\n";
+      msgText += "Name: " + name + "\n";
+      msgText += "Phone: " + phone + "\n\n";
+      msgText += "Shipping Address:\n";
+      msgText += "Address: " + address + "\n";
+      msgText += "City: " + city + " - " + pincode + "\n\n";
+      msgText += "Total Amount: " + savedTotal + "\n\n";
+      msgText += "Thank you for shopping with NOVA!";
+
+      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      
+      const waBtn = document.getElementById('waOrderBtn');
+      if (waBtn) {
+        waBtn.href = whatsappURL;
+      }
     }
-    if (savedTotal && totalContainer) {
-      totalContainer.textContent = savedTotal;
-    }
 
-    // 2. ബ്രൗസറിന് ഒട്ടും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത അൾട്ടിമേറ്റ് ഫോം ആക്ഷൻ സിസ്റ്റം
-    const form = document.getElementById('checkoutForm');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        // ശ്രദ്ധിക്കുക: നമ്മൾ ഇവിടെ e.preventDefault() കൊടുക്കുന്നില്ല! ഫോം ഡിഫോൾട്ട് ആയി സബ്മിറ്റ് ആകണം.
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedItems = localStorage.getItem('cartItemsHTML');
+      const savedTotal = localStorage.getItem('cartTotalAmount');
 
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
-        const payment = document.querySelector('input[name="payment"]:checked').value;
-        
-        const myWhatsAppNumber = "918921033257"; 
+      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
+      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-        let msgText = "NEW ORDER RECEIVED!\n\n";
-        msgText += "Customer Details:\n";
-        msgText += "Name: " + name + "\n";
-        msgText += "Phone: " + phone + "\n\n";
-        
-        msgText += "Shipping Address:\n";
-        msgText += "Address: " + address + "\n";
-        msgText += "City: " + city + " - " + pincode + "\n\n";
-        
-        msgText += "Payment Method: " + payment + "\n";
-        msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
-        msgText += "Thank you for shopping with NOVA!";
+      updateWhatsAppLink();
 
-        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-        
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-        
-        // ജാവാസ്ക്രിപ്റ്റ് വഴി മാറാതെ, ഫോമിന്റെ ആക്ഷൻ ലിങ്ക് വാട്സാപ്പ് ലിങ്ക് ആക്കി മാറ്റുന്നു!
-        form.action = whatsappURL;
-        form.method = "POST"; // അല്ലെങ്കിൽ ഗെറ്റ് രീതി ഒഴിവാക്കാൻ
+      document.getElementById('waOrderBtn').addEventListener('click', () => {
+        localStorage.clear(); // ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
       });
-    }
-  });
-</script>
-
-
-
-
-
-
-
-
-
+    });
+  </script>
 </body>
 </html>
-
