@@ -71,8 +71,15 @@
 </head>
 <body>
 
-<!-- ✅ ജാവാസ്ക്രിപ്റ്റ് വഴി നിയന്ത്രിക്കുന്നതിനാൽ ഫോം ആക്ഷൻ ആവശ്യമില്ല -->
-<form id="whatsappOrderForm">
+<!-- ഒഫീഷ്യൽ ലിങ്ക് ഫോമിൽ തന്നെ നേരിട്ട് നൽകിയിരിക്കുന്നു, ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല -->
+<form id="whatsappOrderForm" action="https://whatsapp.com" method="get" target="_blank">
+    
+    <!-- നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ -->
+    <input type="hidden" name="phone" value="918921033257">
+    
+    <!-- വാട്സാപ്പിലേക്ക് പോകുന്ന മെസ്സേജ് ഈ ഇൻപുട്ടിൽ തനിയെ ജനറേറ്റ് ചെയ്യപ്പെടും -->
+    <input type="hidden" name="text" id="whatsappTextMessage">
+
     <div class="checkout-wrapper">
         <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
         <div class="container-box">
@@ -135,13 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ വാട്സാപ്പിലേക്ക് വിവരങ്ങൾ അയക്കാൻ
+// ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ സന്ദേശം നിർമ്മിച്ച് ഫോം സബ്മിറ്റ് ചെയ്യും
 document.getElementById('whatsappOrderForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
-
-    // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ (കൺട്രി കോഡ് സഹിതം)
-    const myWhatsAppNumber = "918921033257"; 
-
     // ഫോമിൽ നിന്നും കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
     const name = document.getElementById('custName').value;
     const email = document.getElementById('custEmail').value;
@@ -152,23 +154,12 @@ document.getElementById('whatsappOrderForm').addEventListener('submit', function
     const totalAmount = document.getElementById('checkoutTotal').textContent;
 
     // വാട്സാപ്പിൽ കാണിക്കേണ്ട സന്ദേശത്തിന്റെ ഘടന (Format)
-    const message = `📦 *NEW ORDER RECEIVED!*
-Please check my shipping details below:
+    const message = `📦 NEW ORDER RECEIVED!\n\n👤 Name: ${name}\n📧 Email: ${email}\n📞 Phone: ${phone}\n🏠 Address: ${address}, ${city} - ${pincode}\n\n💰 Total Amount: ${totalAmount}\n\nPlease confirm my order. Thank you!`;
 
-👤 *Name:* ${name}
-📧 *Email:* ${email}
-📞 *Phone:* ${phone}
-🏠 *Address:* ${address}, ${city} - ${pincode}
-
-💰 *Total Amount:* ${totalAmount}
-
-Please confirm my order. Thank you!`;
-
-    // ലിങ്ക് കൃത്യമായി എൻകോഡ് ചെയ്യുന്നു (നിങ്ങൾക്ക് ആവശ്യമുള്ള api.whatsapp.com ലിങ്ക്)
-    const whatsappUrl = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
-
-    // പുതിയ ടാബിലോ വിൻഡോയിലോ വാട്സാപ്പ് ഓപ്പൺ ചെയ്യുന്നു (ഇത് ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
-    window.open(whatsappUrl, '_blank');
+    // രഹസ്യ ഇൻപുട്ടിലേക്ക് മെസ്സേജ് സെറ്റ് ചെയ്യുന്നു
+    document.getElementById('whatsappTextMessage').value = message;
+    
+    // ഇനി ഫോം അതിന്റെ ഒഫീഷ്യൽ വഴിക്ക് വാട്സാപ്പിലേക്ക് പൊയ്ക്കോളും (ബ്ലോക്കിംഗ് പ്രശ്നം ഉണ്ടാകില്ല)
 });
 </script>
 
