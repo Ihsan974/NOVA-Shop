@@ -188,7 +188,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,11 +201,10 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ഫോം സബ്മിറ്റ് കൈകാര്യം ചെയ്യുന്നു
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault(); // ഫോം റീഫ്രഷ് ആകുന്നത് തടയുന്നു
+        e.preventDefault(); 
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -215,6 +213,7 @@
         const pincode = document.getElementById('pincode').value;
         const payment = document.querySelector('input[name="payment"]:checked').value;
         
+        // ഇവിടെ വെറും ഫോൺ നമ്പർ മാത്രം (Country code സഹിതം)
         const myWhatsAppNumber = "918921033257"; 
 
         let msgText = "NEW ORDER RECEIVED!\n\n";
@@ -230,18 +229,18 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+        // ⚠️ ബ്രൗസറിലെ ആഡ്-ബ്ലോക്കറുകൾ ഒട്ടും തടയാത്ത ഏറ്റവും ലളിതമായ 'wa.me' ഷോർട്ട് ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        localStorage.clear(); 
 
-        // യഥാർത്ഥ പരിഹാരം: ഡയറക്ട് റീഡയറക്ട് ഒഴിവാക്കി സ്ക്രീനിൽ ഒരു വ്യക്തമായ സക്സസ് മെസ്സേജ് കാണിക്കുന്നു
-        // ഇത് ബ്രൗസറിന് ഒരു രീതിയിലും ബ്ലോക്ക് ചെയ്യാൻ സാധിക്കില്ല
+        // ഇതേ ടാബിൽ തന്നെ പുതിയ ലിങ്ക് ലോഡ് ചെയ്യിക്കുന്നു (target="_self")
         document.body.innerHTML = `
           <div style="max-width: 500px; margin: 100px auto; padding: 40px 20px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif;">
             <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
             <h2 style="font-size: 24px; margin-bottom: 10px; color: #111111;">Order Successfully Placed!</h2>
-            <p style="color: #666666; font-size: 15px; margin-bottom: 30px; line-height: 1.5;">Your shipping details have been saved. To complete the verification, please click the button below to send your order via WhatsApp.</p>
-            <a href="${whatsappURL}" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px; transition: background 0.2s;">
+            <p style="color: #666666; font-size: 15px; margin-bottom: 30px; line-height: 1.5;">Your shipping details have been saved. Click the button below to send your order via WhatsApp.</p>
+            <a href="${whatsappURL}" target="_self" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px;">
               🚀 Open WhatsApp & Send Order
             </a>
             <a href="index.html" style="display: inline-block; margin-top: 20px; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
@@ -251,6 +250,7 @@
     }
   });
 </script>
+
 
 
 
