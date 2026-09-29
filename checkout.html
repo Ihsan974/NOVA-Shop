@@ -86,6 +86,7 @@
       font-weight: 600;
       margin-top: 25px;
       box-sizing: border-box;
+      border: none;
       cursor: pointer;
     }
     .btn-whatsapp-order:hover {
@@ -98,36 +99,37 @@
   <div class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <form id="checkoutForm">
+      <!-- ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ വാട്സാപ്പ് ലിങ്ക് റെഡിയാകാൻ oninput നൽകി -->
+      <form id="checkoutForm" oninput="updateWhatsAppURL()">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" id="name" placeholder="John Doe" value="test">
+          <input type="text" id="name" placeholder="John Doe" value="test" required>
         </div>
         
         <div class="form-row">
           <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="email" placeholder="john@example.com" value="ihsansanu974@gmail.com">
+            <input type="email" id="email" placeholder="john@example.com" value="ihsansanu974@gmail.com" required>
           </div>
           <div class="form-group">
             <label>Phone Number</label>
-            <input type="tel" id="phone" placeholder="9876543210" value="8921033257">
+            <input type="tel" id="phone" placeholder="9876543210" value="8921033257" required>
           </div>
         </div>
 
         <div class="form-group">
           <label>Delivery Address</label>
-          <input type="text" id="address" placeholder="House Name, Street Address" value="test">
+          <input type="text" id="address" placeholder="House Name, Street Address" value="test" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>City</label>
-            <input type="text" id="city" placeholder="Kochi" value="test">
+            <input type="text" id="city" placeholder="Kochi" value="test" required>
           </div>
           <div class="form-group">
             <label>Pincode</label>
-            <input type="text" id="pincode" placeholder="682001" value="0000">
+            <input type="text" id="pincode" placeholder="682001" value="0000" required>
           </div>
         </div>
       </form>
@@ -144,62 +146,55 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- യഥാർത്ഥ പരിഹാരം: ഇൻലൈൻ onclick വഴി നേരിട്ട് ഫങ്ക്ഷൻ റൺ ചെയ്യിക്കുന്നു (ബ്രൗസറിന് ഇത് തടയാൻ കഴിയില്ല) -->
-      <a href="#" onclick="sendOrderViaWhatsApp(event)" class="btn-whatsapp-order">🚀 Confirm & Send via WhatsApp</a>
+      <!-- യഥാർത്ഥ പരിഹാരം: ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത ഡയറക്ട് ലിങ്ക് ടാഗ് -->
+      <a href="#" id="finalWhatsAppLink" target="_self" class="btn-whatsapp-order">Confirm & Send via WhatsApp</a>
     </div>
   </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
-    const itemsContainer = document.getElementById('checkoutItemsList');
-    const totalContainer = document.getElementById('checkoutTotal');
-    
-    const savedItems = localStorage.getItem('cartItemsHTML');
-    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  <script>
+    function updateWhatsAppURL() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+      const pincode = document.getElementById('pincode').value;
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    if (itemsContainer && savedItems) {
-      itemsContainer.innerHTML = savedItems;
+      const myWhatsAppNumber = "918921033257"; 
+
+      let msgText = "NEW ORDER RECEIVED!\n\n";
+      msgText += "Customer Details:\n";
+      msgText += "Name: " + name + "\n";
+      msgText += "Phone: " + phone + "\n\n";
+      msgText += "Shipping Address:\n";
+      msgText += "Address: " + address + "\n";
+      msgText += "City: " + city + " - " + pincode + "\n\n";
+      msgText += "Total Amount: " + savedTotal + "\n\n";
+      msgText += "Thank you for shopping with NOVA!";
+
+      // കമ്പ്യൂട്ടറിലും ഫോണിലും കോൺടാക്റ്റ് ലിസ്റ്റ് വരാതെ നേരിട്ട് നിങ്ങളുടെ ചാറ്റ് തുറക്കാനുള്ള 100% കൃത്യമായ യുആർഎൽ
+      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      
+      const linkBtn = document.getElementById('finalWhatsAppLink');
+      if (linkBtn) {
+        linkBtn.href = whatsappURL;
+      }
     }
-    if (totalContainer && savedTotal) {
-      totalContainer.textContent = savedTotal;
-    }
-  });
 
-  // 2. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ റൺ ആകേണ്ട ശരിയായ ഫങ്ക്ഷൻ
-  function sendOrderViaWhatsApp(e) {
-    if (e) e.preventDefault(); // പേജ് ഹാഷ് (#) കാരണം ചാടുന്നത് തടയാൻ
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedItems = localStorage.getItem('cartItemsHTML');
+      const savedTotal = localStorage.getItem('cartTotalAmount');
 
-    // ഫോമിൽ നിന്ന് വിവരങ്ങൾ കൃത്യമായി എടുക്കുന്നു
-    const name = document.getElementById('name') ? document.getElementById('name').value : "Not Provided";
-    const phone = document.getElementById('phone') ? document.getElementById('phone').value : "Not Provided";
-    const address = document.getElementById('address') ? document.getElementById('address').value : "Not Provided";
-    const city = document.getElementById('city') ? document.getElementById('city').value : "Not Provided";
-    const pincode = document.getElementById('pincode') ? document.getElementById('pincode').value : "Not Provided";
-    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
+      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-    const myWhatsAppNumber = "918921033257"; 
+      // പേജ് ആദ്യമായി ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ സെറ്റ് ചെയ്യുന്നു
+      updateWhatsAppURL();
 
-    // മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
-    let msgText = "NEW ORDER RECEIVED!\n\n";
-    msgText += "Customer Details:\n";
-    msgText += "Name: " + name + "\n";
-    msgText += "Phone: " + phone + "\n\n";
-    msgText += "Shipping Address:\n";
-    msgText += "Address: " + address + "\n";
-    msgText += "City: " + city + " - " + pincode + "\n\n";
-    msgText += "Total Amount: " + savedTotal + "\n\n";
-    msgText += "Thank you for shopping with NOVA!";
-
-    // വാലിഡ് ആയ ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
-    const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-    
-    localStorage.clear(); // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-    
-    // ഇതേ വിൻഡോയിൽ നേരിട്ട് വാട്സാപ്പ് തുറക്കുന്നു
-    window.location.href = whatsappURL;
-  }
-</script>
-
+      document.getElementById('finalWhatsAppLink').addEventListener('click', () => {
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      });
+    });
+  </script>
 </body>
 </html>
