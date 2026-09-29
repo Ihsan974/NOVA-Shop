@@ -65,20 +65,25 @@ button:active {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // കാർട്ട് കൗണ്ട് കാണിക്കുന്ന നമ്പറും, ബട്ടണും ഐഡി വഴി സെലക്ട് ചെയ്യുന്നു
+  // മുകളിലെ കാർട്ട് കൗണ്ട് കാണിക്കുന്ന ബോക്സ് സെലക്ട് ചെയ്യുന്നു
   const cartCount = document.getElementById('cartCount');
-  const addToCartBtn = document.getElementById('addToCartBtn');
+  // നമ്മൾ HTML-ൽ കൊടുത്ത ക്ലാസ്സ് ഉള്ള എല്ലാ ബട്ടണുകളും സെലക്ട് ചെയ്യുന്നു
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
   
   let count = 0;
 
-  if (addToCartBtn && cartCount) {
-    addToCartBtn.addEventListener('click', (e) => {
-      e.preventDefault(); // ബട്ടൺ ലിങ്ക് ആയതുകൊണ്ട് പേജ് റീഫ്രഷ് ആകുന്നത് തടയാൻ
-      count++;
-      cartCount.textContent = count; // കാർട്ടിലെ നമ്പർ മാറ്റുന്നു
-      
-      // ഒരു കൺഫർമേഷന് വേണ്ടി ചെറിയൊരു അലർട്ട്
-      alert('NOVA ONE product added to cart!');
+  if (cartCount && addToCartButtons.length > 0) {
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയാൻ
+        
+        count++; // കൗണ്ട് 1 കൂട്ടുന്നു
+        cartCount.textContent = count; // മുകളിലെ നമ്പറിലേക്ക് പുതിയ കൗണ്ട് നൽകുന്നു
+        
+        // പ്രൊഡക്റ്റിന്റെ പേര് എടുക്കുന്നു (വരി 214-ൽ നൽകിയത്)
+        const productName = button.getAttribute('data-product') || 'Product';
+        alert(`${productName} added to cart!`);
+      });
     });
   }
 });
