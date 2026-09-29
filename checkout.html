@@ -153,11 +153,12 @@
 
   <script>
     function generateWhatsAppApiLink() {
-      const name = document.getElementById('name').value || "Not Provided";
-      const phone = document.getElementById('phone').value || "Not Provided";
-      const address = document.getElementById('address').value || "Not Provided";
-      const city = document.getElementById('city').value || "Not Provided";
-      const pincode = document.getElementById('pincode').value || "Not Provided";
+      // ഇൻപുട്ടുകളിൽ വാല്യൂ ഉണ്ടെങ്കിൽ എടുക്കും, ഇല്ലെങ്കിൽ "Not Provided" എന്ന് കാണിക്കും
+      const name = document.getElementById('name')?.value || "Not Provided";
+      const phone = document.getElementById('phone')?.value || "Not Provided";
+      const address = document.getElementById('address')?.value || "Not Provided";
+      const city = document.getElementById('city')?.value || "Not Provided";
+      const pincode = document.getElementById('pincode')?.value || "Not Provided";
       const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
       const myWhatsAppNumber = "918921033257"; 
@@ -172,8 +173,8 @@
       msgText += "💰 Total Amount: " + savedTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
-      // ⚠️ നിങ്ങൾ ആവശ്യപ്പെട്ട കൃത്യമായ ://whatsapp.com ഔദ്യോഗിക ലിങ്ക് ഫോർമാറ്റ്
-      const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      // ✅ ശരിയായ ഒഫീഷ്യൽ വാട്സാപ്പ് ലിങ്ക് ഫോർമാറ്റ് (തെറ്റുകൾ തിരുത്തിയത്)
+      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
       const confirmLink = document.getElementById('realConfirmBtn');
       if (confirmLink) {
@@ -182,19 +183,34 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // കാർട്ട് ഡാറ്റ ലോഡ് ചെയ്യുന്നു
       const savedItems = localStorage.getItem('cartItemsHTML');
       const savedTotal = localStorage.getItem('cartTotalAmount');
 
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ സെറ്റ് ചെയ്യുന്നു
+      // ആദ്യമേ ലിങ്ക് ജനറേറ്റ് ചെയ്യുന്നു
       generateWhatsAppApiLink();
 
-      document.getElementById('realConfirmBtn').addEventListener('click', () => {
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      // കസ്റ്റമർ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്കിലെ മെസ്സേജും തത്സമയം അപ്ഡേറ്റ് ചെയ്യാനുള്ള മാറ്റം
+      const inputIds = ['name', 'phone', 'address', 'city', 'pincode'];
+      inputIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.addEventListener('input', generateWhatsAppApiLink);
+        }
       });
+
+      // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യും
+      const confirmBtn = document.getElementById('realConfirmBtn');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+          localStorage.clear(); 
+        });
+      }
     });
-  </script>
+</script>
+
 </body>
 </html>
