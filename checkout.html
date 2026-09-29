@@ -152,49 +152,50 @@
   </div>
 
   <script>
-    function updateOrderWhatsAppURL() {
-      const name = document.getElementById('name').value || "Not Provided";
-      const phone = document.getElementById('phone').value || "Not Provided";
-      const address = document.getElementById('address').value || "Not Provided";
-      const city = document.getElementById('city').value || "Not Provided";
-      const pincode = document.getElementById('pincode').value || "Not Provided";
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  function updateOrderWhatsAppURL() {
+    const name = document.getElementById('name').value || "Not Provided";
+    const phone = document.getElementById('phone').value || "Not Provided";
+    const address = document.getElementById('address').value || "Not Provided";
+    const city = document.getElementById('city').value || "Not Provided";
+    const pincode = document.getElementById('pincode').value || "Not Provided";
+    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-      const myWhatsAppNumber = "918921033257"; 
+    const myWhatsAppNumber = "918921033257"; 
 
-      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-      msgText += "👤 Customer Details:\n";
-      msgText += "• Name: " + name + "\n";
-      msgText += "• Phone: " + phone + "\n\n";
-      msgText += "📍 Shipping Address:\n";
-      msgText += "• Address: " + address + "\n";
-      msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
+    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+    msgText += "👤 Customer Details:\n";
+    msgText += "• Name: " + name + "\n";
+    msgText += "• Phone: " + phone + "\n\n";
+    msgText += "📍 Shipping Address:\n";
+    msgText += "• Address: " + address + "\n";
+    msgText += "• City: " + city + " - " + pincode + "\n\n";
+    msgText += "💰 Total Amount: " + savedTotal + "\n\n";
+    msgText += "Thank you for shopping with NOVA!";
 
-      // കമ്പ്യൂട്ടറിൽ 'Continue to WhatsApp Web' ബോക്സ് നേരിട്ട് ഓപ്പൺ ആക്കാനുള്ള 100% ശരിയായ ആഗോള ലിങ്ക് ഫോർമാറ്റ്
-      const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
-      
-      const confirmLink = document.getElementById('realConfirmBtn');
-      if (confirmLink) {
-        confirmLink.href = whatsappURL;
-      }
+    // ⚠️ കമ്പ്യൂട്ടറിലെ ബ്രൗസറിന് 100% കൃത്യമായി മനസ്സിലാകുന്ന പൂർണ്ണമായ ഔദ്യോഗിക വാട്സാപ്പ് വെബ് ലിങ്ക് ഫോർമാറ്റ്
+    const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+    
+    const confirmLink = document.getElementById('realConfirmBtn');
+    if (confirmLink) {
+      confirmLink.href = whatsappURL;
     }
+  }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount');
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedItems = localStorage.getItem('cartItemsHTML');
+    const savedTotal = localStorage.getItem('cartTotalAmount');
 
-      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
-      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+    if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
+    if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ആദ്യത്തെ ലിങ്ക് തയാറാക്കുന്നു
-      updateOrderWhatsAppURL();
+    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ശരിയായ ലിങ്ക് സെറ്റ് ചെയ്യുന്നു
+    updateOrderWhatsAppURL();
 
-      document.getElementById('realConfirmBtn').addEventListener('click', () => {
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      });
+    document.getElementById('realConfirmBtn').addEventListener('click', () => {
+      localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
