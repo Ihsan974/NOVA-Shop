@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,17 +12,19 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f6f6f6;
             margin: 0;
             padding: 30px 20px;
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
             color: #1c1c1c;
         }
 
         .checkout-wrapper {
-            display: flex;
+            width: 100%;
             max-width: 1000px;
             margin: 0 auto;
+
+            display: flex;
             gap: 25px;
             align-items: flex-start;
         }
@@ -31,9 +32,11 @@
         .container-box,
         .summary-box {
             background: #ffffff;
-            padding: 28px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 28px;
+
+            box-shadow:
+                0 5px 25px rgba(0, 0, 0, 0.06);
         }
 
         .container-box {
@@ -46,9 +49,11 @@
 
         h2 {
             margin: 0 0 25px;
-            font-size: 21px;
-            border-bottom: 1px solid #eeeeee;
             padding-bottom: 15px;
+
+            border-bottom: 1px solid #eeeeee;
+
+            font-size: 21px;
         }
 
         .form-group {
@@ -66,37 +71,51 @@
 
         label {
             display: block;
+
             margin-bottom: 7px;
+
             font-size: 13px;
             font-weight: 600;
-            color: #444;
+
+            color: #444444;
         }
 
         input {
             width: 100%;
+
             padding: 13px;
+
             border: 1px solid #d5d5d5;
             border-radius: 7px;
+
             outline: none;
+
             font-size: 14px;
+
             transition: 0.2s ease;
         }
 
         input:focus {
             border-color: #1c1c1c;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+
+            box-shadow:
+                0 0 0 3px rgba(0, 0, 0, 0.05);
         }
 
         .total-section {
             display: flex;
+
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
+
             margin: 25px 0;
             padding: 18px 0;
+
             border-top: 1px solid #eeeeee;
             border-bottom: 1px solid #eeeeee;
+
             font-size: 16px;
+            font-weight: bold;
         }
 
         #checkoutTotal {
@@ -104,16 +123,21 @@
         }
 
         .confirm-btn {
-            display: block;
             width: 100%;
+
             padding: 15px;
-            background: #1c1c1c;
-            color: #ffffff;
+
             border: none;
             border-radius: 7px;
-            font-weight: bold;
+
+            background: #1c1c1c;
+            color: #ffffff;
+
             font-size: 15px;
+            font-weight: bold;
+
             cursor: pointer;
+
             transition: 0.2s ease;
         }
 
@@ -127,18 +151,61 @@
         }
 
         #orderStatus {
-            text-align: center;
+            display: none;
+
             margin-top: 15px;
+
+            text-align: center;
+
             font-size: 13px;
             line-height: 1.5;
         }
 
-        .success {
+        #orderStatus.success {
+            display: block;
             color: #16803c;
         }
 
-        .error {
+        #orderStatus.error {
+            display: block;
             color: #c62828;
+        }
+
+        .success-box {
+            display: none;
+
+            margin-top: 20px;
+            padding: 18px;
+
+            border-radius: 8px;
+
+            background: #eefaf2;
+            color: #16803c;
+
+            text-align: center;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .success-box.show {
+            display: block;
+        }
+
+        .continue-btn {
+            display: inline-block;
+
+            margin-top: 12px;
+            padding: 10px 18px;
+
+            border-radius: 6px;
+
+            background: #16803c;
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
@@ -170,20 +237,29 @@
 
     <div class="checkout-wrapper">
 
-        <!-- CUSTOMER DETAILS -->
+        <!-- SHIPPING DETAILS -->
+
         <div class="container-box">
 
-            <h2>Shipping Details</h2>
+            <h2>
+                Shipping Details
+            </h2>
+
 
             <div class="form-group">
-                <label for="custName">Full Name</label>
+
+                <label for="custName">
+                    Full Name
+                </label>
 
                 <input
                     type="text"
                     id="custName"
                     placeholder="Enter full name"
+                    autocomplete="name"
                     required
                 >
+
             </div>
 
 
@@ -191,12 +267,15 @@
 
                 <div class="form-group">
 
-                    <label for="custEmail">Email Address</label>
+                    <label for="custEmail">
+                        Email Address
+                    </label>
 
                     <input
                         type="email"
                         id="custEmail"
                         placeholder="Enter email address"
+                        autocomplete="email"
                         required
                     >
 
@@ -205,12 +284,15 @@
 
                 <div class="form-group">
 
-                    <label for="custPhone">Phone Number</label>
+                    <label for="custPhone">
+                        Phone Number
+                    </label>
 
                     <input
                         type="tel"
                         id="custPhone"
                         placeholder="Enter phone number"
+                        autocomplete="tel"
                         required
                     >
 
@@ -229,6 +311,7 @@
                     type="text"
                     id="custAddress"
                     placeholder="Enter delivery address"
+                    autocomplete="street-address"
                     required
                 >
 
@@ -247,6 +330,7 @@
                         type="text"
                         id="custCity"
                         placeholder="City"
+                        autocomplete="address-level2"
                         required
                     >
 
@@ -263,6 +347,8 @@
                         type="text"
                         id="custPincode"
                         placeholder="000000"
+                        inputmode="numeric"
+                        autocomplete="postal-code"
                         required
                     >
 
@@ -274,9 +360,12 @@
 
 
         <!-- ORDER SUMMARY -->
+
         <div class="summary-box">
 
-            <h2>Order Summary</h2>
+            <h2>
+                Order Summary
+            </h2>
 
 
             <div class="total-section">
@@ -294,14 +383,40 @@
 
             <button
                 type="submit"
-                class="confirm-btn"
                 id="confirmButton"
+                class="confirm-btn"
             >
                 Confirm Order
             </button>
 
 
             <p id="orderStatus"></p>
+
+
+            <div
+                id="successBox"
+                class="success-box"
+            >
+
+                <strong>
+                    Order submitted successfully!
+                </strong>
+
+                <br>
+
+                Your order has been sent to our
+                WhatsApp Business account.
+
+                <br>
+
+                <a
+                    href="/"
+                    class="continue-btn"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
 
         </div>
 
@@ -312,211 +427,313 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    /*
-    ==========================================
-    LOAD CART TOTAL
-    ==========================================
-    */
+        /*
+        ==========================================
+        LOAD CART TOTAL
+        ==========================================
+        */
 
-    const savedTotal =
-        localStorage.getItem("cartTotalAmount");
+        const savedTotal =
+            localStorage.getItem(
+                "cartTotalAmount"
+            );
 
-    const totalElement =
-        document.getElementById("checkoutTotal");
+        const totalElement =
+            document.getElementById(
+                "checkoutTotal"
+            );
 
 
-    if (savedTotal) {
+        if (savedTotal) {
 
-        totalElement.textContent = savedTotal;
+            totalElement.textContent =
+                savedTotal;
+
+        }
 
     }
-
-});
+);
 
 
 /*
 ==========================================
-ORDER SUBMISSION
+ORDER FORM
 ==========================================
 */
 
 document
     .getElementById("orderForm")
-    .addEventListener("submit", async function (event) {
+    .addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
-
-
-        /*
-        ==========================================
-        GET CUSTOMER DETAILS
-        ==========================================
-        */
-
-        const name =
-            document.getElementById("custName")
-                .value
-                .trim();
+            event.preventDefault();
 
 
-        const email =
-            document.getElementById("custEmail")
-                .value
-                .trim();
+            /*
+            ======================================
+            ELEMENTS
+            ======================================
+            */
 
+            const button =
+                document.getElementById(
+                    "confirmButton"
+                );
 
-        const phone =
-            document.getElementById("custPhone")
-                .value
-                .trim();
+            const status =
+                document.getElementById(
+                    "orderStatus"
+                );
 
-
-        const address =
-            document.getElementById("custAddress")
-                .value
-                .trim();
-
-
-        const city =
-            document.getElementById("custCity")
-                .value
-                .trim();
-
-
-        const pincode =
-            document.getElementById("custPincode")
-                .value
-                .trim();
-
-
-        const totalAmount =
-            document.getElementById("checkoutTotal")
-                .textContent;
-
-
-        /*
-        ==========================================
-        BUTTON + STATUS
-        ==========================================
-        */
-
-        const button =
-            document.getElementById("confirmButton");
-
-
-        const status =
-            document.getElementById("orderStatus");
-
-
-        button.disabled = true;
-
-        button.textContent =
-            "Processing...";
-
-
-        status.textContent = "";
-
-        status.className = "";
-
-
-        /*
-        ==========================================
-        CREATE ORDER DATA
-        ==========================================
-        */
-
-        const orderData = {
-
-            name: name,
-
-            email: email,
-
-            phone: phone,
-
-            address: address,
-
-            city: city,
-
-            pincode: pincode,
-
-            totalAmount: totalAmount
-
-        };
-
-
-        /*
-        ==========================================
-        SEND ORDER TO YOUR BACKEND API
-        ==========================================
-        
-        IMPORTANT:
-        This endpoint must exist on your server/Vercel.
-
-        Example:
-
-        /api/send-order
-
-        ==========================================
-        */
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/send-order",
-                    {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(orderData)
-
-                    }
+            const successBox =
+                document.getElementById(
+                    "successBox"
                 );
 
 
             /*
-            ==========================================
-            CHECK RESPONSE
-            ==========================================
+            ======================================
+            CUSTOMER DATA
+            ======================================
             */
 
-            const result =
-                await response.json();
+            const name =
+                document
+                    .getElementById("custName")
+                    .value
+                    .trim();
 
 
-            if (response.ok && result.success) {
+            const email =
+                document
+                    .getElementById("custEmail")
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById("custPhone")
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById("custAddress")
+                    .value
+                    .trim();
+
+
+            const city =
+                document
+                    .getElementById("custCity")
+                    .value
+                    .trim();
+
+
+            const pincode =
+                document
+                    .getElementById("custPincode")
+                    .value
+                    .trim();
+
+
+            const totalAmount =
+                document
+                    .getElementById("checkoutTotal")
+                    .textContent
+                    .trim();
+
+
+            /*
+            ======================================
+            BASIC VALIDATION
+            ======================================
+            */
+
+            if (
+                !name ||
+                !email ||
+                !phone ||
+                !address ||
+                !city ||
+                !pincode
+            ) {
 
                 status.textContent =
-                    "Order sent successfully!";
+                    "Please fill in all required fields.";
 
                 status.className =
-                    "success";
+                    "error";
+
+                return;
+
+            }
+
+
+            /*
+            ======================================
+            UI
+            ======================================
+            */
+
+            button.disabled = true;
+
+            button.textContent =
+                "Sending Order...";
+
+
+            status.textContent = "";
+
+            status.className = "";
+
+            successBox.classList.remove(
+                "show"
+            );
+
+
+            /*
+            ======================================
+            ORDER OBJECT
+            ======================================
+            */
+
+            const orderData = {
+
+                name: name,
+
+                email: email,
+
+                phone: phone,
+
+                address: address,
+
+                city: city,
+
+                pincode: pincode,
+
+                totalAmount: totalAmount
+
+            };
+
+
+            /*
+            ======================================
+            SEND TO VERCEL API
+            ======================================
+            */
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/send-order",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    orderData
+                                )
+
+                        }
+                    );
 
 
                 /*
-                ==========================================
-                CLEAR FORM
-                ==========================================
+                ==================================
+                READ SERVER RESPONSE
+                ==================================
                 */
 
-                document
-                    .getElementById("orderForm")
-                    .reset();
+                let result;
+
+                try {
+
+                    result =
+                        await response.json();
+
+                } catch {
+
+                    result = {};
+
+                }
 
 
-            } else {
+                /*
+                ==================================
+                SUCCESS
+                ==================================
+                */
+
+                if (
+                    response.ok &&
+                    result.success === true
+                ) {
+
+                    status.textContent =
+                        "Order sent successfully.";
+
+                    status.className =
+                        "success";
+
+
+                    successBox.classList.add(
+                        "show"
+                    );
+
+
+                    document
+                        .getElementById(
+                            "orderForm"
+                        )
+                        .reset();
+
+
+                }
+
+                /*
+                ==================================
+                ERROR
+                ==================================
+                */
+
+                else {
+
+                    status.textContent =
+                        result.message ||
+                        "Unable to send the order.";
+
+                    status.className =
+                        "error";
+
+                }
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Order Error:",
+                    error
+                );
+
 
                 status.textContent =
-                    result.message ||
-                    "Unable to send order.";
+                    "Unable to connect to the order server.";
 
                 status.className =
                     "error";
@@ -524,38 +741,21 @@ document
             }
 
 
-        } catch (error) {
+            /*
+            ======================================
+            RESTORE BUTTON
+            ======================================
+            */
 
-            console.error(
-                "Order API Error:",
-                error
-            );
+            button.disabled = false;
 
-
-            status.textContent =
-                "Unable to connect to the order server. Please try again.";
-
-            status.className =
-                "error";
+            button.textContent =
+                "Confirm Order";
 
         }
-
-
-        /*
-        ==========================================
-        RESTORE BUTTON
-        ==========================================
-        */
-
-        button.disabled = false;
-
-        button.textContent =
-            "Confirm Order";
-
-    });
+    );
 
 </script>
 
 </body>
 </html>
-```
