@@ -1531,3 +1531,6 @@ img {
     object-fit: contain !important;
     transform: none !important; /* പഴയ ഏതെങ്കിലും ആനിമേഷൻ ഇതിനെ മറയ്ക്കുന്നുണ്ടെങ്കിൽ മാറ്റാൻ */
 }
+.feature-intro h1 span {
+  color: #111111; /* ബാക്കി ഹെഡിംഗിന്റെ അതേ കടും കറുപ്പ് നിറം നൽകി */
+}
