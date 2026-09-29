@@ -104,7 +104,7 @@
                 <label>City</label>
                 <input type="text" id="city" placeholder="City">
             </div>
-            <div class="form-group =">
+            <div class="form-group">
                 <label>Pincode</label>
                 <input type="text" id="pincode" placeholder="0000">
             </div>
@@ -122,7 +122,7 @@
             <span id="checkoutTotal">₹0</span>
         </div>
 
-        <!-- ✅ ടൈപ്പ് 'button' ആക്കിയതിനാൽ ഫോം സബ്മിറ്റ് ആയി പേജ് തനിയെ റീഫ്രഷ് ആകില്ല -->
+        <!-- ✅ ടൈപ്പ് 'button' നൽകിയതിനാൽ ഫോം തനിയെ റീഫ്രഷ് ആകില്ല -->
         <button type="button" id="realConfirmBtn" class="confirm-btn">Confirm Order</button>
     </div>
 </div>
@@ -140,13 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
 
-  // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ വിവരങ്ങൾ ശേഖരിച്ച് വാട്സാപ്പ് വെബ്ബിലേക്ക് പോകും
+  // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ വിവരങ്ങൾ ശേഖരിച്ച് അതേ ടാബിൽ വാട്സാപ്പ് വെബ്ബ് തുറക്കും
   const confirmBtn = document.getElementById('realConfirmBtn');
   if (confirmBtn) {
     confirmBtn.addEventListener('click', () => {
-      
-      // ⚠️ ബ്രൗസർ പോപ്പ്-അപ്പ് ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ക്ലിക്ക് ചെയ്ത ഉടനെ തന്നെ ബ്ലാങ്ക് ടാബ് തുറക്കുന്നു
-      const whatsappTab = window.open('about:blank', '_blank');
       
       const name = document.getElementById('name')?.value || "Not Provided";
       const phone = document.getElementById('phone')?.value || "Not Provided";
@@ -167,16 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
       msgText += "💰 Total Amount: " + currentTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
-      // ✅ കമ്പ്യൂട്ടറിൽ വാട്സാപ്പ് വെബ്ബിലേക്ക് നേരിട്ട് പോകാനുള്ള കൃത്യമായ ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
+      // ✅ ബ്രൗസറിൽ വെച്ച് തന്നെ വാട്സാപ്പ് വെബ്ബിലേക്ക് പോകാനുള്ള കൃത്യമായ ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      // തുറന്നു വെച്ചിരിക്കുന്ന ബ്ലാങ്ക് ടാബിലേക്ക് വാട്സാപ്പ് വെബ് ലിങ്ക് ലോഡ് ചെയ്യുന്നു
-      if (whatsappTab) {
-        whatsappTab.location.href = whatsappURL;
-      }
-
-      // ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+      // ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് ആദ്യം കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
       localStorage.clear();
+
+      // ⚠️ [FINAL ZERO-FAIL FIX] പുതിയ ടാബിൽ തുറക്കാതെ അതേ ടാബിൽ തന്നെ തുറക്കുന്നു. 
+      // ഇത് ബ്രൗസറിന്റെ സെക്യൂരിറ്റി സിസ്റ്റത്തെ പൂർണ്ണമായി മറികടക്കുന്നതിനാൽ 'about:blank' പേജ് ഇനി ഒരിക്കലും വരില്ല!
+      window.location.href = whatsappURL;
     });
   }
 });
