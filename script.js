@@ -1,92 +1,56 @@
-/* =========================================================
-   SCROLL REVEAL
-========================================================= */
-
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition:
-        opacity 0.7s ease,
-        transform 0.7s ease;
-}
-
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-/* =========================================================
-   PRODUCT CARD STAGGER
-========================================================= */
-
-.product-card:nth-child(2) {
-    transition-delay: 0.08s;
-}
-
-.product-card:nth-child(3) {
-    transition-delay: 0.16s;
-}
-
-
-/* =========================================================
-   FEATURE STAGGER
-========================================================= */
-
-.feature-card:nth-child(2) {
-    transition-delay: 0.08s;
-}
-
-.feature-card:nth-child(3) {
-    transition-delay: 0.16s;
-}
-
-.feature-card:nth-child(4) {
-    transition-delay: 0.24s;
-}
-
-
-/* =========================================================
-   BUTTON PRESS
-========================================================= */
-
-button:active {
-    transform: scale(0.97);
-}
-
-
-/* =========================================================
-   SELECTION
-========================================================= */
-
-::selection {
-    background: #d9ff3f;
-    color: #111;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  // കാർട്ട് കൗണ്ട് കാണിക്കുന്ന നമ്പറും, ഹീറോ ബട്ടണും, പ്രൊഡക്റ്റ് ബട്ടണുകളും സെലക്ട് ചെയ്യുന്നു
-  const cartCount = document.getElementById('cartCount');
+  // നിങ്ങളുടെ വെബ്‌സൈറ്റിലെ കാർട്ടിന്റെ കൗണ്ട് കാണിക്കുന്ന എല്ലാ ടാഗുകളും സെലക്ട് ചെയ്യുന്നു
+  // (id="cartCount" അല്ലെങ്കിൽ class="cart-count" ഉണ്ടെങ്കിൽ അത് വർക്ക് ചെയ്യും)
+  const cartCount = document.getElementById('cartCount') || document.querySelector('.cart-count') || document.querySelector('#cartButton span');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
   
-  // കൂടുതൽ സുരക്ഷിതമാക്കാൻ രണ്ട് തരം ക്ലാസ്സുകളെയും (add-to-cart, add-to-cart-btn) ഐഡിയെയും (addToCartBtn) ഒന്നിച്ച് സെലക്ട് ചെയ്യുന്നു
   const allButtons = document.querySelectorAll('.add-to-cart, .add-to-cart-btn, #addToCartBtn');
   
   let count = 0;
+  let totalAmount = 0;
 
   if (allButtons.length > 0) {
     allButtons.forEach(button => {
       button.addEventListener('click', (e) => {
-        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയാൻ
+        e.preventDefault();
         
-        count++; // കൗണ്ട് 1 കൂട്ടുന്നു
+        count++;
         
-        // കാർട്ട് കൗണ്ട് ബോക്സ് വെബ്‌സൈറ്റിൽ ഉണ്ടെങ്കിൽ അതിലെ നമ്പർ മാറ്റുന്നു
+        // 1. മുകളിലെ കാർട്ട് ബട്ടണിലെ നമ്പർ മാറ്റുന്നു
         if (cartCount) {
           cartCount.textContent = count;
         }
         
-        // പ്രൊഡക്റ്റിന്റെ പേര് എടുക്കുന്നു
-        const productName = button.getAttribute('data-product') || 'Product';
+        // 2. വിലയും പേരും എടുക്കുന്നു
+        const productName = button.getAttribute('data-product') || 'Wireless Earbuds';
+        const productPriceText = button.getAttribute('data-price') || '0';
+        // വിലയിലെ കറൻസി ചിഹ്നങ്ങളും കോമയും മാറ്റി നമ്പറിലേക്ക് മാറ്റുന്നു (ഉദാഹരണത്തിന് ₹8,999 -> 8999)
+        const productPrice = parseInt(productPriceText.replace(/[^0-9]/g, '')) || 0;
+        
+        // 3. ആകെ തുക കൂട്ടുന്നു
+        totalAmount += productPrice;
+        if (cartTotal) {
+          cartTotal.textContent = '₹' + totalAmount.toLocaleString('en-IN');
+        }
+        
+        // 4. കാർട്ട് ലിസ്റ്റിലെ "Your cart is empty" മാറ്റുന്നു
+        if (cartItemsContainer) {
+          const emptyMsg = cartItemsContainer.querySelector('.empty-cart');
+          if (emptyMsg) {
+            emptyMsg.remove(); // കാർട്ട് കാലിയാണെന്ന മെസ്സേജ് ഒഴിവാക്കുന്നു
+          }
+          
+          // പുതിയ പ്രൊഡക്റ്റ് ലിസ്റ്റിലേക്ക് ചേർക്കുന്നു
+          const newItem = document.createElement('div');
+          newItem.className = 'cart-item';
+          newItem.style.display = 'flex';
+          newItem.style.justifyContent = 'space-between';
+          newItem.style.margin = '10px 0';
+          newItem.innerHTML = `<span>${productName}</span> <span>${productPriceText}</span>`;
+          cartItemsContainer.appendChild(newItem);
+        }
+        
         alert(`${productName} added to cart!`);
       });
     });
