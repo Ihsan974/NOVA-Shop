@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout | NOVA</title>
     <style>
-        /* ചെക്കൗട്ട് പേജിന്റെ ലളിതമായ സിഎസ്എസ് ഡിസൈൻ */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -65,8 +64,6 @@
             font-weight: bold;
             font-size: 15px;
             box-sizing: border-box;
-            border: none;
-            cursor: pointer;
             transition: background 0.2s;
         }
         .confirm-btn:hover { background-color: #333; }
@@ -75,62 +72,42 @@
 <body>
 
 <div class="checkout-wrapper">
-    <!-- ഇടത് വശം: കസ്റ്റമർ ഷിപ്പിംഗ് വിവരങ്ങൾ -->
+    <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
     <div class="container-box">
         <h2>Shipping Details</h2>
-        
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="Enter full name">
-        </div>
-
+        <div class="form-group"><label>Full Name</label><input type="text" placeholder="Enter full name"></div>
         <div class="form-row">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" placeholder="Enter email address">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter phone number">
-            </div>
+            <div class="form-group"><label>Email Address</label><input type="email" placeholder="Enter email address"></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="Enter phone number"></div>
         </div>
-
-        <div class="form-group">
-            <label>Delivery Address</label>
-            <input type="text" id="address" placeholder="Enter delivery address">
-        </div>
-
+        <div class="form-group"><label>Delivery Address</label><input type="text" placeholder="Enter delivery address"></div>
         <div class="form-row">
-            <div class="form-group">
-                <label>City</label>
-                <input type="text" id="city" placeholder="City">
-            </div>
-            <div class="form-group">
-                <label>Pincode</label>
-                <input type="text" id="pincode" placeholder="0000">
-            </div>
+            <div class="form-group"><label>City</label><input type="text" placeholder="City"></div>
+            <div class="form-group"><label>Pincode</label><input type="text" placeholder="0000"></div>
         </div>
     </div>
 
-    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+    <!-- വലത് വശം: ഓർഡർ Summary -->
     <div class="summary-box">
         <h2>Order Summary</h2>
-        
         <div id="checkoutItemsList"></div>
-        
         <div class="total-section">
             <span>Total Amount</span>
             <span id="checkoutTotal">₹0</span>
         </div>
 
-        <!-- ✅ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതെ അതേ വിൻഡോയിൽ തന്നെ വാട്സാപ്പിലേക്ക് പോകുന്ന ആങ്കർ ടാഗ് -->
-        <a href="#" id="realConfirmBtn" class="confirm-btn">Confirm Order</a>
+        <!-- ✅ ജാവാസ്ക്രിപ്റ്റും ഫോമും പൂർണ്ണമായി ഒഴിവാക്കിയുള്ള നേരിട്ടുള്ള ഒഫീഷ്യൽ wa.me ലിങ്ക്. 
+             ഇതിൽ സ്ലാഷ് (/) കൃത്യമായി നൽകിയിട്ടുണ്ട്. ഇത് ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ കഴിയില്ല! -->
+        <a href="https://wa.me." 
+           class="confirm-btn">
+           Confirm Order
+        </a>
     </div>
 </div>
 
 <script>
+// ലോക്കൽ സ്റ്റോറേജിലുള്ള സാധനങ്ങളും തുകയും മാത്രം കാണിക്കാൻ ഈ ചെറിയ സ്ക്രിപ്റ്റ് (ഇതിൽ ലിങ്ക് മാറ്റുന്ന കോഡുകൾ ഇല്ല)
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -140,54 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
-
-  // 2. വാട്സാപ്പ് ലിങ്ക് റൺ ടൈമിൽ ഉണ്ടാക്കാനുള്ള ഫങ്ക്ഷൻ
-  function updateWhatsAppHref() {
-    const name = document.getElementById('name')?.value || "Not Provided";
-    const phone = document.getElementById('phone')?.value || "Not Provided";
-    const address = document.getElementById('address')?.value || "Not Provided";
-    const city = document.getElementById('city')?.value || "Not Provided";
-    const pincode = document.getElementById('pincode')?.value || "Not Provided";
-    const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-    const myWhatsAppNumber = "918921033257"; 
-
-    // വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ്
-    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-    msgText += "👤 Customer Details:\n";
-    msgText += "• Name: " + name + "\n";
-    msgText += "• Phone: " + phone + "\n\n";
-    msgText += "📍 Shipping Address:\n";
-    msgText += "• Address: " + address + "\n";
-    msgText += "• City: " + city + " - " + pincode + "\n\n";
-    msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-    msgText += "Thank you for shopping with NOVA!";
-
-    // ✅ [CORRECTED] wa.me കഴിഞ്ഞ് കൃത്യമായി സ്ലാഷ് (/) നൽകിയിരിക്കുന്നു
-    const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
-    
-    // HTML ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
-    const confirmLink = document.getElementById('realConfirmBtn');
-    if (confirmLink) {
-      confirmLink.href = whatsappURL;
-    }
-  }
-
-  // കസ്റ്റമർ പേജ് തുറക്കുമ്പോൾ തന്നെ ആദ്യ ലിങ്ക് റെഡിയാക്കുന്നു
-  updateWhatsAppHref();
-
-  // 3. കസ്റ്റമർ ഓരോ ഇൻപുട്ടിലും ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോൾ ലിങ്ക് തത്സമയം അപ്ഡേറ്റ് ആകും
-  const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
-  inputs.forEach(id => {
-    document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
-  });
-
-  // 4. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യാൻ
-  document.getElementById('realConfirmBtn')?.addEventListener('click', () => {
-    setTimeout(() => {
-      localStorage.clear(); 
-    }, 1000);
-  });
 });
 </script>
 
