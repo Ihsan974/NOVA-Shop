@@ -322,6 +322,15 @@ img {
     margin-top: 4px;
 }
 
+.hero-content h1 span {
+  color: #5d5d62; 
+}
+.hero-content h1 span {
+  color: inherit; 
+}
+
+
+
 
 /* =========================================================
    HERO PRODUCT
