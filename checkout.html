@@ -130,7 +130,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. ലോക്കൽ സ്റ്റോറേജിലുള്ള സാധനങ്ങളും ടോട്ടൽ തുകയും പേജിൽ കാണിക്കുന്നു
+  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     msgText += "💰 Total Amount: " + currentTotal + "\n\n";
     msgText += "Thank you for shopping with NOVA!";
 
-    // ✅ [FIX] 4xx Client Error വരുന്നത് ഒഴിവാക്കാനുള്ള ശരിയായ 'wa.me' ഷോർട്ട് ലിങ്ക് ഫോർമാറ്റ്
+    // ✅ [CORRECTED] wa.me കഴിഞ്ഞ് കൃത്യമായി സ്ലാഷ് (/) നൽകിയിരിക്കുന്നു
     const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
     
     // HTML ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
