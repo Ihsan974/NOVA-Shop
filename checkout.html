@@ -188,7 +188,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
+    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,11 +202,11 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ബ്രൗസറിന് ഒട്ടും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത അൾട്ടിമേറ്റ് ഫോം ആക്ഷൻ സിസ്റ്റം
+    // 2. ഫോം സബ്മിറ്റ് കൈകാര്യം ചെയ്യുന്നു
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        // ശ്രദ്ധിക്കുക: നമ്മൾ ഇവിടെ e.preventDefault() കൊടുക്കുന്നില്ല! ഫോം ഡിഫോൾട്ട് ആയി സബ്മിറ്റ് ആകണം.
+        e.preventDefault(); // ഫോം റീഫ്രഷ് ആകുന്നത് തടയുന്നു
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -233,14 +233,25 @@
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
         localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-        
-        // ജാവാസ്ക്രിപ്റ്റ് വഴി മാറാതെ, ഫോമിന്റെ ആക്ഷൻ ലിങ്ക് വാട്സാപ്പ് ലിങ്ക് ആക്കി മാറ്റുന്നു!
-        form.action = whatsappURL;
-        form.method = "POST"; // അല്ലെങ്കിൽ ഗെറ്റ് രീതി ഒഴിവാക്കാൻ
+
+        // യഥാർത്ഥ പരിഹാരം: ഡയറക്ട് റീഡയറക്ട് ഒഴിവാക്കി സ്ക്രീനിൽ ഒരു വ്യക്തമായ സക്സസ് മെസ്സേജ് കാണിക്കുന്നു
+        // ഇത് ബ്രൗസറിന് ഒരു രീതിയിലും ബ്ലോക്ക് ചെയ്യാൻ സാധിക്കില്ല
+        document.body.innerHTML = `
+          <div style="max-width: 500px; margin: 100px auto; padding: 40px 20px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif;">
+            <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
+            <h2 style="font-size: 24px; margin-bottom: 10px; color: #111111;">Order Successfully Placed!</h2>
+            <p style="color: #666666; font-size: 15px; margin-bottom: 30px; line-height: 1.5;">Your shipping details have been saved. To complete the verification, please click the button below to send your order via WhatsApp.</p>
+            <a href="${whatsappURL}" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px; transition: background 0.2s;">
+              🚀 Open WhatsApp & Send Order
+            </a>
+            <a href="index.html" style="display: inline-block; margin-top: 20px; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
+          </div>
+        `;
       });
     }
   });
 </script>
+
 
 
 
