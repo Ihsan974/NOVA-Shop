@@ -236,11 +236,16 @@
       message += `Thank you for shopping with NOVA!`;
 
       // ലിങ്ക് തയാറാക്കി WhatsApp തുറക്കുന്നു
+           // തിരുത്തിയ ശരിയായ വാട്സാപ്പ് ലിങ്ക് (പുതിയ ടാബിൽ തുറക്കാൻ പാകത്തിന്)
       const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
       
       alert('Thank you! Redirecting to WhatsApp to complete your order.');
       localStorage.clear(); // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      window.location.href = whatsappURL; // WhatsApp ലിങ്കിലേക്ക് പോവുന്നു
+      
+      // ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ പുതിയ ടാബിൽ വാട്സാപ്പ് തുറക്കുന്നു
+      window.open(whatsappURL, '_blank'); 
+      window.location.href = 'index.html'; // ഈ പേജ് തനിയെ ഹോം പേജിലേക്ക് മാറുന്നു
+
     });
   });
 </script>
