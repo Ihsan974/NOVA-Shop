@@ -65,26 +65,30 @@ button:active {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // മുകളിലെ കാർട്ട് കൗണ്ട് കാണിക്കുന്ന ബോക്സ് സെലക്ട് ചെയ്യുന്നു
+  // കാർട്ട് കൗണ്ട് കാണിക്കുന്ന നമ്പറും, ഹീറോ ബട്ടണും, പ്രൊഡക്റ്റ് ബട്ടണുകളും സെലക്ട് ചെയ്യുന്നു
   const cartCount = document.getElementById('cartCount');
-  // നമ്മൾ HTML-ൽ കൊടുത്ത ക്ലാസ്സ് ഉള്ള എല്ലാ ബട്ടണുകളും സെലക്ട് ചെയ്യുന്നു
-  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+  
+  // കൂടുതൽ സുരക്ഷിതമാക്കാൻ രണ്ട് തരം ക്ലാസ്സുകളെയും (add-to-cart, add-to-cart-btn) ഐഡിയെയും (addToCartBtn) ഒന്നിച്ച് സെലക്ട് ചെയ്യുന്നു
+  const allButtons = document.querySelectorAll('.add-to-cart, .add-to-cart-btn, #addToCartBtn');
   
   let count = 0;
 
-  if (cartCount && addToCartButtons.length > 0) {
-    addToCartButtons.forEach(button => {
+  if (allButtons.length > 0) {
+    allButtons.forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയാൻ
         
         count++; // കൗണ്ട് 1 കൂട്ടുന്നു
-        cartCount.textContent = count; // മുകളിലെ നമ്പറിലേക്ക് പുതിയ കൗണ്ട് നൽകുന്നു
         
-        // പ്രൊഡക്റ്റിന്റെ പേര് എടുക്കുന്നു (വരി 214-ൽ നൽകിയത്)
+        // കാർട്ട് കൗണ്ട് ബോക്സ് വെബ്‌സൈറ്റിൽ ഉണ്ടെങ്കിൽ അതിലെ നമ്പർ മാറ്റുന്നു
+        if (cartCount) {
+          cartCount.textContent = count;
+        }
+        
+        // പ്രൊഡക്റ്റിന്റെ പേര് എടുക്കുന്നു
         const productName = button.getAttribute('data-product') || 'Product';
         alert(`${productName} added to cart!`);
       });
     });
   }
 });
-
