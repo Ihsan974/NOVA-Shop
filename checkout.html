@@ -195,7 +195,6 @@
     const itemsContainer = document.getElementById('checkoutItemsList');
     const totalContainer = document.getElementById('checkoutTotal');
 
-    // ഈ പേജിലേക്ക് വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്യുന്നു
     if (savedItems && itemsContainer) {
       itemsContainer.innerHTML = savedItems;
     }
@@ -203,17 +202,49 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ഓർഡർ സക്സസ് ആകാൻ
+    // ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ WhatsApp-ലേക്ക് വിവരങ്ങൾ അയക്കാൻ
     const form = document.getElementById('checkoutForm');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Thank you! Your order has been placed successfully.');
-      // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      localStorage.clear();
-      window.location.href = 'index.html'; // തിരികെ ഹോം പേജിലേക്ക്
+
+      // ഫോമിലെ കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+      const pincode = document.getElementById('pincode').value;
+      const payment = document.querySelector('input[name="payment"]:checked').value;
+      
+      // നിങ്ങളുടെ WhatsApp നമ്പർ ഇവിടെ നൽകുക (Country code സഹിതം, ചിഹ്നങ്ങൾ ഇല്ലാതെ)
+      // ഉദാഹരണത്തിന്: 91 കഴിഞ്ഞTarget നമ്പർ (91XXXXXXXXXX)
+      const myWhatsAppNumber = "918921033257"; 
+
+      // WhatsApp മെസ്സേജ് ഫോർമാറ്റ് തയാറാക്കുന്നു
+      let message = `*📦 NEW ORDER RECEIVED!* \n\n`;
+      message += `*👤 Customer Details:* \n`;
+      message += `• Name: ${name}\n`;
+      message += `• Phone: ${phone}\n`;
+      message += `• Email: ${email}\n\n`;
+      
+      message += `*📍 Shipping Address:* \n`;
+      message += `• Address: ${address}\n`;
+      message += `• City: ${city} - ${pincode}\n\n`;
+      
+      message += `*💳 Payment Method:* ${payment}\n\n`;
+      message += `*💰 Total Amount:* ${savedTotal || '₹0'}\n\n`;
+      message += `Thank you for shopping with NOVA!`;
+
+      // ലിങ്ക് തയാറാക്കി WhatsApp തുറക്കുന്നു
+      const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
+      
+      alert('Thank you! Redirecting to WhatsApp to complete your order.');
+      localStorage.clear(); // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      window.location.href = whatsappURL; // WhatsApp ലിങ്കിലേക്ക് പോവുന്നു
     });
   });
 </script>
+
 
 </body>
 </html>
