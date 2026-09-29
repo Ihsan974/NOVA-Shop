@@ -319,9 +319,9 @@ img {
 }
 
 .hero-meta span {
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 4px;
+  color: #555555;   /* ഇപ്പോഴുള്ള ലൈറ്റ് കളറിന് പകരം നല്ലൊരു ഡാർക്ക് ഗ്രേ */
+  font-size: 14px;  /* 11px മാറ്റി 14px ആക്കി വലിപ്പം കൂട്ടി */
+  margin-top: 4px;
 }
 
 .hero-content h1 span {
