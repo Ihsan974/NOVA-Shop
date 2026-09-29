@@ -59,12 +59,11 @@
             background-color: #1c1c1c;
             color: white;
             text-align: center;
-            text-decoration: none;
+            border: none;
             border-radius: 5px;
             font-weight: bold;
             font-size: 15px;
             box-sizing: border-box;
-            border: none;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -73,102 +72,73 @@
 </head>
 <body>
 
-<div class="checkout-wrapper">
-    <!-- ഇടത് വശം: കസ്റ്റമർ ഷിപ്പിംഗ് വിവരങ്ങൾ -->
-    <div class="container-box">
-        <h2>Shipping Details</h2>
-        
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="Enter full name">
+<!-- ✅ ജാവാസ്ക്രിപ്റ്റ് ഇല്ലാതെ ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത ഒഫീഷ്യൽ വാട്സാപ്പ് ഫോം ആക്ഷൻ -->
+<form action="https://whatsapp.com" method="get">
+    
+    <!-- നിങ്ങളുടെ വാട്സാപ്പ് നമ്പറും ഡിഫോൾട്ട് മെസ്സേജും ഇതിലൂടെ വാട്സാപ്പിലേക്ക് പോകും -->
+    <input type="hidden" name="phone" value="918921033257">
+    <input type="hidden" name="text" value="📦 NEW ORDER RECEIVED! Please check my shipping details below.">
+
+    <div class="checkout-wrapper">
+        <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
+        <div class="container-box">
+            <h2>Shipping Details</h2>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <!-- കസ്റ്റമർ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ ലിങ്കിൽ വരാൻ name ഫീൽഡുകൾ ഉപയോഗിക്കുന്നു -->
+                <input type="text" name="Customer_Name" placeholder="Enter full name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="Customer_Email" placeholder="Enter email address" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="Customer_Phone" placeholder="Enter phone number" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Address</label>
+                <input type="text" name="Delivery_Address" placeholder="Enter delivery address" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="City" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" name="Pincode" placeholder="0000" required>
+                </div>
+            </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" placeholder="Enter email address">
+        <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+        <div class="summary-box">
+            <h2>Order Summary</h2>
+            
+            <div class="total-section">
+                <span>Total Amount</span>
+                <span id="checkoutTotal">₹0</span>
             </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="Enter phone number">
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label>Delivery Address</label>
-            <input type="text" id="address" placeholder="Enter delivery address">
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>City</label>
-                <input type="text" id="city" placeholder="City">
-            </div>
-            <div class="form-group">
-                <label>Pincode</label>
-                <input type="text" id="pincode" placeholder="0000">
-            </div>
+            <!-- ✅ സാധാരണ സബ്മിറ്റ് ബട്ടൺ (ഇത് ക്ലിക്ക് ചെയ്യുമ്പോൾ ബ്ലോക്ക് ആകാതെ അതേ ടാബിൽ നേരിട്ട് വാട്സാപ്പ് വെബ് തുറക്കും) -->
+            <button type="submit" class="confirm-btn">Confirm Order</button>
         </div>
     </div>
-
-    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
-    <div class="summary-box">
-        <h2>Order Summary</h2>
-        
-        <!-- കാർട്ടിലെ തകരാറിലായ എച്ച്.ടി.എം.എൽ ഒഴിവാക്കി വെറും വിവരങ്ങൾ മാത്രം കാണിക്കുന്നു -->
-        <div id="checkoutItemsList" style="font-size: 14px; color: #666; margin-bottom: 15px;">Your items will be confirmed via WhatsApp</div>
-        
-        <div class="total-section">
-            <span>Total Amount</span>
-            <span id="checkoutTotal">₹0</span>
-        </div>
-
-        <!-- ✅ സുരക്ഷിതമായ ബട്ടൺ ആക്ഷൻ -->
-        <button type="button" id="realConfirmBtn" class="confirm-btn">Confirm Order</button>
-    </div>
-</div>
+</form>
 
 <script>
+// പേജ് ലോഡ് ചെയ്യുമ്പോൾ ലോക്കൽ സ്റ്റോറേജിലുള്ള തുക മാത്രം കാണിക്കാൻ ഈ ചെറിയ സ്ക്രിപ്റ്റ് (ഇതിൽ എറർ വരില്ല)
 document.addEventListener('DOMContentLoaded', () => {
-  // കാർട്ടിലെ ടോട്ടൽ തുക മാത്രം ലോഡ് ചെയ്ത് കാണിക്കുന്നു (തകരാറിലായ HTML നമ്മൾ പൂർണ്ണമായി ഒഴിവാക്കി)
   const savedTotal = localStorage.getItem('cartTotalAmount');
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
-  }
-
-  // ബട്ടൺ ക്ലിക്ക് ഇവന്റ്
-  const confirmBtn = document.getElementById('realConfirmBtn');
-  if (confirmBtn) {
-    confirmBtn.addEventListener('click', () => {
-      
-      const name = document.getElementById('name')?.value || "Not Provided";
-      const phone = document.getElementById('phone')?.value || "Not Provided";
-      const address = document.getElementById('address')?.value || "Not Provided";
-      const city = document.getElementById('city')?.value || "Not Provided";
-      const pincode = document.getElementById('pincode')?.value || "Not Provided";
-      const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-      const myWhatsAppNumber = "918921033257"; 
-
-      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-      msgText += "👤 Customer Details:\n";
-      msgText += "• Name: " + name + "\n";
-      msgText += "• Phone: " + phone + "\n\n";
-      msgText += "📍 Shipping Address:\n";
-      msgText += "• Address: " + address + "\n";
-      msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // ഒഫീഷ്യൽ വാട്സാപ്പ് വെബ് ലിങ്ക് ഫോർമാറ്റ്
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      // ലോക്കൽ സ്റ്റോറേജ് ക്ലിയർ ചെയ്യുന്നു
-      localStorage.clear();
-
-      // അതേ വിൻഡോയിൽ തന്നെ വാട്സാപ്പ് വെബ്ബ് ലോഡ് ചെയ്യിക്കുന്നു
-      window.location.href = whatsappURL;
-    });
   }
 });
 </script>
