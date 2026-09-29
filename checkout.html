@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
 
-  // 2. വാട്സാപ്പ് ലിങ്ക് റൺ ടൈമിൽ ഉണ്ടാക്കാനുള്ള ഫങ്ക്ഷൻ
+  // 2. വാട്സാപ്പ് ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ അപ്ഡേറ്റ് ചെയ്യാനുള്ള ഫങ്ക്ഷൻ
   function updateWhatsAppHref() {
     const name = document.getElementById('name')?.value || "Not Provided";
     const phone = document.getElementById('phone')?.value || "Not Provided";
@@ -185,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     msgText += "💰 Total Amount: " + currentTotal + "\n\n";
     msgText += "Thank you for shopping with NOVA!";
 
+    // ഒഫീഷ്യൽ വാട്സാപ്പ് കണ്ടിന്യൂ പേജ് ലിങ്ക്
     const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
     
     // HTML-ലെ ആങ്കർ ടാഗിലേക്ക് ലിങ്ക് നേരിട്ട് നൽകുന്നു
@@ -194,10 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ആദ്യമേ ലിങ്ക് ഒന്ന് ജനറേറ്റ് ചെയ്തു വെക്കുന്നു
+  // ആദ്യം തന്നെ ലിങ്ക് ഒന്ന് ജനറേറ്റ് ചെയ്തു വെക്കുന്നു
   updateWhatsAppHref();
 
-  // 3. കസ്റ്റമർ ഇൻപുട്ടുകളിൽ ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോഴും ബാക്ക്ഗ്രൗണ്ടിൽ ലിങ്ക് മാറിമറിയും
+  // 3. കസ്റ്റമർ ഇൻപുട്ടുകളിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തത്സമയം ലിങ്ക് അപ്ഡേറ്റ് ആകും
   const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
   inputs.forEach(id => {
     document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
