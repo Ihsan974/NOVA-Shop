@@ -1591,3 +1591,10 @@ img {
 .philosophy-content p {
   color: #555555 !important; /* ലൈറ്റ് കളർ മാറ്റി നല്ലൊരു ഡാർക്ക് ഗ്രേ നൽകി */
 }
+/* കാർട്ട് ബോക്സ് സ്ക്രീനിൽ കാണിക്കാൻ */
+aside.active, 
+.cart-sidebar.active,
+#cartItems.active {
+  display: block !important;
+  right: 0 !important; /* സൈഡിൽ നിന്ന് വരാൻ */
+}
