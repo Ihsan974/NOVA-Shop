@@ -73,22 +73,19 @@
       font-size: 18px;
       font-weight: 600;
     }
-    /* ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത സാധാരണ ലിങ്ക് സ്റ്റൈൽ */
-    .btn-whatsapp-link {
-      display: block;
+    .btn-whatsapp-order {
       width: 100%;
       background: #25D366;
       color: #ffffff;
       padding: 15px;
-      text-align: center;
-      text-decoration: none;
+      border: none;
       border-radius: 6px;
       font-size: 16px;
       font-weight: 600;
+      cursor: pointer;
       margin-top: 25px;
-      box-sizing: border-box;
     }
-    .btn-whatsapp-link:hover {
+    .btn-whatsapp-order:hover {
       background: #20ba5a;
     }
   </style>
@@ -98,9 +95,11 @@
   <div class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <form id="checkoutForm" oninput="generateOrderLink()">
+      <!-- முக்கிய மாற்றம்: ஃபார்ம் சப்மிட் ஆகும் போதே நேரடியாக wa.me லிங்கிற்குப் போகும் படி மாற்றப்பட்டது -->
+      <form id="checkoutForm" action="https://wa.me" method="GET">
         <div class="form-group">
           <label>Full Name</label>
+          <!-- மெசேஜ் ஃபார்மட்டில் வர ஏதுவாக name="text" பயன்படுத்தப்பட்டுள்ளது -->
           <input type="text" id="name" placeholder="John Doe" value="test">
         </div>
         
@@ -130,13 +129,16 @@
             <input type="text" id="pincode" placeholder="682001" value="0000">
           </div>
         </div>
+        
+        <!-- வாட்ஸ்அப் மெசேஜ் உரையைச் சேமிக்க ஒரு மறைமுக உள்ளீடு (Hidden Input) -->
+        <input type="hidden" name="text" id="whatsappMessage">
       </form>
     </div>
 
     <div class="order-summary-box">
       <h2>Order Summary</h2>
       <div id="checkoutItemsList">
-        <!-- കാർട്ടിലെ വിവരങ്ങൾ ഇവിടെ വരും -->
+        <!-- கார்ட் விவரங்கள் இங்கே வரும் -->
       </div>
       
       <div class="summary-total">
@@ -144,56 +146,43 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- പ്രധാന മാറ്റം: ഇവിടെ നമ്മൾ ജാവാസ്ക്രിപ്റ്റ് വഴി വിൻഡോ മാറ്റുന്നില്ല, നേരിട്ടുള്ള ലിങ്ക് ആണ് -->
-      <a href="#" id="realWhatsAppBtn" target="_self" class="btn-whatsapp-link">
-        Confirm & Send via WhatsApp
-      </a>
+      <button type="submit" form="checkoutForm" class="btn-whatsapp-order">Confirm & Send via WhatsApp</button>
     </div>
   </div>
 
   <script>
-    function generateOrderLink() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
-      const city = document.getElementById('city').value;
-      const pincode = document.getElementById('pincode').value;
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-      const myWhatsAppNumber = "918921033257"; 
-
-      let msgText = "NEW ORDER RECEIVED!\n\n";
-      msgText += "Customer Details:\n";
-      msgText += "Name: " + name + "\n";
-      msgText += "Phone: " + phone + "\n\n";
-      msgText += "Shipping Address:\n";
-      msgText += "Address: " + address + "\n";
-      msgText += "City: " + city + " - " + pincode + "\n\n";
-      msgText += "Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // ഔദ്യോഗിക സുരക്ഷിതമായ പൂർണ്ണമായ ലിങ്ക് ഫോർമാറ്റ്
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      const linkBtn = document.getElementById('realWhatsAppBtn');
-      if (linkBtn) {
-        linkBtn.href = whatsappURL;
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount');
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // ആദ്യ തവണ ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ഉണ്ടാക്കുന്നു
-      generateOrderLink();
+      const form = document.getElementById('checkoutForm');
+      if (form) {
+        form.addEventListener('submit', () => {
+          const name = document.getElementById('name').value;
+          const phone = document.getElementById('phone').value;
+          const address = document.getElementById('address').value;
+          const city = document.getElementById('city').value;
+          const pincode = document.getElementById('pincode').value;
 
-      document.getElementById('realWhatsAppBtn').addEventListener('click', () => {
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      });
+          let msgText = "NEW ORDER RECEIVED!\n\n";
+          msgText += "Customer Details:\n";
+          msgText += "Name: " + name + "\n";
+          msgText += "Phone: " + phone + "\n\n";
+          msgText += "Shipping Address:\n";
+          msgText += "Address: " + address + "\n";
+          msgText += "City: " + city + " - " + pincode + "\n\n";
+          msgText += "Total Amount: " + savedTotal + "\n\n";
+          msgText += "Thank you for shopping with NOVA!";
+
+          // மறைமுக உள்ளீட்டில் (Hidden Input) வாட்ஸ்அப் மெசேஜை வைக்கிறோம்
+          document.getElementById('whatsappMessage').value = msgText;
+          
+          localStorage.clear(); // கார்ட்டை காலி செய்கிறோம்
+        });
+      }
     });
   </script>
 </body>
