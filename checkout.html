@@ -164,55 +164,54 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
 
-  // 2. 'Confirm Order' ബട്ടൺ കണ്ടെത്തി അതിലേക്ക് ക്ലിക്ക് ഇവന്റ് നൽകുന്നു
-  const confirmBtn = document.getElementById('realConfirmBtn');
-  if (confirmBtn) {
-    confirmBtn.addEventListener('click', (event) => {
-      // ഫോം സബ്‌മിറ്റ് ആയി പേജ് ഓട്ടോമാറ്റിക് റീഫ്രഷ് ആകുന്നത് പൂർണ്ണമായി തടയുന്നു
-      event.preventDefault();
-      event.stopPropagation();
+  // 2. വാട്സാപ്പ് ലിങ്ക് റൺ ടൈമിൽ ഉണ്ടാക്കാനുള്ള ഫങ്ക്ഷൻ
+  function updateWhatsAppHref() {
+    const name = document.getElementById('name')?.value || "Not Provided";
+    const phone = document.getElementById('phone')?.value || "Not Provided";
+    const address = document.getElementById('address')?.value || "Not Provided";
+    const city = document.getElementById('city')?.value || "Not Provided";
+    const pincode = document.getElementById('pincode')?.value || "Not Provided";
+    const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-      // 3. കസ്റ്റമർ ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ തത്സമയം എടുക്കുന്നു
-      const name = document.getElementById('name')?.value || "Not Provided";
-      const phone = document.getElementById('phone')?.value || "Not Provided";
-      const address = document.getElementById('address')?.value || "Not Provided";
-      const city = document.getElementById('city')?.value || "Not Provided";
-      const pincode = document.getElementById('pincode')?.value || "Not Provided";
-      const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+    const myWhatsAppNumber = "918921033257"; 
 
-      const myWhatsAppNumber = "918921033257"; 
+    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+    msgText += "👤 Customer Details:\n";
+    msgText += "• Name: " + name + "\n";
+    msgText += "• Phone: " + phone + "\n\n";
+    msgText += "📍 Shipping Address:\n";
+    msgText += "• Address: " + address + "\n";
+    msgText += "• City: " + city + " - " + pincode + "\n\n";
+    msgText += "💰 Total Amount: " + currentTotal + "\n\n";
+    msgText += "Thank you for shopping with NOVA!";
 
-      // 4. വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
-      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-      msgText += "👤 Customer Details:\n";
-      msgText += "• Name: " + name + "\n";
-      msgText += "• Phone: " + phone + "\n\n";
-      msgText += "📍 Shipping Address:\n";
-      msgText += "• Address: " + address + "\n";
-      msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // 5. ഒഫീഷ്യൽ വാട്സാപ്പ് വെബ് കണ്ടിന്യൂ ലിങ്ക് നൽകുന്നു
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      // ⚠️ [BEST TRICK] ജാവാസ്ക്രിപ്റ്റ് വഴി താല്ക്കാലികമായി ഒരു ലിങ്ക് ഉണ്ടാക്കി ക്ലിക്ക് ചെയ്യിക്കുന്നു
-      // ഇത് ബ്രൗസറിനെ പറ്റിക്കുകയും 'about:blank' വരുന്നത് പൂർണ്ണമായി ഒഴിവാക്കുകയും ചെയ്യും
-      const tempLink = document.createElement('a');
-      tempLink.href = whatsappURL;
-      tempLink.target = '_blank';
-      document.body.appendChild(tempLink);
-      tempLink.click();
-      document.body.removeChild(tempLink);
-
-      // 6. ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് 1 സെക്കൻഡിന് ശേഷം കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
-      setTimeout(() => {
-        localStorage.clear();
-      }, 1000);
-    });
+    const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+    
+    // HTML-ലെ ആങ്കർ ടാഗിലേക്ക് ലിങ്ക് നേരിട്ട് നൽകുന്നു
+    const confirmBtn = document.getElementById('realConfirmBtn');
+    if (confirmBtn) {
+      confirmBtn.href = whatsappURL;
+    }
   }
+
+  // ആദ്യമേ ലിങ്ക് ഒന്ന് ജനറേറ്റ് ചെയ്തു വെക്കുന്നു
+  updateWhatsAppHref();
+
+  // 3. കസ്റ്റമർ ഇൻപുട്ടുകളിൽ ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോഴും ബാക്ക്ഗ്രൗണ്ടിൽ ലിങ്ക് മാറിമറിയും
+  const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
+  inputs.forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
+  });
+
+  // 4. ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യാൻ മാത്രം ജാവസ്ക്രിപ്റ്റ് ഉപയോഗിക്കുന്നു
+  document.getElementById('realConfirmBtn')?.addEventListener('click', () => {
+    setTimeout(() => {
+      localStorage.clear();
+    }, 1000);
+  });
 });
 </script>
+
 
 
 
