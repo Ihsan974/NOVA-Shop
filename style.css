@@ -150,13 +150,15 @@ img {
 }
 
 .btn-secondary {
-    border: 1px solid #c9c7c0;
-    color: var(--black);
+  border: 2px solid #111111; /* ബോർഡർ കട്ടി 2px ആക്കി, കറുപ്പ് നിറം നൽകി */
+  color: #111111;            /* അക്ഷരങ്ങൾക്ക് നല്ല കറുപ്പ് നിറം നൽകി */
+  background: transparent;
 }
 
+/* മൗസ് മുകളിൽ വെക്കുമ്പോൾ (Hover ചെയ്യുമ്പോൾ) ഭംഗി കൂട്ടാൻ ഇത് കൂടി ചേർക്കാം */
 .btn-secondary:hover {
-    background: white;
-    transform: translateY(-3px);
+  background-color: #111111;
+  color: #ffffff;
 }
 
 
