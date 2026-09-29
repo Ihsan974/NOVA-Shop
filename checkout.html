@@ -188,6 +188,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -201,10 +202,11 @@
       totalContainer.textContent = savedTotal;
     }
 
+    // 2. ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ബ്രൗസറിന് ഒരു ബ്ലോക്കും ചെയ്യാൻ പറ്റാത്ത സുരക്ഷിതമായ വഴി
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
-        e.preventDefault();
+        e.preventDefault(); // ഡിഫോൾട്ട് റീഫ്രഷിംഗ് തടയുന്നു
 
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
@@ -230,39 +232,10 @@
 
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); 
-
-        const popup = document.createElement('div');
-        popup.style.position = 'fixed';
-        popup.style.top = '50%';
-        popup.style.left = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.background = '#ffffff';
-        popup.style.padding = '30px';
-        popup.style.borderRadius = '12px';
-        popup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
-        popup.style.zIndex = '10000';
-        popup.style.textAlign = 'center';
-        popup.style.fontFamily = 'sans-serif';
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
         
-        // ഇവിടെ target="_self" എന്ന് നൽകി, ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ഇതേ ടാബിൽ തന്നെ ലിങ്ക് തുറക്കും
-        popup.innerHTML = `
-          <h3 style="margin-bottom: 15px; color: #111;">Order Details Saved!</h3>
-          <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Click the button below to send your order via WhatsApp.</p>
-          <a href="${whatsappURL}" target="_self" style="display: inline-block; background: #25D366; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px;">🚀 Send Order to WhatsApp</a>
-        `;
-        
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.background = 'rgba(0,0,0,0.4)';
-        overlay.style.zIndex = '9999';
-        
-        document.body.appendChild(overlay);
-        document.body.appendChild(popup);
+        // ബ്രൗസറിന്റെ എല്ലാ ബ്ലോക്കുകളും തകർക്കാൻ വിൻഡോ ഒബ്ജക്റ്റ് മാറ്റുന്നു
+        window.location.assign(whatsappURL);
       });
     }
   });
