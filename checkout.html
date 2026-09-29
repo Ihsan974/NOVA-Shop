@@ -73,34 +73,29 @@
       font-size: 18px;
       font-weight: 600;
     }
-    .btn-whatsapp-order {
-      display: block;
+    .btn-submit-order {
       width: 100%;
-      background: #25D366;
+      background: #111111;
       color: #ffffff;
       padding: 15px;
-      text-align: center;
-      text-decoration: none;
+      border: none;
       border-radius: 6px;
       font-size: 16px;
       font-weight: 600;
-      margin-top: 25px;
-      box-sizing: border-box;
-      border: none;
       cursor: pointer;
+      margin-top: 25px;
     }
-    .btn-whatsapp-order:hover {
-      background: #20ba5a;
+    .btn-submit-order:hover {
+      background: #333333;
     }
   </style>
 </head>
 <body>
 
-  <div class="checkout-container">
+  <div id="mainCheckoutContent" class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <!-- ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ വാട്സാപ്പ് ലിങ്ക് റെഡിയാകാൻ oninput നൽകി -->
-      <form id="checkoutForm" oninput="updateWhatsAppURL()">
+      <form id="checkoutForm">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="name" placeholder="John Doe" value="test" required>
@@ -146,54 +141,60 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- യഥാർത്ഥ പരിഹാരം: ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത ഡയറക്ട് ലിങ്ക് ടാഗ് -->
-      <a href="#" id="finalWhatsAppLink" target="_self" class="btn-whatsapp-order">Confirm & Send via WhatsApp</a>
+      <button type="submit" form="checkoutForm" class="btn-submit-order">Confirm Order</button>
     </div>
   </div>
 
   <script>
-    function updateWhatsAppURL() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
-      const city = document.getElementById('city').value;
-      const pincode = document.getElementById('pincode').value;
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-      const myWhatsAppNumber = "918921033257"; 
-
-      let msgText = "NEW ORDER RECEIVED!\n\n";
-      msgText += "Customer Details:\n";
-      msgText += "Name: " + name + "\n";
-      msgText += "Phone: " + phone + "\n\n";
-      msgText += "Shipping Address:\n";
-      msgText += "Address: " + address + "\n";
-      msgText += "City: " + city + " - " + pincode + "\n\n";
-      msgText += "Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // കമ്പ്യൂട്ടറിലും ഫോണിലും കോൺടാക്റ്റ് ലിസ്റ്റ് വരാതെ നേരിട്ട് നിങ്ങളുടെ ചാറ്റ് തുറക്കാനുള്ള 100% കൃത്യമായ യുആർഎൽ
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      const linkBtn = document.getElementById('finalWhatsAppLink');
-      if (linkBtn) {
-        linkBtn.href = whatsappURL;
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount');
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // പേജ് ആദ്യമായി ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ സെറ്റ് ചെയ്യുന്നു
-      updateWhatsAppURL();
+      const form = document.getElementById('checkoutForm');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault(); 
 
-      document.getElementById('finalWhatsAppLink').addEventListener('click', () => {
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      });
+          const name = document.getElementById('name').value;
+          const phone = document.getElementById('phone').value;
+          const address = document.getElementById('address').value;
+          const city = document.getElementById('city').value;
+          const pincode = document.getElementById('pincode').value;
+
+          let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+          msgText += "👤 Customer Details:\n";
+          msgText += "• Name: " + name + "\n";
+          msgText += "• Phone: " + phone + "\n\n";
+          msgText += "📍 Shipping Address:\n";
+          msgText += "• Address: " + address + "\n";
+          msgText += "• City: " + city + " - " + pincode + "\n\n";
+          msgText += "💰 Total Amount: " + savedTotal + "\n\n";
+          msgText += "Thank you for shopping with NOVA!";
+
+          const whatsappURL = "https://whatsapp.com" + encodeURIComponent(msgText);
+          
+          localStorage.clear(); 
+
+          // യഥാർത്ഥ പരിഹാരം: ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ സ്ക്രീനിൽ ഡാറ്റ കാണിക്കുന്നു
+          document.body.innerHTML = `
+            <div style="max-width: 550px; margin: 80px auto; padding: 40px 30px; background: #ffffff; text-align: center; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.08); font-family: -apple-system, sans-serif; box-sizing: border-box;">
+              <div style="font-size: 50px; color: #25D366; margin-bottom: 20px;">🎉</div>
+              <h2 style="font-size: 24px; margin-bottom: 10px; color: #111111;">Order Details Saved!</h2>
+              <p style="color: #666666; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Please copy the order text below and send it to our official WhatsApp number: <strong>+91 89210 33257</strong></p>
+              
+              <textarea readonly style="width: 100%; height: 160px; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; font-size: 13px; background: #fafafa; resize: none; box-sizing: border-box; margin-bottom: 20px;">${msgText}</textarea>
+              
+              <a href="${whatsappURL}" target="_blank" style="display: block; background: #25D366; color: #ffffff; padding: 15px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 16px; margin-bottom: 15px;">
+                🚀 Try Opening WhatsApp Automatically
+              </a>
+              <a href="index.html" style="display: inline-block; color: #111111; text-decoration: underline; font-size: 14px;">Back to Home</a>
+            </div>
+          `;
+        });
+      }
     });
   </script>
 </body>
