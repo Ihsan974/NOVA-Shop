@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout | NOVA</title>
     <style>
+        /* നിങ്ങളുടെ വെബ്‌സൈറ്റിലെ ഡിസൈൻ അനുസരിച്ചുള്ള സ്റ്റൈൽ */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -51,7 +52,7 @@
             margin: 20px 0;
             font-size: 16px;
         }
-        /* കൺഫേം ഓർഡർ ബട്ടൺ സ്റ്റൈൽ */
+        /* ✅ ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത സുരക്ഷിതമായ HTML Anchor Link */
         .confirm-btn {
             display: block;
             width: 100%;
@@ -59,12 +60,11 @@
             background-color: #1c1c1c;
             color: white;
             text-align: center;
-            border: none;
+            text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             font-size: 15px;
             box-sizing: border-box;
-            cursor: pointer;
             transition: background 0.2s;
         }
         .confirm-btn:hover { background-color: #333; }
@@ -72,72 +72,64 @@
 </head>
 <body>
 
-<!-- ✅ ജാവാസ്ക്രിപ്റ്റ് ഇല്ലാതെ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാത്ത ഒഫീഷ്യൽ വാട്സാപ്പ് ഫോം ആക്ഷൻ -->
-<form action="https://whatsapp.com" method="get" target="_blank">
-    
-    <!-- നിങ്ങളുടെ വാട്സാപ്പ് നമ്പറും ഡിഫോൾട്ട് മെസ്സേജും ഇതിലൂടെ വാട്സാപ്പിലേക്ക് പോകും -->
-    <input type="hidden" name="phone" value="918921033257">
-    <input type="hidden" name="text" value="📦 NEW ORDER RECEIVED! Please check my shipping details.">
+<div class="checkout-wrapper">
+    <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാനുള്ള ഇൻപുട്ടുകൾ -->
+    <div class="container-box">
+        <h2>Shipping Details</h2>
+        
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Enter full name">
+        </div>
 
-    <div class="checkout-wrapper">
-        <!-- ഇടത് വശം: കസ്റ്റമർ വിവരങ്ങൾ -->
-        <div class="container-box">
-            <h2>Shipping Details</h2>
-            
+        <div class="form-row">
             <div class="form-group">
-                <label>Full Name</label>
-                <!-- കസ്റ്റമർ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ ലിങ്കിൽ വരാൻ name ഫീൽഡുകൾ ഉപയോഗിക്കുന്നു -->
-                <input type="text" name="name" placeholder="Enter full name" required>
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="Enter email address">
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" name="email" placeholder="Enter email address" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" name="phone_number" placeholder="Enter phone number" required>
-                </div>
-            </div>
-
             <div class="form-group">
-                <label>Delivery Address</label>
-                <input type="text" name="address" placeholder="Enter delivery address" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>City</label>
-                    <input type="text" name="city" placeholder="City" required>
-                </div>
-                <div class="form-group">
-                    <label>Pincode</label>
-                    <input type="text" name="pincode" placeholder="0000" required>
-                </div>
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter phone number">
             </div>
         </div>
 
-        <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
-        <div class="summary-box">
-            <h2>Order Summary</h2>
-            
-            <div id="checkoutItemsList"></div>
-            
-            <div class="total-section">
-                <span>Total Amount</span>
-                <span id="checkoutTotal">₹0</span>
-            </div>
+        <div class="form-group">
+            <label>Delivery Address</label>
+            <input type="text" id="address" placeholder="Enter delivery address">
+        </div>
 
-            <!-- ✅ സാധാരണ സബ്മിറ്റ് ബട്ടൺ (ഇത് ക്ലിക്ക് ചെയ്യുമ്പോൾ നേരിട്ട് വാട്സാപ്പ് വെബ്ബിലേക്ക് പൊയ്ക്കോളും) -->
-            <button type="submit" class="confirm-btn">Confirm Order</button>
+        <div class="form-row">
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" id="city" placeholder="City">
+            </div>
+            <div class="form-group">
+                <label>Pincode</label>
+                <input type="text" id="pincode" placeholder="0000">
+            </div>
         </div>
     </div>
-</form>
+
+    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+    <div class="summary-box">
+        <h2>Order Summary</h2>
+        
+        <!-- കാർട്ടിലെ സാധനങ്ങൾ കാണിക്കാൻ -->
+        <div id="checkoutItemsList"></div>
+        
+        <div class="total-section">
+            <span>Total Amount</span>
+            <span id="checkoutTotal">₹0</span>
+        </div>
+
+        <!-- ✅ ഇതിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ നേരിട്ട് ://whatsapp.com ഓപ്പൺ ആകും -->
+        <a href="#" id="realConfirmBtn" target="_blank" class="confirm-btn">Confirm Order</a>
+    </div>
+</div>
 
 <script>
-// പേജ് ലോഡ് ചെയ്യുമ്പോൾ ലോക്കൽ സ്റ്റോറേജിലുള്ള തുക മാത്രം കാണിക്കാൻ ഈ ചെറിയ സ്ക്രിപ്റ്റ് ഉപയോഗിക്കാം
 document.addEventListener('DOMContentLoaded', () => {
+  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -147,6 +139,54 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
+
+  // 2. ://whatsapp.com ലിങ്ക് തത്സമയം ഉണ്ടാക്കാനുള്ള ഫങ്ക്ഷൻ
+  function updateWhatsAppHref() {
+    const name = document.getElementById('name')?.value || "Not Provided";
+    const phone = document.getElementById('phone')?.value || "Not Provided";
+    const address = document.getElementById('address')?.value || "Not Provided";
+    const city = document.getElementById('city')?.value || "Not Provided";
+    const pincode = document.getElementById('pincode')?.value || "Not Provided";
+    const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+
+    const myWhatsAppNumber = "918921033257"; 
+
+    // വാട്സാപ്പിൽ കാണിക്കേണ്ട ഒഫീഷ്യൽ ഓർഡർ മെസ്സേജ് ഫോർമാറ്റ്
+    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+    msgText += "👤 Customer Details:\n";
+    msgText += "• Name: " + name + "\n";
+    msgText += "• Phone: " + phone + "\n\n";
+    msgText += "📍 Shipping Address:\n";
+    msgText += "• Address: " + address + "\n";
+    msgText += "• City: " + city + " - " + pincode + "\n\n";
+    msgText += "💰 Total Amount: " + currentTotal + "\n\n";
+    msgText += "Thank you for shopping with NOVA!";
+
+    // ✅ നിങ്ങൾ ആവശ്യപ്പെട്ട കൃത്യമായ ://whatsapp.com ഒഫീഷ്യൽ ലിങ്ക് ഫോർമാറ്റ്
+    const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+    
+    // HTML-ലെ ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
+    const confirmBtn = document.getElementById('realConfirmBtn');
+    if (confirmBtn) {
+      confirmBtn.href = whatsappURL;
+    }
+  }
+
+  // കൗണ്ടർ ആദ്യം ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് റെഡിയാക്കുന്നു
+  updateWhatsAppHref();
+
+  // 3. കസ്റ്റമർ ഓരോ ഇൻപുട്ടിലും ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോൾ ലിങ്കിലെ വിവരങ്ങൾ തത്സമയം അപ്ഡേറ്റ് ആകും
+  const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
+  inputs.forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
+  });
+
+  // 4. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യാൻ
+  document.getElementById('realConfirmBtn')?.addEventListener('click', () => {
+    setTimeout(() => {
+      localStorage.clear();
+    }, 1500); // ലിങ്ക് പുതിയ ടാബിൽ തുറന്നതിനു ശേഷം മാത്രം കാർട്ട് ക്ലിയർ ചെയ്യും
+  });
 });
 </script>
 
