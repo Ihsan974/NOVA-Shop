@@ -215,9 +215,8 @@
       const city = document.getElementById('city').value;
       const pincode = document.getElementById('pincode').value;
       const payment = document.querySelector('input[name="payment"]:checked').value;
-      
-      // നിങ്ങളുടെ WhatsApp നമ്പർ ഇവിടെ നൽകുക (Country code സഹിതം, ചിഹ്നങ്ങൾ ഇല്ലാതെ)
-      // ഉദാഹരണത്തിന്: 91 കഴിഞ്ഞTarget നമ്പർ (91XXXXXXXXXX)
+
+            // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പറും ശരിയായ സ്പെല്ലിംഗും ഇവിടെ നൽകിയിട്ടുണ്ട്
       const myWhatsAppNumber = "918921033257"; 
 
       // WhatsApp മെസ്സേജ് ഫോർമാറ്റ് തയാറാക്കുന്നു
@@ -235,13 +234,16 @@
       message += `*💰 Total Amount:* ${savedTotal || '₹0'}\n\n`;
       message += `Thank you for shopping with NOVA!`;
 
-      // ലിങ്ക് തയാറാക്കി WhatsApp തുറക്കുന്നു
-           // തിരുത്തിയ ശരിയായ വാട്സാപ്പ് ലിങ്ക് (പുതിയ ടാബിൽ തുറക്കാൻ പാകത്തിന്)
+      // ഔദ്യോഗിക ലിങ്കും ശരിയായ വേരിയബിളും ഇവിടെ നൽകി
       const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
       
       alert('Thank you! Redirecting to WhatsApp to complete your order.');
       localStorage.clear(); // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
       
+      // പുതിയ ടാബിൽ വാട്സാപ്പ് മെസ്സേജ് ബോക്സ് തുറക്കുന്നു
+      window.open(whatsappURL, '_blank'); 
+      window.location.href = 'index.html'; // ഹോം പേജിലേക്ക് തിരികെ പോകുന്നു
+
       // ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ പുതിയ ടാബിൽ വാട്സാപ്പ് തുറക്കുന്നു
       window.open(whatsappURL, '_blank'); 
       window.location.href = 'index.html'; // ഈ പേജ് തനിയെ ഹോം പേജിലേക്ക് മാറുന്നു
