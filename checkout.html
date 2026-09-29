@@ -73,8 +73,8 @@
       font-size: 18px;
       font-weight: 600;
     }
-    /* പ്രധാന മാറ്റം: ഇതൊരു സാധാരണ സുരക്ഷിതമായ ലിങ്ക് ബട്ടൺ ആണ് */
-    .btn-whatsapp-order {
+    /* ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത സാധാരണ ലിങ്ക് സ്റ്റൈൽ */
+    .btn-whatsapp-link {
       display: block;
       width: 100%;
       background: #25D366;
@@ -88,7 +88,7 @@
       margin-top: 25px;
       box-sizing: border-box;
     }
-    .btn-whatsapp-order:hover {
+    .btn-whatsapp-link:hover {
       background: #20ba5a;
     }
   </style>
@@ -98,7 +98,7 @@
   <div class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <form id="checkoutForm" oninput="updateWhatsAppLink()">
+      <form id="checkoutForm" oninput="generateOrderLink()">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="name" placeholder="John Doe" value="test">
@@ -144,13 +144,15 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- യഥാർത്ഥ പരിഹാരം: ജാവാസ്ക്രിപ്റ്റ് റീഡയറക്ഷൻ ഒഴിവാക്കി നേരിട്ടുള്ള നോർമൽ ബട്ടൺ ലിങ്ക് -->
-      <a href="#" id="waOrderBtn" class="btn-whatsapp-order">🚀 Confirm & Send via WhatsApp</a>
+      <!-- പ്രധാന മാറ്റം: ഇവിടെ നമ്മൾ ജാവാസ്ക്രിപ്റ്റ് വഴി വിൻഡോ മാറ്റുന്നില്ല, നേരിട്ടുള്ള ലിങ്ക് ആണ് -->
+      <a href="#" id="realWhatsAppBtn" target="_self" class="btn-whatsapp-link">
+        Confirm & Send via WhatsApp
+      </a>
     </div>
   </div>
 
   <script>
-    function updateWhatsAppLink() {
+    function generateOrderLink() {
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
       const address = document.getElementById('address').value;
@@ -170,11 +172,12 @@
       msgText += "Total Amount: " + savedTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
+      // ഔദ്യോഗിക സുരക്ഷിതമായ പൂർണ്ണമായ ലിങ്ക് ഫോർമാറ്റ്
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      const waBtn = document.getElementById('waOrderBtn');
-      if (waBtn) {
-        waBtn.href = whatsappURL;
+      const linkBtn = document.getElementById('realWhatsAppBtn');
+      if (linkBtn) {
+        linkBtn.href = whatsappURL;
       }
     }
 
@@ -185,10 +188,11 @@
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      updateWhatsAppLink();
+      // ആദ്യ തവണ ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ഉണ്ടാക്കുന്നു
+      generateOrderLink();
 
-      document.getElementById('waOrderBtn').addEventListener('click', () => {
-        localStorage.clear(); // ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      document.getElementById('realWhatsAppBtn').addEventListener('click', () => {
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
       });
     });
   </script>
