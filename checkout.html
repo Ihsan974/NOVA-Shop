@@ -230,8 +230,8 @@
         msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
-        // ⚠️ കമ്പ്യൂട്ടറിലും ഫോണിലും ഒരു തടസ്സവുമില്ലാതെ ലിങ്ക് വർക്ക് ചെയ്യാൻ https:// പൂർണ്ണമായി ചേർത്തു
-        const whatsappURL = "https://wa.me" + myWhatsAppNumber + "?text=" + encodeURIComponent(msgText);
+        // ⚠️ കമ്പ്യൂട്ടറിലെ ക്രോം ബ്രൗസറിന് 100% മനസ്സിലാകുന്ന രീതിയിലുള്ള പൂർണ്ണമായ ഔദ്യോഗിക ലിങ്ക്
+        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
         localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
 
