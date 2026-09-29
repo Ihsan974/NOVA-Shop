@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | NOVA</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #111111;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .checkout-container {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 40px;
+    }
+    @media (max-width: 768px) {
+      .checkout-container { grid-template-columns: 1fr; margin: 20px auto; }
+    }
+    .checkout-section {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    }
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #444;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #111111;
+      outline: none;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .order-summary-box {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      height: fit-content;
+    }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .btn-place-order {
+      width: 100%;
+      background: #111111;
+      color: #ffffff;
+      padding: 15px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: background 0.2s;
+    }
+    .btn-place-order:hover {
+      background: #333333;
+    }
+    .payment-options label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .payment-options input:checked + span {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="checkout-container">
+    <!-- ഇടത് വശം: ഷിപ്പിംഗ് ഫോം -->
+    <div class="checkout-section">
+      <h2>Shipping Details</h2>
+      <form id="checkoutForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required placeholder="John Doe">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" required placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required placeholder="9876543210">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+          <input type="text" id="address" required placeholder="House Name, Street Address">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" required placeholder="Kochi">
+          </div>
+          <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" required placeholder="682001">
+          </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">Payment Method</h2>
+        <div class="payment-options">
+          <label>
+            <input type="radio" name="payment" value="COD" checked>
+            <span>Cash on Delivery (COD)</span>
+          </label>
+          <label>
+            <input type="radio" name="payment" value="UPI">
+            <span>UPI / Cards (Pay Online)</span>
+          </label>
+        </div>
+      </form>
+    </div>
+
+    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+    <div class="order-summary-box">
+      <h2>Order Summary</h2>
+      <div id="checkoutItemsList">
+        <!-- കാർട്ടിലെ സാധനങ്ങൾ ഇവിടെ ജാവാസ്ക്രിപ്റ്റ് വഴി വരും -->
+        <p style="color: #666; font-size: 14px;">Reviewing your items...</p>
+      </div>
+      
+      <div class="summary-total">
+        <span>Total Amount</span>
+        <span id="checkoutTotal">₹0</span>
+      </div>
+
+      <button type="submit" form="checkoutForm" class="btn-place-order">Confirm Order</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ആദ്യത്തെ പേജിലെ കാർട്ടിൽ നിന്ന് വിവരങ്ങൾ തനിയെ എടുക്കാനുള്ള ഒരു ലളിതമായ സിസ്റ്റം അടുത്ത സ്റ്റെപ്പിൽ ചെയ്യാം.
+      // തൽക്കാലം ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ ഒരു കൺഫർമേഷൻ കാണിക്കാൻ:
+      const form = document.getElementById('checkoutForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Thank you! Your order has been placed successfully.');
+        window.location.href = 'index.html'; // തിരികെ ഹോം പേജിലേക്ക് പോകാൻ
+      });
+    });
+  </script>
+</body>
+</html>
 
