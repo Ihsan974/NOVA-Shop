@@ -153,7 +153,7 @@
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
+  // പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -163,46 +163,43 @@ document.addEventListener('DOMContentLoaded', () => {
   if (savedTotal && document.getElementById('checkoutTotal')) {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
-
-  // 2. 'Confirm Order' ബട്ടൺ കണ്ടെത്തി അതിലേക്ക് ക്ലിക്ക് ഇവന്റ് നൽകുന്നു
-  const confirmBtn = document.getElementById('realConfirmBtn');
-  if (confirmBtn) {
-    confirmBtn.addEventListener('click', (event) => {
-      // ⚠️ ഫോം സബ്‌മിറ്റ് ആയി പേജ് റീഫ്രഷ് ആകുന്നത് പൂർണ്ണമായി തടയുന്നു
-      event.preventDefault();
-
-      // 3. കസ്റ്റമർ ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ തത്സമയം എടുക്കുന്നു
-      const name = document.getElementById('name')?.value || "Not Provided";
-      const phone = document.getElementById('phone')?.value || "Not Provided";
-      const address = document.getElementById('address')?.value || "Not Provided";
-      const city = document.getElementById('city')?.value || "Not Provided";
-      const pincode = document.getElementById('pincode')?.value || "Not Provided";
-      const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
-
-      const myWhatsAppNumber = "918921033257"; 
-
-      // 4. വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
-      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-      msgText += "👤 Customer Details:\n";
-      msgText += "• Name: " + name + "\n";
-      msgText += "• Phone: " + phone + "\n\n";
-      msgText += "📍 Shipping Address:\n";
-      msgText += "• Address: " + address + "\n";
-      msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
-
-      // 5. ഒഫീഷ്യൽ വാട്സാപ്പ് കണ്ടിന്യൂ ലിങ്ക് നൽകുന്നു
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      // 6. ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
-      localStorage.clear();
-
-      // ⚠️ [FIX] പുതിയ ടാബിൽ തുറക്കാതെ അതേ ടാബിൽ തന്നെ തുറക്കുന്നു. ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല!
-      window.location.href = whatsappURL;
-    });
-  }
 });
+
+// ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ ഈ ഫങ്ക്ഷൻ നേരിട്ട് റൺ ആകും
+function sendOrderToWhatsApp() {
+  // നിങ്ങളുടെ ഇൻപുട്ട് ഫീൽഡുകളിലെ വാല്യൂസ് എടുക്കുന്നു
+  // (ശ്രദ്ധിക്കുക: HTML-ൽ ഇൻപുട്ടുകൾക്ക് id="name", id="phone" ഒക്കെ ഉണ്ടായിരിക്കണം)
+  const name = document.getElementById('name')?.value || "Not Provided";
+  const phone = document.getElementById('phone')?.value || "Not Provided";
+  const address = document.getElementById('address')?.value || "Not Provided";
+  const city = document.getElementById('city')?.value || "Not Provided";
+  const pincode = document.getElementById('pincode')?.value || "Not Provided";
+  
+  // ലോക്കൽ സ്റ്റോറേജിൽ നിന്ന് ടോട്ടൽ എമൗണ്ട് എടുക്കുന്നു
+  const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+
+  const myWhatsAppNumber = "918921033257"; 
+
+  // വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
+  let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+  msgText += "👤 Customer Details:\n";
+  msgText += "• Name: " + name + "\n";
+  msgText += "• Phone: " + phone + "\n\n";
+  msgText += "📍 Shipping Address:\n";
+  msgText += "• Address: " + address + "\n";
+  msgText += "• City: " + city + " - " + pincode + "\n\n";
+  msgText += "💰 Total Amount: " + currentTotal + "\n\n";
+  msgText += "Thank you for shopping with NOVA!";
+
+  // ഒഫീഷ്യൽ വാട്സാപ്പ് കണ്ടിന്യൂ ലിങ്ക് നൽകുന്നു
+  const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+  
+  // ഓർഡർ അയക്കുന്നതുകൊണ്ട് കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+  localStorage.clear();
+
+  // അതേ വിൻഡോയിൽ തന്നെ വാട്സാപ്പ് ഒഫീഷ്യൽ പേജ് ലോഡ് ചെയ്യിക്കുന്നു (ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
+  window.location.href = whatsappURL;
+}
 </script>
 
 
