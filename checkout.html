@@ -152,9 +152,9 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
+    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
-    const savedTotal = localStorage.getItem('cartTotalAmount');
+    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
     const itemsContainer = document.getElementById('checkoutItemsList');
     const totalContainer = document.getElementById('checkoutTotal');
@@ -166,43 +166,46 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // 2. ബ്രൗസറിന് ഒട്ടും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത അൾട്ടിമേറ്റ് ഫോം ആക്ഷൻ സിസ്റ്റം
-    const form = document.getElementById('checkoutForm');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        // ശ്രദ്ധിക്കുക: നമ്മൾ ഇവിടെ e.preventDefault() കൊടുക്കുന്നില്ല! ഫോം ഡിഫോൾട്ട് ആയി സബ്മിറ്റ് ആകണം.
+    // 2. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ നേരിട്ട് വാട്സാപ്പ് തുറക്കാനുള്ള ഫങ്ക്ഷൻ
+    const waBtn = document.getElementById('waDirectBtn');
+    if (waBtn) {
+      waBtn.addEventListener('click', (e) => {
+        // ഡമ്മി ഹാഷ് ലിങ്ക് (#) ഉള്ളത് കൊണ്ട് പേജ് മുകളിലേക്ക് ചാടുന്നത് തടയാൻ
+        e.preventDefault(); 
 
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
-        
+        // ഫോമിൽ നിന്ന് കസ്റ്റമർ വിവരങ്ങൾ കൃത്യമായി എടുക്കുന്നു
+        const name = document.getElementById('name').value || "Not Provided";
+        const phone = document.getElementById('phone').value || "Not Provided";
+        const address = document.getElementById('address').value || "Not Provided";
+        const city = document.getElementById('city').value || "Not Provided";
+        const pincode = document.getElementById('pincode').value || "Not Provided";
+
         const myWhatsAppNumber = "918921033257"; 
 
+        // മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
         let msgText = "NEW ORDER RECEIVED!\n\n";
         msgText += "Customer Details:\n";
         msgText += "Name: " + name + "\n";
         msgText += "Phone: " + phone + "\n\n";
-        
         msgText += "Shipping Address:\n";
         msgText += "Address: " + address + "\n";
         msgText += "City: " + city + " - " + pincode + "\n\n";
-        
-        msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
+        msgText += "Total Amount: " + savedTotal + "\n\n";
         msgText += "Thank you for shopping with NOVA!";
 
+        // പൂർണ്ണമായ ഔദ്യോഗിക വാട്സാപ്പ് ലിങ്ക് ഉണ്ടാക്കുന്നു
         const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-        
-        // ജാവാസ്ക്രിപ്റ്റ് വഴി മാറാതെ, ഫോമിന്റെ ആക്ഷൻ ലിങ്ക് വാട്സാപ്പ് ലിങ്ക് ആക്കി മാറ്റുന്നു!
-        form.action = whatsappURL;
-        form.method = "POST"; // അല്ലെങ്കിൽ ഗെറ്റ് രീതി ഒഴിവാക്കാൻ
+        // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+        localStorage.clear(); 
+
+        // ബ്രൗസറിന് ഒരു ബ്ലോക്കും തരാൻ പറ്റാത്ത രീതിയിൽ ഇതേ വിൻഡോയിൽ വാട്സാപ്പ് ഓപ്പൺ ആക്കുന്നു
+        window.location.href = whatsappURL;
       });
     }
   });
 </script>
+
 
 </body>
 </html>
