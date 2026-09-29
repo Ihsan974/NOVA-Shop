@@ -5,67 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout | NOVA</title>
     <style>
-        /* ചെക്കൗട്ട് പേജിന്റെ ലളിതമായ സിഎസ്എസ് ഡിസൈൻ */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-        .checkout-wrapper {
-            display: flex;
-            max-width: 1000px;
-            margin: 0 auto;
-            gap: 20px;
-        }
-        .container-box {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            flex: 1;
-        }
-        .summary-box {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            width: 320px;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; }
+        .checkout-wrapper { display: flex; max-width: 1000px; margin: 0 auto; gap: 20px; }
+        .container-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex: 1; }
+        .summary-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 320px; }
         h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-row { display: flex; gap: 15px; }
         .form-row .form-group { flex: 1; }
         label { display: block; margin-bottom: 5px; font-size: 13px; color: #555; }
-        input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        .total-section {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            margin: 20px 0;
-            font-size: 16px;
-        }
-        /* ✅ ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത സുരക്ഷിതമായ ആങ്കർ ടാഗ് ബട്ടൺ സ്റ്റൈൽ */
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .total-section { display: flex; justify-content: space-between; font-weight: bold; margin: 20px 0; font-size: 16px; }
         .confirm-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background-color: #1c1c1c;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 15px;
-            box-sizing: border-box;
-            transition: background 0.2s;
+            display: block; width: 100%; padding: 14px; background-color: #1c1c1c; color: white;
+            text-align: center; text-decoration: none; border-radius: 5px; font-weight: bold;
+            font-size: 15px; box-sizing: border-box; border: none; cursor: pointer; transition: background 0.2s;
         }
         .confirm-btn:hover { background-color: #333; }
     </style>
@@ -73,15 +27,13 @@
 <body>
 
 <div class="checkout-wrapper">
-    <!-- ഇടത് വശം: കസ്റ്റമർ ഷിപ്പിംഗ് വിവരങ്ങൾ -->
+    <!-- കസ്റ്റമർ വിവരങ്ങൾ ടൈപ്പ് ചെയ്യാനുള്ള ഇൻപുട്ടുകൾ -->
     <div class="container-box">
         <h2>Shipping Details</h2>
-        
         <div class="form-group">
             <label>Full Name</label>
             <input type="text" id="name" placeholder="Enter full name">
         </div>
-
         <div class="form-row">
             <div class="form-group">
                 <label>Email Address</label>
@@ -92,12 +44,10 @@
                 <input type="tel" id="phone" placeholder="Enter phone number">
             </div>
         </div>
-
         <div class="form-group">
             <label>Delivery Address</label>
             <input type="text" id="address" placeholder="Enter delivery address">
         </div>
-
         <div class="form-row">
             <div class="form-group">
                 <label>City</label>
@@ -110,26 +60,22 @@
         </div>
     </div>
 
-    <!-- വലത് വശം: ഓർഡർ വിവരങ്ങൾ -->
+    <!-- ഓർഡർ വിവരങ്ങൾ -->
     <div class="summary-box">
         <h2>Order Summary</h2>
-        
-        <!-- കാർട്ടിലെ ഐറ്റംസ് ലിസ്റ്റ് കാണിക്കാൻ -->
         <div id="checkoutItemsList"></div>
-        
         <div class="total-section">
             <span>Total Amount</span>
             <span id="checkoutTotal">₹0</span>
         </div>
-
-        <!-- ✅ ജാവാസ്ക്രിപ്റ്റ് തകരാറിലായാലും അതേ പേജിൽ നേരിട്ട് ://whatsapp.com കൃത്യമായി തുറക്കുന്ന ബട്ടൺ ലിങ്ക് -->
-        <a href="#" id="realConfirmBtn" class="confirm-btn">Confirm Order</a>
+        <!-- ✅ type="button" നൽകിയതു കൊണ്ട് ഫോം തനിയെ റീഫ്രഷ് ആകില്ല -->
+        <button type="button" id="realConfirmBtn" class="confirm-btn">Confirm Order</button>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. ലോക്കൽ സ്റ്റോറേജിലുള്ള സാധനങ്ങളും ടോട്ടൽ തുകയും പേജിൽ കാണിക്കുന്നു
+  // LocalStorage-ൽ നിന്നുള്ള വിവരങ്ങൾ കാണിക്കുന്നു
   const savedItems = localStorage.getItem('cartItemsHTML');
   const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -140,53 +86,39 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkoutTotal').textContent = savedTotal;
   }
 
-  // 2. കസ്റ്റമർ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ എടുത്ത് വാട്സാപ്പ് ലിങ്ക് മാറ്റുന്ന ഫങ്ക്ഷൻ
-  function updateWhatsAppHref() {
-    const name = document.getElementById('name')?.value || "Not Provided";
-    const phone = document.getElementById('phone')?.value || "Not Provided";
-    const address = document.getElementById('address')?.value || "Not Provided";
-    const city = document.getElementById('city')?.value || "Not Provided";
-    const pincode = document.getElementById('pincode')?.value || "Not Provided";
-    const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ വിവരങ്ങൾ ശേഖരിച്ച് വാട്സാപ്പിലേക്ക് പോകും
+  const confirmBtn = document.getElementById('realConfirmBtn');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', () => {
+      
+      const name = document.getElementById('name')?.value || "Not Provided";
+      const phone = document.getElementById('phone')?.value || "Not Provided";
+      const address = document.getElementById('address')?.value || "Not Provided";
+      const city = document.getElementById('city')?.value || "Not Provided";
+      const pincode = document.getElementById('pincode')?.value || "Not Provided";
+      const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    const myWhatsAppNumber = "918921033257"; 
+      const myWhatsAppNumber = "918921033257"; 
 
-    // വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ്
-    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-    msgText += "👤 Customer Details:\n";
-    msgText += "• Name: " + name + "\n";
-    msgText += "• Phone: " + phone + "\n\n";
-    msgText += "📍 Shipping Address:\n";
-    msgText += "• Address: " + address + "\n";
-    msgText += "• City: " + city + " - " + pincode + "\n\n";
-    msgText += "💰 Total Amount: " + currentTotal + "\n\n";
-    msgText += "Thank you for shopping with NOVA!";
+      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+      msgText += "👤 Customer Details:\n";
+      msgText += "• Name: " + name + "\n";
+      msgText += "• Phone: " + phone + "\n\n";
+      msgText += "📍 Shipping Address:\n";
+      msgText += "• Address: " + address + "\n";
+      msgText += "• City: " + city + " - " + pincode + "\n\n";
+      msgText += "💰 Total Amount: " + currentTotal + "\n\n";
+      msgText += "Thank you for shopping with NOVA!";
 
-    // ✅ നിങ്ങൾ ആവശ്യപ്പെട്ട ഒഫീഷ്യൽ ://whatsapp.com ലിങ്ക് (അതേ ടാബിൽ തുറക്കാനുള്ള ഫോർമാറ്റ്)
-    const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-    
-    // HTML ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
-    const confirmLink = document.getElementById('realConfirmBtn');
-    if (confirmLink) {
-      confirmLink.href = whatsappURL;
-    }
+      // ✅ ഒഫീഷ്യൽ ://whatsapp.com ലിങ്ക്
+      const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      
+      localStorage.clear();
+
+      // ⚠️ [FINAL FIX] അതേ ടാബിൽ തന്നെ തുറക്കുന്നു. ഇത് ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യില്ല!
+      window.location.href = whatsappURL;
+    });
   }
-
-  // കസ്റ്റമർ പേജ് തുറക്കുമ്പോൾ തന്നെ ആദ്യ ലിങ്ക് റെഡിയാക്കുന്നു
-  updateWhatsAppHref();
-
-  // 3. കസ്റ്റമർ ഓരോ ഇൻപുട്ടിലും ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോൾ ലിങ്ക് തത്സമയം അപ്ഡേറ്റ് ആകും
-  const inputs = ['name', 'phone', 'address', 'city', 'pincode'];
-  inputs.forEach(id => {
-    document.getElementById(id)?.addEventListener('input', updateWhatsAppHref);
-  });
-
-  // 4. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യാൻ
-  document.getElementById('realConfirmBtn')?.addEventListener('click', () => {
-    setTimeout(() => {
-      localStorage.clear(); 
-    }, 1000);
-  });
 });
 </script>
 
