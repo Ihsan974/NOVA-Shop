@@ -152,21 +152,39 @@
   </div>
 
   <script>
-    // ഇൻപുട്ടിലെ വിവരങ്ങൾ എടുത്ത് വാട്സാപ്പ് ലിങ്ക് ഉണ്ടാക്കുന്ന ഫങ്ക്ഷൻ
-    function generateWhatsAppApiLink() {
-      // HTML-ലെ ഐഡികൾ ഉപയോഗിച്ച് വാല്യൂസ് എടുക്കുന്നു (ഇല്ലെങ്കിൽ 'Not Provided')
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ ചെക്കൗട്ടിൽ കാണിക്കുന്നു
+  const savedItems = localStorage.getItem('cartItemsHTML');
+  const savedTotal = localStorage.getItem('cartTotalAmount');
+
+  if (savedItems && document.getElementById('checkoutItemsList')) {
+    document.getElementById('checkoutItemsList').innerHTML = savedItems;
+  }
+  if (savedTotal && document.getElementById('checkoutTotal')) {
+    document.getElementById('checkoutTotal').textContent = savedTotal;
+  }
+
+  // 2. 'Confirm Order' ബട്ടൺ കണ്ടെത്തി അതിലേക്ക് ക്ലിക്ക് ഇവന്റ് നൽകുന്നു
+  const confirmBtn = document.getElementById('realConfirmBtn');
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', (event) => {
+      // ഫോം സബ്‌മിറ്റ് ആയി പേജ് ഓട്ടോമാറ്റിക് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
+      event.preventDefault();
+
+      // ⚠️ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ക്ലിക്ക് ചെയ്ത ഉടനെ ഒരു ബ്ലാങ്ക് ടാബ് തുറക്കുന്നു
+      const whatsappTab = window.open('about:blank', '_blank');
+
+      // 3. കസ്റ്റമർ ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ തത്സമയം എടുക്കുന്നു
       const name = document.getElementById('name')?.value || "Not Provided";
       const phone = document.getElementById('phone')?.value || "Not Provided";
       const address = document.getElementById('address')?.value || "Not Provided";
       const city = document.getElementById('city')?.value || "Not Provided";
       const pincode = document.getElementById('pincode')?.value || "Not Provided";
-      
-      // ലോക്കൽ സ്റ്റോറേജിൽ നിന്നും ടോട്ടൽ എമൗണ്ട് എടുക്കുന്നു
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+      const currentTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
       const myWhatsAppNumber = "918921033257"; 
 
-      // വാട്സാപ്പിൽ വരേണ്ട മെസ്സേജ് ഫോർമാറ്റ്
+      // 4. വാട്സാപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
       let msgText = "📦 NEW ORDER RECEIVED!\n\n";
       msgText += "👤 Customer Details:\n";
       msgText += "• Name: " + name + "\n";
@@ -174,54 +192,24 @@
       msgText += "📍 Shipping Address:\n";
       msgText += "• Address: " + address + "\n";
       msgText += "• City: " + city + " - " + pincode + "\n\n";
-      msgText += "💰 Total Amount: " + savedTotal + "\n\n";
+      msgText += "💰 Total Amount: " + currentTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
-      // ✅ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാത്ത കൃത്യമായ ഒഫീഷ്യൽ വാട്സാപ്പ് എപിഐ ലിങ്ക്
+      // 5. ഒഫീഷ്യൽ വാട്സാപ്പ് വെബ് കണ്ടിന്യൂ ലിങ്ക് നൽകുന്നു
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      // HTML ബട്ടണിലേക്ക് ഈ ലിങ്ക് നേരിട്ട് കയറ്റുന്നു
-      const confirmLink = document.getElementById('realConfirmBtn');
-      if (confirmLink) {
-        confirmLink.href = whatsappURL;
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ടിലെ വിവരങ്ങൾ കാണിക്കുന്നു
-      const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount');
-
-      if (savedItems && document.getElementById('checkoutItemsList')) {
-        document.getElementById('checkoutItemsList').innerHTML = savedItems;
-      }
-      if (savedTotal && document.getElementById('checkoutTotal')) {
-        document.getElementById('checkoutTotal').textContent = savedTotal;
+      // 6. തുറന്നു വെച്ചിരിക്കുന്ന ബ്ലാങ്ക് ടാബിലേക്ക് വാട്സാപ്പ് ലിങ്ക് ലോഡ് ചെയ്യുന്നു (ഇത് ബ്രൗസർ ബ്ലോക്ക് ചെയ്യില്ല)
+      if (whatsappTab) {
+        whatsappTab.location.href = whatsappURL;
       }
 
-      // 2. ആദ്യം തന്നെ ഒരു തവണ ലിങ്ക് റെഡിയാക്കി വെക്കുന്നു
-      generateWhatsAppApiLink();
-
-      // 3. കസ്റ്റമർ ഓരോ അക്ഷരം ടൈപ്പ് ചെയ്യുമ്പോഴും ലിങ്കിലെ വിവരങ്ങൾ തത്സമയം അപ്ഡേറ്റ് ചെയ്യും
-      const inputIds = ['name', 'phone', 'address', 'city', 'pincode'];
-      inputIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.addEventListener('input', generateWhatsAppApiLink);
-        }
-      });
-
-      // 4. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യുന്നു (ലിങ്ക് ഓപ്പൺ ആയതിനു ശേഷം മാത്രം)
-      const confirmBtn = document.getElementById('realConfirmBtn');
-      if (confirmBtn) {
-        confirmBtn.addEventListener('click', () => {
-          setTimeout(() => {
-            localStorage.clear(); 
-          }, 1000); // 1 സെക്കന്റ് കഴിഞ്ഞു മാത്രം കാർട്ട് ക്ലിയർ ചെയ്യും
-        });
-      }
+      // 7. ഓർഡർ കഴിഞ്ഞതുകൊണ്ട് കാർട്ട് ക്ലിയർ ചെയ്യുന്നു
+      localStorage.clear();
     });
+  }
+});
 </script>
+
 
 
 </body>
