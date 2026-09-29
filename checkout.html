@@ -73,7 +73,7 @@
       font-size: 18px;
       font-weight: 600;
     }
-    /* ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത സുരക്ഷിതമായ കറുത്ത ലിങ്ക് ബട്ടൺ സ്റ്റൈൽ */
+    /* കറുത്ത ബട്ടൺ ക്രോം ബ്രൗസർ ഒട്ടും ബ്ലോക്ക് ചെയ്യാത്ത രീതിയിലുള്ള സ്റ്റൈൽ */
     .btn-checkout-link {
       display: block;
       width: 100%;
@@ -87,7 +87,7 @@
       font-weight: 600;
       margin-top: 25px;
       box-sizing: border-box;
-      transition: background 0.2s;
+      cursor: pointer;
     }
     .btn-checkout-link:hover {
       background: #333333;
@@ -99,8 +99,8 @@
   <div class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <!-- ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് അപ്ഡേറ്റ് ആകാൻ oninput നൽകി -->
-      <form id="checkoutForm" oninput="updateOrderWhatsAppURL()">
+      <!-- ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ബാക്ക്ഗ്രൗണ്ടിൽ ലിങ്ക് റെഡിയാകാൻ oninput നൽകി -->
+      <form id="checkoutForm" oninput="generateWhatsAppApiLink()">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="name" placeholder="John Doe" value="test">
@@ -146,57 +146,55 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- യഥാർത്ഥ പരിഹാരം: ബ്രൗസറിന് ഒരു രീതിയിലും തടയാൻ കഴിയാത്ത നേരിട്ടുള്ള നോർമൽ ലിങ്ക് ടാഗ് -->
+      <!-- യഥാർത്ഥ പരിഹാരം: ബ്രൗസറിന് ഒരു രീതിയിലും തടയാൻ കഴിയാത്ത നേരിട്ടുള്ള ലിങ്ക് ടാഗ് -->
       <a href="#" id="realConfirmBtn" target="_self" class="btn-checkout-link">Confirm Order</a>
     </div>
   </div>
 
   <script>
-  function updateOrderWhatsAppURL() {
-    const name = document.getElementById('name').value || "Not Provided";
-    const phone = document.getElementById('phone').value || "Not Provided";
-    const address = document.getElementById('address').value || "Not Provided";
-    const city = document.getElementById('city').value || "Not Provided";
-    const pincode = document.getElementById('pincode').value || "Not Provided";
-    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+    function generateWhatsAppApiLink() {
+      const name = document.getElementById('name').value || "Not Provided";
+      const phone = document.getElementById('phone').value || "Not Provided";
+      const address = document.getElementById('address').value || "Not Provided";
+      const city = document.getElementById('city').value || "Not Provided";
+      const pincode = document.getElementById('pincode').value || "Not Provided";
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    const myWhatsAppNumber = "918921033257"; 
+      const myWhatsAppNumber = "918921033257"; 
 
-    let msgText = "📦 NEW ORDER RECEIVED!\n\n";
-    msgText += "👤 Customer Details:\n";
-    msgText += "• Name: " + name + "\n";
-    msgText += "• Phone: " + phone + "\n\n";
-    msgText += "📍 Shipping Address:\n";
-    msgText += "• Address: " + address + "\n";
-    msgText += "• City: " + city + " - " + pincode + "\n\n";
-    msgText += "💰 Total Amount: " + savedTotal + "\n\n";
-    msgText += "Thank you for shopping with NOVA!";
+      let msgText = "📦 NEW ORDER RECEIVED!\n\n";
+      msgText += "👤 Customer Details:\n";
+      msgText += "• Name: " + name + "\n";
+      msgText += "• Phone: " + phone + "\n\n";
+      msgText += "📍 Shipping Address:\n";
+      msgText += "• Address: " + address + "\n";
+      msgText += "• City: " + city + " - " + pincode + "\n\n";
+      msgText += "💰 Total Amount: " + savedTotal + "\n\n";
+      msgText += "Thank you for shopping with NOVA!";
 
-    // ⚠️ നിങ്ങൾ ആവശ്യപ്പെട്ട കൃത്യമായ ഔദ്യോഗിക ://whatsapp.com ലിങ്ക് ഫോർമാറ്റ് (മുൻപിൽ https:// സഹിതം)
-    const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-    
-    const confirmLink = document.getElementById('realConfirmBtn');
-    if (confirmLink) {
-      confirmLink.href = whatsappURL;
+      // ⚠️ നിങ്ങൾ ആവശ്യപ്പെട്ട കൃത്യമായ ://whatsapp.com ഔദ്യോഗിക ലിങ്ക് ഫോർമാറ്റ്
+      const whatsappURL = "https://://whatsapp.com/send?phone=" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      
+      const confirmLink = document.getElementById('realConfirmBtn');
+      if (confirmLink) {
+        confirmLink.href = whatsappURL;
+      }
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const savedItems = localStorage.getItem('cartItemsHTML');
-    const savedTotal = localStorage.getItem('cartTotalAmount');
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedItems = localStorage.getItem('cartItemsHTML');
+      const savedTotal = localStorage.getItem('cartTotalAmount');
 
-    if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
-    if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
+      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ കൃത്യമായ api ലിങ്ക് സെറ്റ് ചെയ്യുന്നു
-    updateOrderWhatsAppURL();
+      // പേജ് ലോഡ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ സെറ്റ് ചെയ്യുന്നു
+      generateWhatsAppApiLink();
 
-    document.getElementById('realConfirmBtn').addEventListener('click', () => {
-      localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      document.getElementById('realConfirmBtn').addEventListener('click', () => {
+        localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      });
     });
-  });
-</script>
-
-
+  </script>
 </body>
 </html>
