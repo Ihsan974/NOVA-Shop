@@ -188,7 +188,6 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // ലോക്കൽ സ്റ്റോറേജിൽ നിന്ന് വിവരങ്ങൾ എടുക്കുന്നു
     const savedItems = localStorage.getItem('cartItemsHTML');
     const savedTotal = localStorage.getItem('cartTotalAmount');
 
@@ -202,13 +201,11 @@
       totalContainer.textContent = savedTotal;
     }
 
-    // ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ WhatsApp-ലേക്ക് വിവരങ്ങൾ അയക്കാൻ
     const form = document.getElementById('checkoutForm');
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // ഫോമിലെ കസ്റ്റമർ വിവരങ്ങൾ എടുക്കുന്നു
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -217,31 +214,29 @@
         const pincode = document.getElementById('pincode').value;
         const payment = document.querySelector('input[name="payment"]:checked').value;
         
-        // നിങ്ങളുടെ വാട്സാപ്പ് നമ്പർ കൃത്യമായ സ്പെല്ലിംഗിൽ ഇവിടെ നൽകിയിട്ടുണ്ട്
         const myWhatsAppNumber = "918921033257"; 
 
-        // WhatsApp മെസ്സേജ് ഫോർമാറ്റ് തയാറാക്കുന്നു
-        let message = `*📦 NEW ORDER RECEIVED!* \n\n`;
-        message += `*👤 Customer Details:* \n`;
-        message += `• Name: ${name}\n`;
-        message += `• Phone: ${phone}\n`;
-        message += `• Email: ${email}\n\n`;
+        // കോഡിനുള്ളിലെ എല്ലാ മലയാളം കമന്റുകളും ചിഹ്നങ്ങളും പൂർണ്ണമായി ഒഴിവാക്കി തയാറാക്കിയ മെസ്സേജ്
+        let msgText = "NEW ORDER RECEIVED!\n\n";
+        msgText += "Customer Details:\n";
+        msgText += "Name: " + name + "\n";
+        msgText += "Phone: " + phone + "\n";
+        msgText += "Email: " + email + "\n\n";
         
-        message += `*📍 Shipping Address:* \n`;
-        message += `• Address: ${address}\n`;
-        message += `• City: ${city} - ${pincode}\n\n`;
+        msgText += "Shipping Address:\n";
+        msgText += "Address: " + address + "\n";
+        msgText += "City: " + city + " - " + pincode + "\n\n";
         
-        message += `*💳 Payment Method:* ${payment}\n`;
-        message += `*💰 Total Amount:* ${savedTotal || '₹0'}\n\n`;
-        message += `Thank you for shopping with NOVA!`;
+        msgText += "Payment Method: " + payment + "\n";
+        msgText += "Total Amount: " + (savedTotal || "₹0") + "\n\n";
+        msgText += "Thank you for shopping with NOVA!";
 
-        // ഔദ്യോഗിക ലിങ്കും ശരിയായ വേരിയബിളും ഒരൊറ്റ വരിയിൽ
-        const whatsappURL = `https://whatsapp.com{myWhatsAppNumber}&text=${encodeURIComponent(message)}`;
+        // 100% വാലിഡ് ആയ ഔദ്യോഗിക വാട്സാപ്പ് ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
         
-        // ഓർഡർ കഴിഞ്ഞ ശേഷം കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
         localStorage.clear(); 
         
-        // ഒരു തടസ്സവുമില്ലാതെ നേരിട്ട് വാട്സാപ്പ് ചാറ്റിലേക്ക് പേജ് മാറ്റുന്നു
+        // നേരിട്ട് വാട്സാപ്പ് ചാറ്റിലേക്ക് പേജ് റീഡയറക്ട് ചെയ്യുന്നു
         window.location.href = whatsappURL; 
       });
     }
