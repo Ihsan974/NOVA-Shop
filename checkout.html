@@ -152,8 +152,10 @@
   </div>
 
   <script>
-    function generateWhatsAppApiLink() {
-      // ഇൻപുട്ടുകളിൽ വാല്യൂ ഉണ്ടെങ്കിൽ എടുക്കും, ഇല്ലെങ്കിൽ "Not Provided" എന്ന് കാണിക്കും
+    function redirectToWhatsApp(e) {
+      // 1. ஃபார்ம் தானாக சப்மிட் ஆகி பேஜ் ரீஃப்ரெஷ் ஆவதைத் தடுக்கிறது
+      e.preventDefault();
+
       const name = document.getElementById('name')?.value || "Not Provided";
       const phone = document.getElementById('phone')?.value || "Not Provided";
       const address = document.getElementById('address')?.value || "Not Provided";
@@ -173,41 +175,27 @@
       msgText += "💰 Total Amount: " + savedTotal + "\n\n";
       msgText += "Thank you for shopping with NOVA!";
 
-      // ✅ ശരിയായ ഒഫീഷ്യൽ വാട്സാപ്പ് ലിങ്ക് ഫോർമാറ്റ് (തെറ്റുകൾ തിരുത്തിയത്)
       const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
       
-      const confirmLink = document.getElementById('realConfirmBtn');
-      if (confirmLink) {
-        confirmLink.href = whatsappURL;
-      }
+      // 2. கார்ட்டை கிளியர் செய்கிறது
+      localStorage.clear();
+
+      // 3. பயனர் கிளிக்கிற்குள் நேரடியாக புதிய விண்டோவைத் திறப்பதால் பிரவுசர் இதைத் தடுக்காது
+      window.open(whatsappURL, '_blank');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // കാർട്ട് ഡാറ്റ ലോഡ് ചെയ്യുന്നു
+      // கார்ட் டேட்டாவை லோடு செய்கிறது
       const savedItems = localStorage.getItem('cartItemsHTML');
       const savedTotal = localStorage.getItem('cartTotalAmount');
 
       if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
       if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
 
-      // ആദ്യമേ ലിങ്ക് ജനറേറ്റ് ചെയ്യുന്നു
-      generateWhatsAppApiLink();
-
-      // കസ്റ്റമർ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്കിലെ മെസ്സേജും തത്സമയം അപ്ഡേറ്റ് ചെയ്യാനുള്ള മാറ്റം
-      const inputIds = ['name', 'phone', 'address', 'city', 'pincode'];
-      inputIds.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.addEventListener('input', generateWhatsAppApiLink);
-        }
-      });
-
-      // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ കാർട്ട് ക്ലിയർ ചെയ്യും
+      // பட்டன் கிளிக்கைக் கவனித்து ஃபங்க்ஷனை இயக்குகிறது
       const confirmBtn = document.getElementById('realConfirmBtn');
       if (confirmBtn) {
-        confirmBtn.addEventListener('click', () => {
-          localStorage.clear(); 
-        });
+        confirmBtn.addEventListener('click', redirectToWhatsApp);
       }
     });
 </script>
