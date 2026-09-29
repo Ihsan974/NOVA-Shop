@@ -150,45 +150,135 @@
   </div>
 
   <script>
-    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ കാണിക്കാൻ
     document.addEventListener('DOMContentLoaded', () => {
-      const savedItems = localStorage.getItem('cartItemsHTML');
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  // =========================================================================
+  // 1. ഹോം പേജിലെ കാർട്ട് ഫങ്ക്ഷനുകൾ (HOME PAGE CART SYSTEM)
+  // =========================================================================
+  const cartCount = document.getElementById('cartCount') || document.querySelector('.cart-count');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+  
+  const cartButton = document.getElementById('cartButton');
+  const cartSidebar = document.querySelector('aside') || document.querySelector('.cart-sidebar') || document.querySelector('.cart-overlay');
+  const closeCartBtn = document.getElementById('closeCart') || document.querySelector('.close-cart');
 
-      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
-      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+  const allButtons = document.querySelectorAll('.add-cart, .add-to-cart, .add-to-cart-btn, #addToCartBtn');
+  
+  let count = 0;
+  let totalAmount = 0;
+
+  if (allButtons.length > 0) {
+    allButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        count++;
+        if (cartCount) cartCount.textContent = count;
+        
+        const productName = button.getAttribute('data-product') || 'Wireless Earbuds';
+        const productPriceText = button.getAttribute('data-price') || '0';
+        const productPrice = parseInt(productPriceText.replace(/[^0-9]/g, '')) || 0;
+        
+        totalAmount += productPrice;
+        if (cartTotal) {
+          cartTotal.textContent = '₹' + totalAmount.toLocaleString('en-IN');
+        }
+        
+        if (cartItemsContainer) {
+          const emptyMsg = cartItemsContainer.querySelector('.empty-cart');
+          if (emptyMsg) emptyMsg.remove();
+          
+          const newItem = document.createElement('div');
+          newItem.className = 'cart-item';
+          newItem.style.display = 'flex';
+          newItem.style.justifyContent = 'space-between';
+          newItem.style.margin = '15px 0';
+          newItem.style.paddingBottom = '10px';
+          newItem.style.borderBottom = '1px solid #eee';
+          newItem.style.color = '#111111';
+          newItem.innerHTML = `<span>${productName}</span> <strong>${productPriceText}</strong>`;
+          cartItemsContainer.appendChild(newItem);
+        }
+        
+        // ലോക്കൽ സ്റ്റോറേജിലേക്ക് ഡാറ്റ മാറ്റുന്നു (ചെക്കൗട്ട് പേജിന് വേണ്ടി)
+        if (cartItemsContainer && cartTotal) {
+          localStorage.setItem('cartItemsHTML', cartItemsContainer.innerHTML);
+          localStorage.setItem('cartTotalAmount', cartTotal.textContent);
+        }
+        
+        if (cartSidebar) {
+          cartSidebar.classList.add('active');
+        }
+      });
     });
+  }
 
-    // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ റൺ ആകേണ്ട അൾട്ടിമേറ്റ് ഫങ്ക്ഷൻ
-    function sendOrderViaWhatsApp(e) {
-      e.preventDefault(); // പേജ് ചാടുന്നത് തടയുന്നു
+  if (cartButton && cartSidebar) {
+    cartButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      cartSidebar.classList.toggle('active');
+    });
+  }
 
-      const name = document.getElementById('name').value || "Not Provided";
-      const phone = document.getElementById('phone').value || "Not Provided";
-      const address = document.getElementById('address').value || "Not Provided";
-      const city = document.getElementById('city').value || "Not Provided";
-      const pincode = document.getElementById('pincode').value || "Not Provided";
-      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+  if (closeCartBtn && cartSidebar) {
+    closeCartBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      cartSidebar.classList.remove('active');
+    });
+  }
 
-      const myWhatsAppNumber = "918921033257"; 
+  // =========================================================================
+  // 2. ചെക്കൗട്ട് പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ കാണിക്കാൻ (CHECKOUT LOAD)
+  // =========================================================================
+  const itemsContainer = document.getElementById('checkoutItemsList');
+  const totalContainer = document.getElementById('checkoutTotal');
+  
+  if (itemsContainer) {
+    const savedItems = localStorage.getItem('cartItemsHTML');
+    if (savedItems) itemsContainer.innerHTML = savedItems;
+  }
+  if (totalContainer) {
+    const savedTotal = localStorage.getItem('cartTotalAmount');
+    if (savedTotal) totalContainer.textContent = savedTotal;
+  }
+});
 
-      let msgText = "NEW ORDER RECEIVED!\n\n";
-      msgText += "Customer Details:\n";
-      msgText += "Name: " + name + "\n";
-      msgText += "Phone: " + phone + "\n\n";
-      msgText += "Shipping Address:\n";
-      msgText += "Address: " + address + "\n";
-      msgText += "City: " + city + " - " + pincode + "\n\n";
-      msgText += "Total Amount: " + savedTotal + "\n\n";
-      msgText += "Thank you for shopping with NOVA!";
+// =========================================================================
+// 3. വാട്സാപ്പ് ഓർഡർ സിസ്റ്റം (WHATSAPP ORDER AUTOMATION - BULLETPROOF)
+// =========================================================================
+function sendOrderViaWhatsApp(e) {
+  if (e) e.preventDefault(); // പേജ് മുകളിലേക്ക് ചാടുന്നത് തടയാൻ
 
-      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-      
-      localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-      
-      // ഇതേ ടാബിൽ നേരിട്ട് വാട്സാപ്പ് ഓപ്പൺ ആക്കുന്നു
-      window.location.href = whatsappURL;
-    }
-  </script>
+  // ഫോമിൽ നിന്ന് വിവരങ്ങൾ കൃത്യമായി എടുക്കുന്നു
+  const name = document.getElementById('name') ? document.getElementById('name').value : "Not Provided";
+  const phone = document.getElementById('phone') ? document.getElementById('phone').value : "Not Provided";
+  const address = document.getElementById('address') ? document.getElementById('address').value : "Not Provided";
+  const city = document.getElementById('city') ? document.getElementById('city').value : "Not Provided";
+  const pincode = document.getElementById('pincode') ? document.getElementById('pincode').value : "Not Provided";
+  const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+
+  const myWhatsAppNumber = "918921033257"; 
+
+  let msgText = "NEW ORDER RECEIVED!\n\n";
+  msgText += "Customer Details:\n";
+  msgText += "Name: " + name + "\n";
+  msgText += "Phone: " + phone + "\n\n";
+  
+  msgText += "Shipping Address:\n";
+  msgText += "Address: " + address + "\n";
+  msgText += "City: " + city + " - " + pincode + "\n\n";
+  
+  msgText += "Total Amount: " + savedTotal + "\n\n";
+  msgText += "Thank you for shopping with NOVA!";
+
+  // ബ്രൗസറിന് ഒരു ആശയക്കുഴപ്പവും വരാത്ത രീതിയിലുള്ള ഔദ്യോഗിക ലിങ്ക് ഫോർമാറ്റ്
+  const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+  
+  localStorage.clear(); // ഓർഡർ കംപ്ലീറ്റ് ആയതുകൊണ്ട് കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+  
+  // ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതെ ഇതേ വിൻഡോയിൽ നേരിട്ട് വാട്സാപ്പ് ചാറ്റിലേക്ക് വഴിമാറുന്നു
+  window.location.href = whatsappURL;
+}
+</script>
 </body>
 </html>
