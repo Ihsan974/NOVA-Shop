@@ -73,7 +73,6 @@
       font-size: 18px;
       font-weight: 600;
     }
-    /* ബ്രൗസറിന് ഒരു കാരണവശാലും ബ്ലോക്ക് ചെയ്യാൻ പറ്റാത്ത സാധാരണ ലിങ്ക് ബട്ടൺ സ്റ്റൈൽ */
     .btn-whatsapp-order {
       display: block;
       width: 100%;
@@ -87,6 +86,7 @@
       font-weight: 600;
       margin-top: 25px;
       box-sizing: border-box;
+      cursor: pointer;
     }
     .btn-whatsapp-order:hover {
       background: #20ba5a;
@@ -98,8 +98,7 @@
   <div class="checkout-container">
     <div class="checkout-section">
       <h2>Shipping Details</h2>
-      <!-- ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് അപ്ഡേറ്റ് ആകാൻ oninput നൽകി -->
-      <form id="checkoutForm" oninput="updateOrderLink()">
+      <form id="checkoutForm">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" id="name" placeholder="John Doe" value="test">
@@ -145,67 +144,51 @@
         <span id="checkoutTotal">₹0</span>
       </div>
 
-      <!-- യഥാർത്ഥ പരിഹാരം: ജാവാസ്ക്രിപ്റ്റ് വഴിയുള്ള വിൻഡോ മാറ്റം ഒഴിവാക്കി നേരിട്ടുള്ള നോർമൽ ലിങ്ക് ടാഗ് -->
-      <a href="#" id="waDirectBtn" target="_self" class="btn-whatsapp-order">🚀 Confirm & Send via WhatsApp</a>
+      <!-- യഥാർത്ഥ പരിഹാരം: ഇൻലൈൻ onclick വഴി നേരിട്ട് ഫങ്ക്ഷൻ റൺ ചെയ്യിക്കുന്നു (ബ്രൗസറിന് ഇത് തടയാൻ കഴിയില്ല) -->
+      <a href="#" onclick="sendOrderViaWhatsApp(event)" class="btn-whatsapp-order">🚀 Confirm & Send via WhatsApp</a>
     </div>
   </div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. ആദ്യ പേജിലെ കാർട്ട് വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു
-    const savedItems = localStorage.getItem('cartItemsHTML');
-    const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+    // പേജ് ലോഡ് ചെയ്യുമ്പോൾ കാർട്ട് വിവരങ്ങൾ കാണിക്കാൻ
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedItems = localStorage.getItem('cartItemsHTML');
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
 
-    const itemsContainer = document.getElementById('checkoutItemsList');
-    const totalContainer = document.getElementById('checkoutTotal');
+      if (savedItems) document.getElementById('checkoutItemsList').innerHTML = savedItems;
+      if (savedTotal) document.getElementById('checkoutTotal').textContent = savedTotal;
+    });
 
-    if (savedItems && itemsContainer) {
-      itemsContainer.innerHTML = savedItems;
+    // ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ റൺ ആകേണ്ട അൾട്ടിമേറ്റ് ഫങ്ക്ഷൻ
+    function sendOrderViaWhatsApp(e) {
+      e.preventDefault(); // പേജ് ചാടുന്നത് തടയുന്നു
+
+      const name = document.getElementById('name').value || "Not Provided";
+      const phone = document.getElementById('phone').value || "Not Provided";
+      const address = document.getElementById('address').value || "Not Provided";
+      const city = document.getElementById('city').value || "Not Provided";
+      const pincode = document.getElementById('pincode').value || "Not Provided";
+      const savedTotal = localStorage.getItem('cartTotalAmount') || "₹0";
+
+      const myWhatsAppNumber = "918921033257"; 
+
+      let msgText = "NEW ORDER RECEIVED!\n\n";
+      msgText += "Customer Details:\n";
+      msgText += "Name: " + name + "\n";
+      msgText += "Phone: " + phone + "\n\n";
+      msgText += "Shipping Address:\n";
+      msgText += "Address: " + address + "\n";
+      msgText += "City: " + city + " - " + pincode + "\n\n";
+      msgText += "Total Amount: " + savedTotal + "\n\n";
+      msgText += "Thank you for shopping with NOVA!";
+
+      const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
+      
+      localStorage.clear(); // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
+      
+      // ഇതേ ടാബിൽ നേരിട്ട് വാട്സാപ്പ് ഓപ്പൺ ആക്കുന്നു
+      window.location.href = whatsappURL;
     }
-    if (savedTotal && totalContainer) {
-      totalContainer.textContent = savedTotal;
-    }
-
-    // 2. ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ നേരിട്ട് വാട്സാപ്പ് തുറക്കാനുള്ള ഫങ്ക്ഷൻ
-    const waBtn = document.getElementById('waDirectBtn');
-    if (waBtn) {
-      waBtn.addEventListener('click', (e) => {
-        // ഡമ്മി ഹാഷ് ലിങ്ക് (#) ഉള്ളത് കൊണ്ട് പേജ് മുകളിലേക്ക് ചാടുന്നത് തടയാൻ
-        e.preventDefault(); 
-
-        // ഫോമിൽ നിന്ന് കസ്റ്റമർ വിവരങ്ങൾ കൃത്യമായി എടുക്കുന്നു
-        const name = document.getElementById('name').value || "Not Provided";
-        const phone = document.getElementById('phone').value || "Not Provided";
-        const address = document.getElementById('address').value || "Not Provided";
-        const city = document.getElementById('city').value || "Not Provided";
-        const pincode = document.getElementById('pincode').value || "Not Provided";
-
-        const myWhatsAppNumber = "918921033257"; 
-
-        // മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
-        let msgText = "NEW ORDER RECEIVED!\n\n";
-        msgText += "Customer Details:\n";
-        msgText += "Name: " + name + "\n";
-        msgText += "Phone: " + phone + "\n\n";
-        msgText += "Shipping Address:\n";
-        msgText += "Address: " + address + "\n";
-        msgText += "City: " + city + " - " + pincode + "\n\n";
-        msgText += "Total Amount: " + savedTotal + "\n\n";
-        msgText += "Thank you for shopping with NOVA!";
-
-        // പൂർണ്ണമായ ഔദ്യോഗിക വാട്സാപ്പ് ലിങ്ക് ഉണ്ടാക്കുന്നു
-        const whatsappURL = "https://whatsapp.com" + myWhatsAppNumber + "&text=" + encodeURIComponent(msgText);
-        
-        // കാർട്ട് ക്ലീൻ ചെയ്യുന്നു
-        localStorage.clear(); 
-
-        // ബ്രൗസറിന് ഒരു ബ്ലോക്കും തരാൻ പറ്റാത്ത രീതിയിൽ ഇതേ വിൻഡോയിൽ വാട്സാപ്പ് ഓപ്പൺ ആക്കുന്നു
-        window.location.href = whatsappURL;
-      });
-    }
-  });
-</script>
-
-
+  </script>
 </body>
 </html>
