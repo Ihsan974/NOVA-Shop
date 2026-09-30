@@ -177,36 +177,13 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+               <!-- കൺഫേം ഓർഡർ ബട്ടൺ ഒരു ഡയറക്ട് ലിങ്ക് ആക്കി മാറ്റിയിരിക്കുന്നു -->
+                <a href="https://whatsapp.com" class="btn-confirm" style="text-align: center; text-decoration: none; display: block;">
+            Confirm Order
+        </a>
     </div>
 </div>
 
-<script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
-
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
-        
-        const whatsappNumber = "918921033257"; 
-
-        const message = `*New Order Details* 🛍️\n\n` +
-                        `*Name:* ${fullName}\n` +
-                        `*Email:* ${email}\n` +
-                        `*Phone:* ${phone}\n` +
-                        `*Address:* ${address}, ${city} - ${pincode}\n\n` +
-                        `*Total Amount:* INR 8999`;
-
-        const encodedMessage = encodeURIComponent(message);
-        
-        const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
-
-    });
-</script>
-
+<!-- പഴയ സ്ക്രിപ്റ്റ് ഫങ്ക്ഷൻ പൂർണ്ണമായി ഒഴിവാക്കി -->
 </body>
 </html>
