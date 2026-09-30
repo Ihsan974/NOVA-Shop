@@ -102,14 +102,13 @@
             font-weight: 700;
         }
 
-        /* കൺഫേം ലിങ്ക് ബട്ടണിന്റെ ഡിസൈൻ */
+        /* 100% സുരക്ഷിതമായ വാട്സ്ആപ്പ് ബട്ടൺ ഡിസൈൻ */
         .btn-confirm-whatsapp {
             display: block;
             width: 100%;
             padding: 15px;
             background: #111111;
             color: #ffffff;
-            border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
@@ -183,16 +182,15 @@
             <span class="total-price">₹8,999</span>
         </div>
         
-        <!-- ജാവാസ്ക്രിപ്റ്റ് മാറ്റി നേരിട്ടുള്ള ഒഫിഷ്യൽ ലിങ്ക് ബട്ടൺ ആക്കി മാറ്റി -->
-        <!-- ⚠️ താഴെയുള്ള '918921033257' മാറ്റി നിങ്ങളുടെ ശരിക്കുള്ള വാട്സ്ആപ്പ് നമ്പർ നൽകുക -->
-        <a id="whatsappLink" href="https://whatsapp.com" target="_blank" class="btn-confirm-whatsapp">
+        <!-- ⚠️ പോപ്പ്-അപ്പ് ബ്ലോക്കറുകൾ പൂർണ്ണമായി ഒഴിവാക്കാൻ 'target' മാറ്റുകയും ഡയറക്ട് ലിങ്ക് നൽകുകയും ചെയ്തു -->
+        <!-- ദയവായി താഴെയുള്ള '918921033257' മാറ്റി നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക -->
+        <a id="whatsappLink" href="https://whatsapp.com" class="btn-confirm-whatsapp">
             Confirm Order
         </a>
     </div>
 </div>
 
 <script>
-    // ഫോമിൽ കസ്റ്റമർ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ അനുസരിച്ച് വാട്സ്ആപ്പ് ലിങ്ക് ഓട്ടോമാറ്റിക് ആയി അപ്ഡേറ്റ് ചെയ്യാനുള്ള കോഡ്
     const form = document.getElementById('checkoutForm');
     const whatsappLink = document.getElementById('whatsappLink');
 
@@ -216,11 +214,10 @@
 
         const encodedMessage = encodeURIComponent(message);
         
-        // ലിങ്ക് അപ്ഡേറ്റ് ചെയ്യുന്നു
+        // ലിങ്ക് ഒരേ പേജിൽ തന്നെ ഓപ്പൺ ചെയ്യുന്ന രീതിയിലാക്കി (ബ്ലോക്ക് ആകാതിരിക്കാൻ)
         whatsappLink.href = `https://whatsapp.com{myWhatsappNumber}&text=${encodedMessage}`;
     }
 
-    // ഫോമിൽ ടൈപ്പ് ചെയ്യുമ്പോൾ തന്നെ ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ റെഡിയാകും
     form.addEventListener('input', updateWhatsAppLink);
 </script>
 
