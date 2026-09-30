@@ -131,88 +131,66 @@
 </head>
 <body>
 
-<div class="checkout-wrapper">
-    <!-- Shipping Details Form -->
-    <div class="container-box">
-        <h2>Shipping Details</h2>
-        <form id="checkoutForm">
+<!-- 
+  ഫോമിൽ നേരിട്ട് ://whatsapp.com ആക്ഷൻ നൽകിയിരിക്കുന്നു. 
+  ⚠️ ദയവായി താഴെയുള്ള "919876543210" മാറ്റി നിങ്ങളുടെ ശരിക്കുള്ള വാട്സ്ആപ്പ് നമ്പർ നൽകുക.
+-->
+<form action="https://://whatsapp.com/send" method="GET" target="_blank">
+    <!-- നിങ്ങളുടെ വാട്സ്ആപ്പ് നമ്പർ ഇവിടെയും കൃത്യമായി സെറ്റ് ചെയ്യുക -->
+    <input type="hidden" name="phone" value="918921033257">
+
+    <div class="checkout-wrapper">
+        <!-- Shipping Details -->
+        <div class="container-box">
+            <h2>Shipping Details</h2>
+            
             <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="Your Name" required>
+                <label>Full Name</label>
+                <!-- name="text" എന്ന് നൽകിയാൽ ഈ ഫീൽഡിലെ വിവരങ്ങൾ വാട്സ്ആപ്പിലേക്ക് പോകും -->
+                <input type="text" name="text" placeholder="Your Name" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@email.com" required>
+                    <label>Email Address</label>
+                    <input type="email" placeholder="name@email.com">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="Phone Number">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="address">Delivery Address</label>
-                <input type="text" id="address" placeholder="Address" required>
+                <label>Delivery Address</label>
+                <input type="text" placeholder="Address">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City" required>
+                    <label>City</label>
+                    <input type="text" placeholder="City">
                 </div>
                 <div class="form-group">
-                    <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" placeholder="Pincode" required>
+                    <label>Pincode</label>
+                    <input type="text" placeholder="Pincode">
                 </div>
             </div>
-        </form>
-    </div>
-
-    <!-- Order Summary Box -->
-    <div class="summary-box">
-        <h2>Order Summary</h2>
-        <div class="total-section">
-            <span class="total-label">Total Amount</span>
-            <span class="total-price">₹8,999</span>
         </div>
-        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+
+        <!-- Order Summary Box -->
+        <div class="summary-box">
+            <h2>Order Summary</h2>
+            <div class="total-section">
+                <span class="total-label">Total Amount</span>
+                <span class="total-price">₹8,999</span>
+            </div>
+            
+            <!-- ഈ ബട്ടൺ ക്ലിക്ക് ചെയ്യുമ്പോൾ ഫോം ഓട്ടോമാറ്റിക് ആയി വാട്സ്ആപ്പിലേക്ക് പോകും -->
+            <button type="submit" class="btn-confirm">Confirm Order</button>
+        </div>
     </div>
-</div>
-
-<script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
-
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
-        
-        // ⚠️ ശ്രദ്ധിക്കുക: താഴെയുള്ള "919876543210" മാറ്റി നിങ്ങളുടെ ശരിക്കുള്ള വാട്സ്ആപ്പ് നമ്പർ നൽകുക.
-        // മുൻപിൽ കൺട്രി കോഡ് (91) ഉണ്ടായിരിക്കണം, പ്ലസ് (+) ചിഹ്നം ഉപയോഗിക്കരുത്.
-        const whatsappNumber = "918921033257"; 
-
-        // വാട്സ്ആപ്പിലേക്ക് അയക്കുന്ന മെസ്സേജ് ലേഔട്ട്
-        const message = `*New Order Details* 🛍️\n\n` +
-                        `*Name:* ${fullName}\n` +
-                        `*Email:* ${email}\n` +
-                        `*Phone:* ${phone}\n` +
-                        `*Address:* ${address}, ${city} - ${pincode}\n\n` +
-                        `*Total Amount:* INR 8999`;
-
-        const encodedMessage = encodeURIComponent(message);
-        
-        // ആവശ്യപ്പെട്ടതുപോലെ ഇവിടെ കൃത്യമായ ://whatsapp.com ലിങ്ക് ഫോർമാറ്റ് നൽകിയിരിക്കുന്നു
-        const whatsappUrl = `https://://whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
-
-        // വാട്സ്ആപ്പ് പുതിയ വിൻഡോയിൽ ഓപ്പൺ ചെയ്യുന്നു
-        window.open(whatsappUrl, '_blank');
-    });
-</script>
+</form>
 
 </body>
 </html>
