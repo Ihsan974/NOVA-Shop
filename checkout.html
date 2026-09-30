@@ -135,37 +135,36 @@
     <!-- Shipping Details Form -->
     <div class="container-box">
         <h2>Shipping Details</h2>
-        <!-- ഫോമിന്റെ id ശ്രദ്ധിക്കുക -->
         <form id="checkoutForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" required placeholder="Your Name">
+                <input type="text" id="fullName" placeholder="Your Name">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="name@email.com">
+                    <input type="email" id="email" placeholder="name@email.com">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" required placeholder="Phone Number">
+                    <input type="tel" id="phone" placeholder="Phone Number">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="address">Delivery Address</label>
-                <input type="text" id="address" required placeholder="Address">
+                <input type="text" id="address" placeholder="Address">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="city">City</label>
-                    <input type="text" id="city" required placeholder="City">
+                    <input type="text" id="city" placeholder="City">
                 </div>
                 <div class="form-group">
                     <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" required placeholder="Pincode">
+                    <input type="text" id="pincode" placeholder="Pincode">
                 </div>
             </div>
         </form>
@@ -178,28 +177,26 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <!-- ഈ ബട്ടണിൽ form="checkoutForm" നൽകിയിരിക്കുന്നത് കൊണ്ട് ഫോമുമായി ഇത് കണക്റ്റ് ആകും -->
-        <button type="submit" form="checkoutForm" id="confirmBtn" class="btn-confirm">Confirm Order</button>
+        <!-- ഇവിടെ നമ്മൾ നേരിട്ട് onclick ഫങ്ക്ഷൻ നൽകിയിരിക്കുന്നു -->
+        <button type="button" onclick="sendToWhatsApp()" class="btn-confirm">Confirm Order</button>
     </div>
 </div>
 
 <script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
-        
+    function sendToWhatsApp() {
         // ഇൻപുട്ടുകളിൽ നിന്നുള്ള വിവരങ്ങൾ എടുക്കുന്നു
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
+        const fullName = document.getElementById('fullName').value || "Not provided";
+        const email = document.getElementById('email').value || "Not provided";
+        const phone = document.getElementById('phone').value || "Not provided";
+        const address = document.getElementById('address').value || "Not provided";
+        const city = document.getElementById('city').value || "Not provided";
+        const pincode = document.getElementById('pincode').value || "Not provided";
         const totalAmount = "₹8,999"; 
 
-        // ⚠️ ശ്രദ്ധിക്കുക: ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ മാറ്റി നൽകുക (Country code 91 ചേർക്കണം)
+        // ⚠️ ദയവായി ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക (Country code 91 നിർബന്ധമാണ്)
         const whatsappNumber = "918921033257"; 
 
-        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ്
+        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് രൂപം
         const message = `*New Order Details* 🛍️\n\n` +
                         `*Name:* ${fullName}\n` +
                         `*Email:* ${email}\n` +
@@ -208,11 +205,13 @@
                         `*Total Amount:* ${totalAmount}`;
 
         const encodedMessage = encodeURIComponent(message);
+        
+        // ഇത് ഡയറക്ട് വാട്സ്ആപ്പ് ലിങ്ക് ആണ്
         const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
 
-        // വാട്സ്ആപ്പ് വെബ്ബ് പുതിയ ടാബിൽ ഓപ്പൺ ചെയ്യുന്നു
+        // പുതിയ വിൻഡോയിൽ ഓപ്പൺ ചെയ്യുന്നു
         window.open(whatsappUrl, '_blank');
-    });
+    }
 </script>
 
 </body>
