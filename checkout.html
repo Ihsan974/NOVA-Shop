@@ -102,25 +102,21 @@
             font-weight: 700;
         }
 
-        /* 100% സുരക്ഷിതമായ വാട്സ്ആപ്പ് ബട്ടൺ ഡിസൈൻ */
-        .btn-confirm-whatsapp {
-            display: block;
+        .btn-confirm {
             width: 100%;
             padding: 15px;
             background: #111111;
             color: #ffffff;
+            border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
-            text-align: center;
-            text-decoration: none;
             cursor: pointer;
             transition: background 0.2s;
         }
 
-        .btn-confirm-whatsapp:hover {
+        .btn-confirm:hover {
             background: #2c2c2c;
-            color: #ffffff;
         }
 
         @media (max-width: 768px) {
@@ -139,7 +135,8 @@
     <!-- Shipping Details Form -->
     <div class="container-box">
         <h2>Shipping Details</h2>
-        <form id="checkoutForm">
+        <!-- ⚠️ ഫോമിൽ നിന്നും action, method എന്നിവ പൂർണ്ണമായി ഒഴിവാക്കി -->
+        <form id="checkoutForm" onsubmit="return false;">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
                 <input type="text" id="fullName" placeholder="Your Name" required>
@@ -181,29 +178,29 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        
-        <!-- ⚠️ പോപ്പ്-അപ്പ് ബ്ലോക്കറുകൾ പൂർണ്ണമായി ഒഴിവാക്കാൻ 'target' മാറ്റുകയും ഡയറക്ട് ലിങ്ക് നൽകുകയും ചെയ്തു -->
-        <!-- ദയവായി താഴെയുള്ള '918921033257' മാറ്റി നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക -->
-        <a id="whatsappLink" href="https://whatsapp.com" class="btn-confirm-whatsapp">
-            Confirm Order
-        </a>
+        <!-- ⚠️ ടൈപ്പ് 'button' ആക്കി മാറ്റി, നേരിട്ട് ഫങ്ക്ഷൻ കൊടുത്തിരിക്കുന്നു -->
+        <button type="button" onclick="redirectToWhatsApp()" class="btn-confirm">Confirm Order</button>
     </div>
 </div>
 
 <script>
-    const form = document.getElementById('checkoutForm');
-    const whatsappLink = document.getElementById('whatsappLink');
+    function redirectToWhatsApp() {
+        // ഫോം വാലിഡേഷൻ ചെക്ക് ചെയ്യുന്നു (എല്ലാം ടൈപ്പ് ചെയ്തിട്ടുണ്ടോ എന്ന് നോക്കാൻ)
+        const form = document.getElementById('checkoutForm');
+        if (!form.checkValidity()) {
+            form.reportValidity(); // വിവരങ്ങൾ ടൈപ്പ് ചെയ്തിട്ടില്ലെങ്കിൽ അത് കാണിക്കും
+            return;
+        }
 
-    function updateWhatsAppLink() {
-        const fullName = document.getElementById('fullName').value || '';
-        const email = document.getElementById('email').value || '';
-        const phone = document.getElementById('phone').value || '';
-        const address = document.getElementById('address').value || '';
-        const city = document.getElementById('city').value || '';
-        const pincode = document.getElementById('pincode').value || '';
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const pincode = document.getElementById('pincode').value;
         
-        // ⚠️ ഇവിടെയും നിങ്ങളുടെ ശരിക്കുള്ള വാട്സ്ആപ്പ് നമ്പർ തന്നെ നൽകുക
-        const myWhatsappNumber = "918921033257"; 
+        // ⚠️ ദയവായി ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക (Country code 91 മുൻപിൽ ചേർക്കണം)
+        const whatsappNumber = "918921033257"; 
 
         const message = `*New Order Details* 🛍️\n\n` +
                         `*Name:* ${fullName}\n` +
@@ -213,12 +210,11 @@
                         `*Total Amount:* INR 8999`;
 
         const encodedMessage = encodeURIComponent(message);
-        
-        // ലിങ്ക് ഒരേ പേജിൽ തന്നെ ഓപ്പൺ ചെയ്യുന്ന രീതിയിലാക്കി (ബ്ലോക്ക് ആകാതിരിക്കാൻ)
-        whatsappLink.href = `https://whatsapp.com{myWhatsappNumber}&text=${encodedMessage}`;
-    }
+        const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
 
-    form.addEventListener('input', updateWhatsAppLink);
+        // ⚠️ ബ്രൗസർ ബ്ലോക്ക് ചെയ്യാതിരിക്കാൻ ഒരേ പേജിൽ തന്നെ ലോഡ് ചെയ്യിക്കുന്നു
+        window.location.href = whatsappUrl;
+    }
 </script>
 
 </body>
