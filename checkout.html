@@ -203,8 +203,9 @@
 
         const encodedMessage = encodeURIComponent(message);
         
-        // 100% സുരക്ഷിതമായ പുതിയ യൂണിവേഴ്സൽ ലിങ്ക് ഫോർമാറ്റ് (ഇത് ബ്രൗസർ ഒരിക്കലും ബ്ലോക്ക് ചെയ്യില്ല)
-        const whatsappUrl = `https://wa.me{whatsappNumber}?text=${encodedMessage}`;
+                // ലിങ്കിൽ നിങ്ങളുടെ ഫോൺ നമ്പർ നേരിട്ട് നൽകിയിരിക്കുന്നു
+        const whatsappUrl = `https://whatsapp.com{encodedMessage}`;
+
 
         window.location.href = whatsappUrl;
     });
