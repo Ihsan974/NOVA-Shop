@@ -92,133 +92,128 @@
             margin-bottom: 25px;
         }
 
-        .total-label {
+        .total-section span {
             font-size: 16px;
             font-weight: 600;
         }
 
-        .total-price {
+        .total-amount {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: bold;
         }
 
-        /* 100% സുരക്ഷിതമായ ലിങ്ക് ബട്ടൺ സ്റ്റൈൽ */
-        .btn-confirm-link {
+        /* വാട്സ്ആപ്പ് ബട്ടൺ സ്റ്റൈൽ */
+        .confirm-btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            background: #111111;
+            background: #1c1c1c;
             color: #ffffff;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
             text-align: center;
+            padding: 15px;
+            border-radius: 7px;
             text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s ease;
         }
 
-        .btn-confirm-link:hover {
-            background: #2c2c2c;
-            color: #ffffff;
-        }
-
-        @media (max-width: 768px) {
-            .checkout-wrapper {
-                flex-direction: column;
-            }
-            .summary-box {
-                width: 100%;
-            }
+        .confirm-btn:hover {
+            background: #333333;
         }
     </style>
 </head>
 <body>
 
-<div class="checkout-wrapper">
-    <!-- Shipping Details Form -->
-    <div class="container-box">
-        <h2>Shipping Details</h2>
-        <form id="checkoutForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="Your Name" required>
-            </div>
-
-            <div class="form-row">
+    <div class="checkout-wrapper">
+        <!-- Shipping Details Form -->
+        <div class="container-box">
+            <h2>Shipping Details</h2>
+            <form id="checkoutForm">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@email.com" required>
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Your Name" required>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="Phone Number" required>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="address">Delivery Address</label>
-                <input type="text" id="address" placeholder="Address" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="name@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Phone Number" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" placeholder="Pincode" required>
-                </div>
-            </div>
-        </form>
-    </div>
 
-    <!-- Order Summary Box -->
-    <div class="summary-box">
-        <h2>Order Summary</h2>
-        <div class="total-section">
-            <span class="total-label">Total Amount</span>
-            <span class="total-price">₹8,999</span>
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <input type="text" id="address" placeholder="Address" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="City" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" placeholder="Pincode" required>
+                    </div>
+                </div>
+            </form>
         </div>
-        
-        <!-- ✅ ജാവാസ്ക്രിപ്റ്റ് പൂർണ്ണമായി ഒഴിവാക്കി 100% ഒറിജിനൽ സുരക്ഷിതമായ അപി ലിങ്ക് നേരിട്ട് നൽകിയിരിക്കുന്നു -->
-        <a id="whatsappLink" href="https://whatsapp.com" class="btn-confirm-link">
-            Confirm Order
-        </a>
+
+        <!-- Order Summary Box -->
+        <div class="summary-box">
+            <h2>Order Summary</h2>
+            <div class="total-section">
+                <span>Total Amount</span>
+                <span class="total-amount">₹8,999</span>
+            </div>
+            <!-- വാട്സ്ആപ്പ് ട്രിഗർ ചെയ്യുന്ന ബട്ടൺ -->
+            <button type="button" class="confirm-btn" onclick="sendToWhatsApp()">Confirm Order</button>
+        </div>
     </div>
-</div>
 
-<script>
-    // ഫോമിൽ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ അനുസരിച്ച് ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ ഓട്ടോമാറ്റിക് ആയി അപ്ഡേറ്റ് ചെയ്യും
-    const form = document.getElementById('checkoutForm');
-    const whatsappLink = document.getElementById('whatsappLink');
+    <script>
+        function sendToWhatsApp() {
+            // ഫോമിലെ വിവരങ്ങൾ എടുക്കുന്നു
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const pincode = document.getElementById('pincode').value.trim();
 
-    function updateWhatsAppLink() {
-        const fullName = document.getElementById('fullName').value || '';
-        const email = document.getElementById('email').value || '';
-        const phone = document.getElementById('phone').value || '';
-        const address = document.getElementById('address').value || '';
-        const city = document.getElementById('city').value || '';
-        const pincode = document.getElementById('pincode').value || '';
-        
-        const myWhatsappNumber = "918921033257"; 
+            // എല്ലാ ഫീൽഡുകളും പൂരിപ്പിച്ചിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുന്നു
+            if (!name || !email || !phone || !address || !city || !pincode) {
+                alert('ദയവായി എല്ലാ വിവരങ്ങളും കൃത്യമായി പൂരിപ്പിക്കുക.');
+                return;
+            }
 
-        const message = `*New Order Details* 🛍️\n\n` +
-                        `*Name:* ${fullName}\n` +
-                        `*Email:* ${email}\n` +
-                        `*Phone:* ${phone}\n` +
-                        `*Address:* ${address}, ${city} - ${pincode}\n\n` +
-                        `*Total Amount:* INR 8999`;
+            // നിങ്ങളുടെ ബിസിനസ്സ് വാട്സ്ആപ്പ് നമ്പർ ഇവിടെ നൽകുക (കൺട്രി കോഡ് സഹിതം, സ്പേസ് പാടില്ല)
+            const whatsappNumber = "918921033257"; 
 
-        const encodedMessage = encodeURIComponent(message);
-        
-        // ശരിയായ ലിങ്ക് പാത ഇവിടെ ഭദ്രമായി നൽകിയിരിക്കുന്നു
-        whatsappLink.href = `https://whatsapp.com{myWhatsappNumber}&text=${encodedMessage}`;
-    }
+            // ഓർഡർ വിവരങ്ങൾ മെസ്സേജ് രൂപത്തിലാക്കുന്നു
+            const message = `Hello Nova, I would like to place an order!\n\n` +
+                            `🛍️ *Order Details:*\n` +
+                            `• Total Amount: ₹8,999\n\n` +
+                            `📍 *Shipping Details:*\n` +
+                            `• Name: ${name}\n` +
+                            `• Phone: ${phone}\n` +
+                            `• Email: ${email}\n` +
+                            `• Address: ${address}, ${city} - ${pincode}`;
 
-    form.addEventListener('input', updateWhatsAppLink);
-</script>
+            // മെസ്സേജ് URL-ലേക്ക് മാറ്റുന്നു (URL Encoding)
+            const encodedMessage = encodeURIComponent(message);
+
+            // വാട്സ്ആപ്പ് വിൻഡോ പുതിയ ടാബിൽ തുറക്കുന്നു
+            const whatsappURL = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+        }
+    </script>
 
 </body>
 </html>
