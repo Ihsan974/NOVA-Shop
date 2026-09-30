@@ -178,8 +178,16 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-
-        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+        <!-- Order Summary Box -->
+        <div class="summary-box">
+            <h2>Order Summary</h2>
+            <div class="total-section">
+                <span class="total-label">Total Amount</span>
+                <span class="total-price">₹8,999</span>
+            </div>
+            <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+        </div>
+    </div>
 
 <script>
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
@@ -209,6 +217,10 @@
         window.location.href = whatsappUrl;
     });
 </script>
+
+</body>
+</html>
+
 
 
 
