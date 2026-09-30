@@ -184,9 +184,11 @@
 </div>
 
 
+<button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+
 <script>
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // പേജ് എറർ അടിച്ചു റീഫ്രഷ് ആകുന്നത് തടയാൻ
+        e.preventDefault(); 
 
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
@@ -195,7 +197,6 @@
         const city = document.getElementById('city').value;
         const pincode = document.getElementById('pincode').value;
         
-        // നിങ്ങളുടെ വാട്സ്ആപ്പ് നമ്പർ
         const whatsappNumber = "918921033257"; 
 
         const message = `*New Order Details* 🛍️\n\n` +
@@ -207,13 +208,13 @@
 
         const encodedMessage = encodeURIComponent(message);
         
-        // ✅ ലിങ്കും ഡോളർ ചിഹ്നങ്ങളും പൂർണ്ണമായി തിരുത്തിയത് താഴെ നൽകുന്നു:
+        // ഇവിടെ ലിങ്കും ഡോളർ ചിഹ്നങ്ങളും പൂർണ്ണമായി തിരുത്തിയിട്ടുണ്ട്
         const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
 
-        // സുരക്ഷിതമായി വാട്സ്ആപ്പ് വെബ്ബ് ഓപ്പൺ ചെയ്യുന്നു
         window.location.href = whatsappUrl;
     });
 </script>
+
 
 
 </body>
