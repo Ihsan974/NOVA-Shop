@@ -174,36 +174,41 @@
     </div>
 
     <script>
-        function sendToWhatsApp() {
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const city = document.getElementById('city').value.trim();
-            const pincode = document.getElementById('pincode').value.trim();
+    function sendToWhatsApp() {
+        // ഫീൽഡുകളിൽ നിന്നുള്ള വിവരങ്ങൾ കൃത്യമായി എടുക്കുന്നു
+        var customerName = document.getElementById('fullName').value.trim();
+        var customerEmail = document.getElementById('email').value.trim();
+        var customerPhone = document.getElementById('phone').value.trim();
+        var customerAddress = document.getElementById('address').value.trim();
+        var customerCity = document.getElementById('city').value.trim();
+        var customerPincode = document.getElementById('pincode').value.trim();
 
-            if (!name || !email || !phone || !address || !city || !pincode) {
-                alert('ദയവായി എല്ലാ വിവരങ്ങളും കൃത്യമായി പൂരിപ്പിക്കുക.');
-                return;
-            }
-
-            const whatsappNumber = "918921033257"; 
-
-            const message = "Hello Nova, I would like to place an order!\n\n" +
-                            "🛍️ *Order Details:*\n" +
-                            "• Total Amount: ₹8,999\n\n" +
-                            "📍 *Shipping Details:*\n" +
-                            "• Name: " + name + "\n" +
-                            "• Phone: " + phone + "\n" +
-                            "• Email: " + email + "\n" +
-                            "• Address: " + address + ", " + city + " - " + pincode;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappURL = "https://whatsapp.com" + whatsappNumber + "&text=" + encodedMessage;
-            
-            window.open(whatsappURL, "_blank");
+        // വിവരങ്ങൾ ഒന്നും വിട്ടുപോയിട്ടില്ലെന്ന് ഉറപ്പാക്കുന്നു
+        if (!customerName || !customerEmail || !customerPhone || !customerAddress || !customerCity || !customerPincode) {
+            alert('ദയവായി എല്ലാ വിവരങ്ങളും ടൈപ്പ് ചെയ്യുക.');
+            return;
         }
-    </script>
+
+        // ഇവിടെ യാതൊരു ചിഹ്നങ്ങളും ഇല്ലാതെ നിങ്ങളുടെ നമ്പർ മാത്രം നൽകുക
+        var myNumber = "918921033257"; 
+
+        // അയക്കേണ്ട സന്ദേശം ലളിതമായി നിർമ്മിക്കുന്നു
+        var orderText = "Hello Nova, New Order Placed!\n\n" +
+                        "🛍️ *Amount:* ₹8,999\n\n" +
+                        "📍 *Address Details:*\n" +
+                        "• Name: " + customerName + "\n" +
+                        "• Phone: " + customerPhone + "\n" +
+                        "• Email: " + customerEmail + "\n" +
+                        "• Address: " + customerAddress + ", " + customerCity + " - " + customerPincode;
+
+        // സുരക്ഷിതമായി URL എൻകോഡ് ചെയ്യുന്നു
+        var finalURL = "https://whatsapp.com" + myNumber + "&text=" + encodeURIComponent(orderText);
+        
+        // പുതിയ വിൻഡോയിലേക്ക് റീഡയറക്റ്റ് ചെയ്യുന്നു
+        window.open(finalURL, "_blank");
+    }
+</script>
+
 
 </body>
 </html>
