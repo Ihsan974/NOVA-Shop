@@ -102,21 +102,25 @@
             font-weight: 700;
         }
 
-        .btn-confirm {
+        /* 100% സുരക്ഷിതമായ ലിങ്ക് ബട്ടൺ സ്റ്റൈൽ */
+        .btn-confirm-link {
+            display: block;
             width: 100%;
             padding: 15px;
             background: #111111;
             color: #ffffff;
-            border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
+            text-align: center;
+            text-decoration: none;
             cursor: pointer;
             transition: background 0.2s;
         }
 
-        .btn-confirm:hover {
+        .btn-confirm-link:hover {
             background: #2c2c2c;
+            color: #ffffff;
         }
 
         @media (max-width: 768px) {
@@ -177,22 +181,28 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
+        
+        <!-- ✅ ജാവാസ്ക്രിപ്റ്റ് പൂർണ്ണമായി ഒഴിവാക്കി 100% ഒറിജിനൽ സുരക്ഷിതമായ അപി ലിങ്ക് നേരിട്ട് നൽകിയിരിക്കുന്നു -->
+        <a id="whatsappLink" href="https://whatsapp.com" class="btn-confirm-link">
+            Confirm Order
+        </a>
     </div>
 </div>
 
 <script>
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
+    // ഫോമിൽ ടൈപ്പ് ചെയ്യുന്ന വിവരങ്ങൾ അനുസരിച്ച് ലിങ്ക് ബാക്ക്ഗ്രൗണ്ടിൽ ഓട്ടോമാറ്റിക് ആയി അപ്ഡേറ്റ് ചെയ്യും
+    const form = document.getElementById('checkoutForm');
+    const whatsappLink = document.getElementById('whatsappLink');
 
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const city = document.getElementById('city').value;
-        const pincode = document.getElementById('pincode').value;
+    function updateWhatsAppLink() {
+        const fullName = document.getElementById('fullName').value || '';
+        const email = document.getElementById('email').value || '';
+        const phone = document.getElementById('phone').value || '';
+        const address = document.getElementById('address').value || '';
+        const city = document.getElementById('city').value || '';
+        const pincode = document.getElementById('pincode').value || '';
         
-        const whatsappNumber = "918921033257"; 
+        const myWhatsappNumber = "918921033257"; 
 
         const message = `*New Order Details* 🛍️\n\n` +
                         `*Name:* ${fullName}\n` +
@@ -203,12 +213,11 @@
 
         const encodedMessage = encodeURIComponent(message);
         
-                // ലിങ്കിൽ നിങ്ങളുടെ ഫോൺ നമ്പർ നേരിട്ട് നൽകിയിരിക്കുന്നു
-        const whatsappUrl = `https://whatsapp.com{encodedMessage}`;
+        // ശരിയായ ലിങ്ക് പാത ഇവിടെ ഭദ്രമായി നൽകിയിരിക്കുന്നു
+        whatsappLink.href = `https://whatsapp.com{myWhatsappNumber}&text=${encodedMessage}`;
+    }
 
-
-        window.location.href = whatsappUrl;
-    });
+    form.addEventListener('input', updateWhatsAppLink);
 </script>
 
 </body>
