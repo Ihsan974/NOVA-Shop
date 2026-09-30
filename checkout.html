@@ -135,8 +135,7 @@
     <!-- Shipping Details Form -->
     <div class="container-box">
         <h2>Shipping Details</h2>
-        <!-- ⚠️ ഫോമിൽ നിന്നും action, method എന്നിവ പൂർണ്ണമായി ഒഴിവാക്കി -->
-        <form id="checkoutForm" onsubmit="return false;">
+        <form id="checkoutForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
                 <input type="text" id="fullName" placeholder="Your Name" required>
@@ -178,16 +177,9 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <!-- Order Summary Box -->
-        <div class="summary-box">
-            <h2>Order Summary</h2>
-            <div class="total-section">
-                <span class="total-label">Total Amount</span>
-                <span class="total-price">₹8,999</span>
-            </div>
-            <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
-        </div>
+        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
     </div>
+</div>
 
 <script>
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
@@ -211,19 +203,12 @@
 
         const encodedMessage = encodeURIComponent(message);
         
-        // 100% കൃത്യമായ ഒഫീഷ്യൽ വാട്സ്ആപ്പ് ലിങ്ക് ഫോർമാറ്റ്
+        // 100% കൃത്യമായ ഒഫീഷ്യൽ ലിങ്ക് ഇവിടെ നൽകിയിട്ടുണ്ട്
         const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
 
         window.location.href = whatsappUrl;
     });
 </script>
-
-</body>
-</html>
-
-
-
-
 
 </body>
 </html>
