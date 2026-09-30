@@ -102,21 +102,24 @@
             font-weight: 700;
         }
 
-        .btn-confirm {
+        /* ലിങ്കിനെ ബട്ടൺ രൂപത്തിലാക്കാനുള്ള സ്റ്റൈൽ */
+        .btn-confirm-link {
+            display: block;
             width: 100%;
             padding: 15px;
             background: #111111;
             color: #ffffff;
-            border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
-            cursor: pointer;
+            text-align: center;
+            text-decoration: none; /* ലിങ്കിന്റെ അടിയിലെ വര ഒഴിവാക്കാൻ */
             transition: background 0.2s;
         }
 
-        .btn-confirm:hover {
+        .btn-confirm-link:hover {
             background: #2c2c2c;
+            color: #ffffff;
         }
 
         @media (max-width: 768px) {
@@ -177,42 +180,13 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <!-- ഇവിടെ നമ്മൾ നേരിട്ട് onclick ഫങ്ക്ഷൻ നൽകിയിരിക്കുന്നു -->
-        <button type="button" onclick="sendToWhatsApp()" class="btn-confirm">Confirm Order</button>
+        
+        <!-- ⚠️ ദയവായി താഴെയുള്ള ലിങ്കിലെ 918921033257 മാറ്റി നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക -->
+        <a href="https://whatsapp.com₹8,999" target="_blank" class="btn-confirm-link">
+            Confirm Order
+        </a>
     </div>
 </div>
-
-<script>
-    function sendToWhatsApp() {
-        // ഇൻപുട്ടുകളിൽ നിന്നുള്ള വിവരങ്ങൾ എടുക്കുന്നു
-        const fullName = document.getElementById('fullName').value || "Not provided";
-        const email = document.getElementById('email').value || "Not provided";
-        const phone = document.getElementById('phone').value || "Not provided";
-        const address = document.getElementById('address').value || "Not provided";
-        const city = document.getElementById('city').value || "Not provided";
-        const pincode = document.getElementById('pincode').value || "Not provided";
-        const totalAmount = "₹8,999"; 
-
-        // ⚠️ ദയവായി ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക (Country code 91 നിർബന്ധമാണ്)
-        const whatsappNumber = "918921033257"; 
-
-        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് രൂപം
-        const message = `*New Order Details* 🛍️\n\n` +
-                        `*Name:* ${fullName}\n` +
-                        `*Email:* ${email}\n` +
-                        `*Phone:* ${phone}\n` +
-                        `*Address:* ${address}, ${city} - ${pincode}\n\n` +
-                        `*Total Amount:* ${totalAmount}`;
-
-        const encodedMessage = encodeURIComponent(message);
-        
-        // ഇത് ഡയറക്ട് വാട്സ്ആപ്പ് ലിങ്ക് ആണ്
-        const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
-
-        // പുതിയ വിൻഡോയിൽ ഓപ്പൺ ചെയ്യുന്നു
-        window.open(whatsappUrl, '_blank');
-    }
-</script>
 
 </body>
 </html>
