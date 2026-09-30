@@ -177,16 +177,14 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        <!-- ഫോം സബ്മിറ്റ് ചെയ്യാൻ ടൈപ്പ് 'submit' ആക്കി ബട്ടൺ നൽകി -->
         <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
     </div>
 </div>
 
 <script>
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകാതിരിക്കാൻ
+        e.preventDefault(); 
 
-        // ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ ഓരോന്നായി എടുക്കുന്നു
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -194,10 +192,11 @@
         const city = document.getElementById('city').value;
         const pincode = document.getElementById('pincode').value;
         
-        // ⚠️ ദയവായി ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക (Country code 91 മുൻപിൽ ചേർക്കണം)
+        // ⚠️ ശ്രദ്ധിക്കുക: താഴെയുള്ള "919876543210" മാറ്റി നിങ്ങളുടെ ശരിക്കുള്ള വാട്സ്ആപ്പ് നമ്പർ നൽകുക.
+        // മുൻപിൽ കൺട്രി കോഡ് (91) ഉണ്ടായിരിക്കണം, പ്ലസ് (+) ചിഹ്നം ഉപയോഗിക്കരുത്.
         const whatsappNumber = "918921033257"; 
 
-        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ടെക്സ്റ്റ്
+        // വാട്സ്ആപ്പിലേക്ക് അയക്കുന്ന മെസ്സേജ് ലേഔട്ട്
         const message = `*New Order Details* 🛍️\n\n` +
                         `*Name:* ${fullName}\n` +
                         `*Email:* ${email}\n` +
@@ -205,11 +204,10 @@
                         `*Address:* ${address}, ${city} - ${pincode}\n\n` +
                         `*Total Amount:* INR 8999`;
 
-        // ലിങ്കിലെ ചിഹ്നങ്ങളുടെ പ്രശ്നം ഒഴിവാക്കാൻ 'encodeURIComponent' ഉപയോഗിക്കുന്നു
         const encodedMessage = encodeURIComponent(message);
         
-        // ശരിയായ ഒറിജിനൽ വാട്സ്ആപ്പ് ലിങ്ക് ഫോർമാറ്റ്
-        const whatsappUrl = `https://wa.me{whatsappNumber}?text=${encodedMessage}`;
+        // ആവശ്യപ്പെട്ടതുപോലെ ഇവിടെ കൃത്യമായ ://whatsapp.com ലിങ്ക് ഫോർമാറ്റ് നൽകിയിരിക്കുന്നു
+        const whatsappUrl = `https://://whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
         // വാട്സ്ആപ്പ് പുതിയ വിൻഡോയിൽ ഓപ്പൺ ചെയ്യുന്നു
         window.open(whatsappUrl, '_blank');
