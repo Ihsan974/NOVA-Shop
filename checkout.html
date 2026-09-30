@@ -178,42 +178,45 @@
     </div>
 
     <script>
-        function sendToWhatsApp() {
-            // ഫോമിലെ വിവരങ്ങൾ എടുക്കുന്നു
-            const name = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const city = document.getElementById('city').value.trim();
-            const pincode = document.getElementById('pincode').value.trim();
+    function sendToWhatsApp() {
+        // ഫോമിലെ വിവരങ്ങൾ എടുക്കുന്നു
+        const name = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const pincode = document.getElementById('pincode').value.trim();
 
-            // എല്ലാ ഫീൽഡുകളും പൂരിപ്പിച്ചിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുന്നു
-            if (!name || !email || !phone || !address || !city || !pincode) {
-                alert('ദയവായി എല്ലാ വിവരങ്ങളും കൃത്യമായി പൂരിപ്പിക്കുക.');
-                return;
-            }
-
-            // നിങ്ങളുടെ ബിസിനസ്സ് വാട്സ്ആപ്പ് നമ്പർ ഇവിടെ നൽകുക (കൺട്രി കോഡ് സഹിതം, സ്പേസ് പാടില്ല)
-            const whatsappNumber = "918921033257"; 
-
-            // ഓർഡർ വിവരങ്ങൾ മെസ്സേജ് രൂപത്തിലാക്കുന്നു
-            const message = `Hello Nova, I would like to place an order!\n\n` +
-                            `🛍️ *Order Details:*\n` +
-                            `• Total Amount: ₹8,999\n\n` +
-                            `📍 *Shipping Details:*\n` +
-                            `• Name: ${name}\n` +
-                            `• Phone: ${phone}\n` +
-                            `• Email: ${email}\n` +
-                            `• Address: ${address}, ${city} - ${pincode}`;
-
-            // മെസ്സേജ് URL-ലേക്ക് മാറ്റുന്നു (URL Encoding)
-            const encodedMessage = encodeURIComponent(message);
-
-            // വാട്സ്ആപ്പ് വിൻഡോ പുതിയ ടാബിൽ തുറക്കുന്നു
-            const whatsappURL = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
-            window.open(whatsappURL, '_blank');
+        // എല്ലാ ഫീൽഡുകളും പൂരിപ്പിച്ചിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുന്നു
+        if (!name || !email || !phone || !address || !city || !pincode) {
+            alert('ദയവായി എല്ലാ വിവരങ്ങളും കൃത്യമായി പൂരിപ്പിക്കുക.');
+            return;
         }
-    </script>
+
+        // നിങ്ങളുടെ ബിസിനസ്സ് വാട്സ്ആപ്പ് നമ്പർ (കൺട്രി കോഡ് സഹിതം, സ്പേസോ മറ്റ് ചിഹ്നങ്ങളോ പാടില്ല)
+        const whatsappNumber = "918921033257"; 
+
+        // മെസ്സേജ് കൃത്യമായി ഫോർമാറ്റ് ചെയ്യുന്നു
+        const message = "Hello Nova, I would like to place an order!\n\n" +
+                        "🛍️ *Order Details:*\n" +
+                        "• Total Amount: ₹8,999\n\n" +
+                        "📍 *Shipping Details:*\n" +
+                        "• Name: " + name + "\n" +
+                        "• Phone: " + phone + "\n" +
+                        "• Email: " + email + "\n" +
+                        "• Address: " + address + ", " + city + " - " + pincode;
+
+        // മെസ്സേജ് URL-ലേക്ക് മാറ്റുന്നു (URL Encoding)
+        const encodedMessage = encodeURIComponent(message);
+
+        // കൃത്യമായ വാട്സ്ആപ്പ് URL നിർമ്മിക്കുന്നു
+        const whatsappURL = "https://whatsapp.com" + whatsappNumber + "&text=" + encodedMessage;
+        
+        // പുതിയ ടാബിൽ തുറക്കുന്നു
+        window.open(whatsappURL, "_blank");
+    }
+</script>
+
 
 </body>
 </html>
