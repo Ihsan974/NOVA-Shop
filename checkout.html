@@ -102,24 +102,21 @@
             font-weight: 700;
         }
 
-        /* ലിങ്കിനെ ബട്ടൺ രൂപത്തിലാക്കാനുള്ള സ്റ്റൈൽ */
-        .btn-confirm-link {
-            display: block;
+        .btn-confirm {
             width: 100%;
             padding: 15px;
             background: #111111;
             color: #ffffff;
+            border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
-            text-align: center;
-            text-decoration: none; /* ലിങ്കിന്റെ അടിയിലെ വര ഒഴിവാക്കാൻ */
+            cursor: pointer;
             transition: background 0.2s;
         }
 
-        .btn-confirm-link:hover {
+        .btn-confirm:hover {
             background: #2c2c2c;
-            color: #ffffff;
         }
 
         @media (max-width: 768px) {
@@ -141,33 +138,33 @@
         <form id="checkoutForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="Your Name">
+                <input type="text" id="fullName" placeholder="Your Name" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@email.com">
+                    <input type="email" id="email" placeholder="name@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="Phone Number">
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="address">Delivery Address</label>
-                <input type="text" id="address" placeholder="Address">
+                <input type="text" id="address" placeholder="Address" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City">
+                    <input type="text" id="city" placeholder="City" required>
                 </div>
                 <div class="form-group">
                     <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" placeholder="Pincode">
+                    <input type="text" id="pincode" placeholder="Pincode" required>
                 </div>
             </div>
         </form>
@@ -180,13 +177,44 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
-        
-        <!-- ⚠️ ദയവായി താഴെയുള്ള ലിങ്കിലെ 918921033257 മാറ്റി നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക -->
-        <a href="https://whatsapp.com₹8,999" target="_blank" class="btn-confirm-link">
-            Confirm Order
-        </a>
+        <!-- ഫോം സബ്മിറ്റ് ചെയ്യാൻ ടൈപ്പ് 'submit' ആക്കി ബട്ടൺ നൽകി -->
+        <button type="submit" form="checkoutForm" class="btn-confirm">Confirm Order</button>
     </div>
 </div>
+
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകാതിരിക്കാൻ
+
+        // ഫോമിൽ ടൈപ്പ് ചെയ്ത വിവരങ്ങൾ ഓരോന്നായി എടുക്കുന്നു
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const pincode = document.getElementById('pincode').value;
+        
+        // ⚠️ ദയവായി ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ നൽകുക (Country code 91 മുൻപിൽ ചേർക്കണം)
+        const whatsappNumber = "918921033257"; 
+
+        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ് ടെക്സ്റ്റ്
+        const message = `*New Order Details* 🛍️\n\n` +
+                        `*Name:* ${fullName}\n` +
+                        `*Email:* ${email}\n` +
+                        `*Phone:* ${phone}\n` +
+                        `*Address:* ${address}, ${city} - ${pincode}\n\n` +
+                        `*Total Amount:* INR 8999`;
+
+        // ലിങ്കിലെ ചിഹ്നങ്ങളുടെ പ്രശ്നം ഒഴിവാക്കാൻ 'encodeURIComponent' ഉപയോഗിക്കുന്നു
+        const encodedMessage = encodeURIComponent(message);
+        
+        // ശരിയായ ഒറിജിനൽ വാട്സ്ആപ്പ് ലിങ്ക് ഫോർമാറ്റ്
+        const whatsappUrl = `https://wa.me{whatsappNumber}?text=${encodedMessage}`;
+
+        // വാട്സ്ആപ്പ് പുതിയ വിൻഡോയിൽ ഓപ്പൺ ചെയ്യുന്നു
+        window.open(whatsappUrl, '_blank');
+    });
+</script>
 
 </body>
 </html>
