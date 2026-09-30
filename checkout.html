@@ -119,20 +119,6 @@
             background: #2c2c2c;
         }
 
-        .btn-confirm:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            margin-top: 15px;
-            color: #d93838;
-            font-size: 13px;
-            text-align: center;
-            display: none;
-            line-height: 1.4;
-        }
-
         @media (max-width: 768px) {
             .checkout-wrapper {
                 flex-direction: column;
@@ -149,36 +135,37 @@
     <!-- Shipping Details Form -->
     <div class="container-box">
         <h2>Shipping Details</h2>
+        <!-- ഫോമിന്റെ id ശ്രദ്ധിക്കുക -->
         <form id="checkoutForm">
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" required placeholder="John Doe">
+                <input type="text" id="fullName" required placeholder="Your Name">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="john@example.com">
+                    <input type="email" id="email" required placeholder="name@email.com">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" required placeholder="9999999999">
+                    <input type="tel" id="phone" required placeholder="Phone Number">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="address">Delivery Address</label>
-                <input type="text" id="address" required placeholder="Street, Apartment, Suite">
+                <input type="text" id="address" required placeholder="Address">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="city">City</label>
-                    <input type="text" id="city" required placeholder="Mumbai">
+                    <input type="text" id="city" required placeholder="City">
                 </div>
                 <div class="form-group">
                     <label for="pincode">Pincode</label>
-                    <input type="text" id="pincode" required placeholder="400001">
+                    <input type="text" id="pincode" required placeholder="Pincode">
                 </div>
             </div>
         </form>
@@ -191,42 +178,39 @@
             <span class="total-label">Total Amount</span>
             <span class="total-price">₹8,999</span>
         </div>
+        <!-- ഈ ബട്ടണിൽ form="checkoutForm" നൽകിയിരിക്കുന്നത് കൊണ്ട് ഫോമുമായി ഇത് കണക്റ്റ് ആകും -->
         <button type="submit" form="checkoutForm" id="confirmBtn" class="btn-confirm">Confirm Order</button>
-        <div id="errorMessage" class="error-message">Unable to connect to the order server. Please try again.</div>
     </div>
 </div>
 
 <script>
     document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയാൻ
+        e.preventDefault(); // പേജ് റീഫ്രഷ് ആകുന്നത് തടയുന്നു
         
-        // ഫോമിൽ നിന്നുള്ള വിവരങ്ങൾ ശേഖരിക്കുന്നു
+        // ഇൻപുട്ടുകളിൽ നിന്നുള്ള വിവരങ്ങൾ എടുക്കുന്നു
         const fullName = document.getElementById('fullName').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
         const city = document.getElementById('city').value;
         const pincode = document.getElementById('pincode').value;
-        const totalAmount = "₹8,999"; // നിങ്ങളുടെ ഓർഡർ തുക
+        const totalAmount = "₹8,999"; 
 
-        // നിങ്ങളുടെ ബിസിനസ്സ് വാട്സ്ആപ്പ് നമ്പർ ഇവിടെ നൽകുക (Country code സഹിതം നൽകണം. ഉദാഹരണത്തിന്: 919876543210)
+        // ⚠️ ശ്രദ്ധിക്കുക: ഇവിടെ നിങ്ങളുടെ ഒറിജിനൽ വാട്സ്ആപ്പ് നമ്പർ മാറ്റി നൽകുക (Country code 91 ചേർക്കണം)
         const whatsappNumber = "918921033257"; 
 
-        // വാട്സ്ആപ്പിലേക്ക് അയക്കേണ്ട മെസ്സേജ് ഫോർമാറ്റ് ചെയ്യുന്നു
-        const message = `*New Order Details*🛍️\n\n` +
+        // വാട്സ്ആപ്പിൽ കാണിക്കേണ്ട മെസ്സേജ്
+        const message = `*New Order Details* 🛍️\n\n` +
                         `*Name:* ${fullName}\n` +
                         `*Email:* ${email}\n` +
                         `*Phone:* ${phone}\n` +
                         `*Address:* ${address}, ${city} - ${pincode}\n\n` +
                         `*Total Amount:* ${totalAmount}`;
 
-        // മെസ്സേജ് യുആർഎൽ (URL) രൂപത്തിലാക്കുന്നു
         const encodedMessage = encodeURIComponent(message);
-
-        // വാട്സ്ആപ്പ് ലിങ്ക് ഉണ്ടാക്കുന്നു (ഇത് ഓട്ടോമാറ്റിക്കായി വാട്സ്ആപ്പ് വെബിലേക്കോ ആപ്പിലേക്കോ കൊണ്ടുപോകും)
         const whatsappUrl = `https://whatsapp.com{whatsappNumber}&text=${encodedMessage}`;
 
-        // പുതിയ വിൻഡോയിൽ വാട്സ്ആപ്പ് ഓപ്പൺ ചെയ്യാൻ
+        // വാട്സ്ആപ്പ് വെബ്ബ് പുതിയ ടാബിൽ ഓപ്പൺ ചെയ്യുന്നു
         window.open(whatsappUrl, '_blank');
     });
 </script>
